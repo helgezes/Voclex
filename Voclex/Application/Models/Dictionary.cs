@@ -2,6 +2,11 @@
 {
     public class Dictionary : Entity
     {
-        public string Title { get; private set; } = string.Empty;
+        public Dictionary(string title)
+        {
+            Title = title;
+        }
+
+        public string Title { get; private set; }
     }
 }
