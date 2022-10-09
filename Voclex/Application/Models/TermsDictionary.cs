@@ -1,8 +1,8 @@
 ﻿namespace Application.Models
 {
-    public class Dictionary : Entity
+    public class TermsDictionary : Entity
     {
-        public Dictionary(string title)
+        public TermsDictionary(string title)
         {
             Title = title;
         }

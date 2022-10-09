@@ -10,7 +10,7 @@ namespace Infrastructure.Persistence.Configurations
         {
             builder.Property(d => d.Value).HasMaxLength(600).IsRequired();
 
-            builder.HasOne(i => i.Dictionary).WithMany().HasForeignKey(i => i.DictionaryId);
+            builder.HasOne(i => i.TermsDictionary).WithMany().HasForeignKey(i => i.TermsDictionaryId);
         }
     }
 }

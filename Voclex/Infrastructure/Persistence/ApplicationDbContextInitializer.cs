@@ -14,10 +14,10 @@ namespace Infrastructure.Persistence
 
         public static async Task SeedDbIfNeeded(ApplicationDbContext context)
         {
-            if (context.Dictionaries.Any()) return;
+            if (context.TermsDictionaries.Any()) return;
 
 
-            Dictionary newDict = new("Test dictionary");
+            TermsDictionary newDict = new("Test dictionary");
             context.Add(newDict);
 
             #region DictionaryItems and Definitions

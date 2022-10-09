@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence
 {
     public sealed class ApplicationDbContext : DbContext, IDbContext
     {
-        public DbSet<Dictionary> Dictionaries => Set<Dictionary>();
+        public DbSet<TermsDictionary> TermsDictionaries => Set<TermsDictionary>();
 
         public DbSet<DictionaryItem> DictionaryItems => Set<DictionaryItem>();
 

@@ -15,7 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddScoped<IDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+builder.Services.AddScoped<IDbContext>(provider => 
+    provider.GetRequiredService<ApplicationDbContext>());
 
 builder.Services.AddScoped<DictionaryItemProgressService>();
 
