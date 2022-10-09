@@ -13,7 +13,7 @@ namespace Application.DataAccess
 
         DbSet<User> Users { get; }
 
-        DbSet<DictionaryItemProgress> DictionaryItemProgresses { get; }
+        DbSet<TermProgress> TermProgresses { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Models
 {
-    public class DictionaryItemProgress : Entity
+    public class TermProgress : Entity
     {
-        public DictionaryItemProgress(User user, Term term) : this()
+        public TermProgress(User user, Term term) : this()
         {
             UserId = user.Id;
             User = user;
@@ -16,7 +16,7 @@ namespace Application.Models
             Term = term;
         }
 
-        private DictionaryItemProgress()
+        private TermProgress()
         {
             GuessedTimesCount = 0;
         }

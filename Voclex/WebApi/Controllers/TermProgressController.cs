@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [Route("[controller]")]
-    public class DictionaryItemProgressController : ControllerBase
+    public class TermProgressController : ControllerBase
     {
-        private readonly DictionaryItemProgressService _progressService;
-        public DictionaryItemProgressController(DictionaryItemProgressService progressService)
+        private readonly TermProgressService _progressService;
+        public TermProgressController(TermProgressService progressService)
         {
             _progressService = progressService;
         }

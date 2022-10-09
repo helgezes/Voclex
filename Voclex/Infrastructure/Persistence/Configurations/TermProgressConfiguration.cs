@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    sealed class DictionaryItemProgressConfiguration : IEntityTypeConfiguration<DictionaryItemProgress>
+    sealed class TermProgressConfiguration : IEntityTypeConfiguration<TermProgress>
     {
-        public void Configure(EntityTypeBuilder<DictionaryItemProgress> builder)
+        public void Configure(EntityTypeBuilder<TermProgress> builder)
         {
             builder.HasOne(p => p.Term)
                 .WithMany().HasForeignKey(p => p.TermId);

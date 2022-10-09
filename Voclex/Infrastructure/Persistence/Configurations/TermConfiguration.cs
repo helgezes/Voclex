@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    sealed class DictionaryItemConfiguration : IEntityTypeConfiguration<Term>
+    sealed class TermConfiguration : IEntityTypeConfiguration<Term>
     {
         public void Configure(EntityTypeBuilder<Term> builder)
         {

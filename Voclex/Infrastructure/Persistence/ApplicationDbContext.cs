@@ -15,8 +15,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<User> Users => Set<User>();
 
-        public DbSet<DictionaryItemProgress> DictionaryItemProgresses => 
-            Set<DictionaryItemProgress>();
+        public DbSet<TermProgress> TermProgresses => 
+            Set<TermProgress>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,10 +28,10 @@ namespace Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DictionaryConfiguration());
-            modelBuilder.ApplyConfiguration(new DictionaryItemConfiguration());
+            modelBuilder.ApplyConfiguration(new TermConfiguration());
             modelBuilder.ApplyConfiguration(new DefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new DictionaryItemProgressConfiguration());
+            modelBuilder.ApplyConfiguration(new TermProgressConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
