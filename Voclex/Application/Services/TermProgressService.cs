@@ -27,25 +27,25 @@ namespace Application.Services
             await context.SaveChangesAsync();
         }
 
-        private async Task<TermProgress> GetTermProgress(int dictionaryItemId, int userId)
+        private async Task<TermProgress> GetTermProgress(int termId, int userId)
         {
-            return await GetTermProgressFromDbIfExists(dictionaryItemId, userId) ??
-                   await CreateNewTermProgress(dictionaryItemId, userId);
+            return await GetTermProgressFromDbIfExists(termId, userId) ??
+                   await CreateNewTermProgress(termId, userId);
         }
 
-        private async Task<TermProgress?> GetTermProgressFromDbIfExists(int dictionaryItemId, int userId)
+        private async Task<TermProgress?> GetTermProgressFromDbIfExists(int termId, int userId)
         {
             var relevantProgressItem =
                 await context.TermProgresses
                     .FirstOrDefaultAsync(i =>
-                        i.TermId == dictionaryItemId && i.UserId == userId);
+                        i.TermId == termId && i.UserId == userId);
             return relevantProgressItem;
         }
 
-        private async Task<TermProgress> CreateNewTermProgress(int dictionaryItemId, int userId)
+        private async Task<TermProgress> CreateNewTermProgress(int termId, int userId)
         {
             var userFromDbTask = context.Users.FindAsync(userId);
-            var termFromDbTask = context.Terms.FindAsync(dictionaryItemId);
+            var termFromDbTask = context.Terms.FindAsync(termId);
 
             TermProgress relevantProgressItem =
                 new (await userFromDbTask, await termFromDbTask);
