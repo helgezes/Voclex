@@ -9,7 +9,7 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Dictionaries",
+                name: "TermsDictionaries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -18,7 +18,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dictionaries", x => x.Id);
+                    table.PrimaryKey("PK_TermsDictionaries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,21 +35,21 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DictionaryItems",
+                name: "Terms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DictionaryId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TermsDictionaryId = table.Column<int>(type: "INTEGER", nullable: false),
                     Value = table.Column<string>(type: "TEXT", maxLength: 600, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DictionaryItems", x => x.Id);
+                    table.PrimaryKey("PK_Terms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DictionaryItems_Dictionaries_DictionaryId",
-                        column: x => x.DictionaryId,
-                        principalTable: "Dictionaries",
+                        name: "FK_Terms_TermsDictionaries_TermsDictionaryId",
+                        column: x => x.TermsDictionaryId,
+                        principalTable: "TermsDictionaries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -60,41 +60,41 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DictionaryItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TermId = table.Column<int>(type: "INTEGER", nullable: false),
                     Value = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Definitions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Definitions_DictionaryItems_DictionaryItemId",
-                        column: x => x.DictionaryItemId,
-                        principalTable: "DictionaryItems",
+                        name: "FK_Definitions_Terms_TermId",
+                        column: x => x.TermId,
+                        principalTable: "Terms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DictionaryItemProgresses",
+                name: "TermProgresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DictionaryItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TermId = table.Column<int>(type: "INTEGER", nullable: false),
                     GuessedTimesCount = table.Column<byte>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DictionaryItemProgresses", x => x.Id);
+                    table.PrimaryKey("PK_TermProgresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DictionaryItemProgresses_DictionaryItems_DictionaryItemId",
-                        column: x => x.DictionaryItemId,
-                        principalTable: "DictionaryItems",
+                        name: "FK_TermProgresses_Terms_TermId",
+                        column: x => x.TermId,
+                        principalTable: "Terms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DictionaryItemProgresses_Users_UserId",
+                        name: "FK_TermProgresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -102,24 +102,24 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Definitions_DictionaryItemId",
+                name: "IX_Definitions_TermId",
                 table: "Definitions",
-                column: "DictionaryItemId");
+                column: "TermId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DictionaryItemProgresses_DictionaryItemId",
-                table: "DictionaryItemProgresses",
-                column: "DictionaryItemId");
+                name: "IX_TermProgresses_TermId",
+                table: "TermProgresses",
+                column: "TermId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DictionaryItemProgresses_UserId",
-                table: "DictionaryItemProgresses",
+                name: "IX_TermProgresses_UserId",
+                table: "TermProgresses",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DictionaryItems_DictionaryId",
-                table: "DictionaryItems",
-                column: "DictionaryId");
+                name: "IX_Terms_TermsDictionaryId",
+                table: "Terms",
+                column: "TermsDictionaryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -128,16 +128,16 @@ namespace Infrastructure.Migrations
                 name: "Definitions");
 
             migrationBuilder.DropTable(
-                name: "DictionaryItemProgresses");
+                name: "TermProgresses");
 
             migrationBuilder.DropTable(
-                name: "DictionaryItems");
+                name: "Terms");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Dictionaries");
+                name: "TermsDictionaries");
         }
     }
 }

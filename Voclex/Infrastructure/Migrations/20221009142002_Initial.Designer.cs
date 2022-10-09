@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221009053944_Initial")]
+    [Migration("20221009142002_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DictionaryItemId")
+                    b.Property<int>("TermId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Value")
@@ -34,12 +34,57 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DictionaryItemId");
+                    b.HasIndex("TermId");
 
                     b.ToTable("Definitions");
                 });
 
-            modelBuilder.Entity("Application.Models.Dictionary", b =>
+            modelBuilder.Entity("Application.Models.Term", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TermsDictionaryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(600)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TermsDictionaryId");
+
+                    b.ToTable("Terms");
+                });
+
+            modelBuilder.Entity("Application.Models.TermProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("GuessedTimesCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TermId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TermId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TermProgresses");
+                });
+
+            modelBuilder.Entity("Application.Models.TermsDictionary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,52 +97,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dictionaries");
-                });
-
-            modelBuilder.Entity("Application.Models.DictionaryItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DictionaryId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DictionaryId");
-
-                    b.ToTable("DictionaryItems");
-                });
-
-            modelBuilder.Entity("Application.Models.DictionaryItemProgress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("DictionaryItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<byte>("GuessedTimesCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DictionaryItemId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DictionaryItemProgresses");
+                    b.ToTable("TermsDictionaries");
                 });
 
             modelBuilder.Entity("Application.Models.User", b =>
@@ -118,31 +118,31 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Application.Models.Definition", b =>
                 {
-                    b.HasOne("Application.Models.DictionaryItem", "DictionaryItem")
+                    b.HasOne("Application.Models.Term", "Term")
                         .WithMany()
-                        .HasForeignKey("DictionaryItemId")
+                        .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DictionaryItem");
+                    b.Navigation("Term");
                 });
 
-            modelBuilder.Entity("Application.Models.DictionaryItem", b =>
+            modelBuilder.Entity("Application.Models.Term", b =>
                 {
-                    b.HasOne("Application.Models.Dictionary", "Dictionary")
+                    b.HasOne("Application.Models.TermsDictionary", "TermsDictionary")
                         .WithMany()
-                        .HasForeignKey("DictionaryId")
+                        .HasForeignKey("TermsDictionaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Dictionary");
+                    b.Navigation("TermsDictionary");
                 });
 
-            modelBuilder.Entity("Application.Models.DictionaryItemProgress", b =>
+            modelBuilder.Entity("Application.Models.TermProgress", b =>
                 {
-                    b.HasOne("Application.Models.DictionaryItem", "DictionaryItem")
+                    b.HasOne("Application.Models.Term", "Term")
                         .WithMany()
-                        .HasForeignKey("DictionaryItemId")
+                        .HasForeignKey("TermId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -152,7 +152,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DictionaryItem");
+                    b.Navigation("Term");
 
                     b.Navigation("User");
                 });
