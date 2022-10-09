@@ -15,6 +15,6 @@ namespace Application.DataAccess
 
         DbSet<DictionaryItemProgress> DictionaryItemProgresses { get; }
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -18,7 +18,7 @@ namespace Application.Models
 
         private DictionaryItemProgress()
         {
-            GuessedTimesCount = 1;
+            GuessedTimesCount = 0;
         }
 
         public int UserId { get; }
@@ -28,5 +28,18 @@ namespace Application.Models
         public DictionaryItem DictionaryItem { get; } = null!;
 
         public byte GuessedTimesCount { get; private set; }
+
+
+        public void CorrectGuess()
+        {
+            if(GuessedTimesCount < byte.MaxValue)
+                GuessedTimesCount++;
+        }
+
+        public void IncorrectGuess()
+        {
+            if(GuessedTimesCount > 0)
+                GuessedTimesCount--;
+        }
     }
 }
