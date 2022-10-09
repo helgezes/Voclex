@@ -7,7 +7,19 @@ using ApplicationDbContext context = new();
 context.Database.EnsureDeleted();
 context.Database.Migrate();
 
-context.Dictionaries.Add(new Dictionary("Oxford 300"));
+Dictionary newDict = new("Oxford 300");
+DictionaryItem newDictItem = new("Train", newDict);
+Definition newDefinition = new(
+    "a connected line of railroad cars with or without a locomotive", newDictItem);
+
+User newUser = new("Joe");
+DictionaryItemProgress newProgress = new(newUser, newDictItem);
+
+context.Dictionaries.Add(newDict);
+context.DictionaryItems.Add(newDictItem);
+context.Definitions.Add(newDefinition);
+context.Users.Add(newUser);
+context.DictionaryItemProgresses.Add(newProgress);
 await context.SaveChangesAsync();
 
 var dicts = context.Dictionaries.ToList();

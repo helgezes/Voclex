@@ -116,35 +116,43 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Application.Models.Definition", b =>
                 {
-                    b.HasOne("Application.Models.DictionaryItem", null)
+                    b.HasOne("Application.Models.DictionaryItem", "DictionaryItem")
                         .WithMany()
                         .HasForeignKey("DictionaryItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DictionaryItem");
                 });
 
             modelBuilder.Entity("Application.Models.DictionaryItem", b =>
                 {
-                    b.HasOne("Application.Models.Dictionary", null)
+                    b.HasOne("Application.Models.Dictionary", "Dictionary")
                         .WithMany()
                         .HasForeignKey("DictionaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Dictionary");
                 });
 
             modelBuilder.Entity("Application.Models.DictionaryItemProgress", b =>
                 {
-                    b.HasOne("Application.Models.DictionaryItem", null)
+                    b.HasOne("Application.Models.DictionaryItem", "DictionaryItem")
                         .WithMany()
                         .HasForeignKey("DictionaryItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Application.Models.User", null)
+                    b.HasOne("Application.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DictionaryItem");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

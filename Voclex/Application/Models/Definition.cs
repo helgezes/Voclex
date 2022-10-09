@@ -2,17 +2,24 @@
 {
     public class Definition : Entity
     {
-        public Definition(int dictionaryItemId, string value)
+        public Definition(string value, DictionaryItem dictionaryItem) : this(value)
+        {
+            DictionaryItem = dictionaryItem;
+            DictionaryItemId = dictionaryItem.Id;
+        }
+
+        private Definition(string value)
         {
             if(string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));
 
             Value = value;
-            DictionaryItemId = dictionaryItemId;
         }
 
-        public int DictionaryItemId { get; private set; }
+        public int DictionaryItemId { get; }
 
-        public string Value { get; private set; }
+        public DictionaryItem DictionaryItem { get; } = null!;
+
+        public string Value { get; set; }
     }
 }

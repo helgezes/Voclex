@@ -8,8 +8,10 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<DictionaryItemProgress> builder)
         {
-            builder.HasOne<DictionaryItem>().WithMany().HasForeignKey(i => i.DictionaryItemId);
-            builder.HasOne<User>().WithMany().HasForeignKey(i => i.UserId);
+            builder.HasOne(p => p.DictionaryItem)
+                .WithMany().HasForeignKey(p => p.DictionaryItemId);
+            builder.HasOne(p => p.User)
+                .WithMany().HasForeignKey(p => p.UserId);
         }
     }
 }
