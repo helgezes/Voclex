@@ -1,14 +1,14 @@
 ﻿namespace Application.Models
 {
-    public class DictionaryItem : Entity
+    public class Term : Entity
     {
-        public DictionaryItem(string value, TermsDictionary termsDictionary) : this(value)
+        public Term(string value, TermsDictionary termsDictionary) : this(value)
         {
             TermsDictionary = termsDictionary;
             TermsDictionaryId = termsDictionary.Id;
         }
 
-        private DictionaryItem(string value) 
+        private Term(string value) 
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));

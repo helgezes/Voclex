@@ -2,10 +2,10 @@
 {
     public class Definition : Entity
     {
-        public Definition(string value, DictionaryItem dictionaryItem) : this(value)
+        public Definition(string value, Term term) : this(value)
         {
-            DictionaryItem = dictionaryItem;
-            DictionaryItemId = dictionaryItem.Id;
+            Term = term;
+            TermId = term.Id;
         }
 
         private Definition(string value)
@@ -16,9 +16,9 @@
             Value = value;
         }
 
-        public int DictionaryItemId { get; }
+        public int TermId { get; }
 
-        public DictionaryItem DictionaryItem { get; } = null!;
+        public Term Term { get; } = null!;
 
         public string Value { get; set; }
     }

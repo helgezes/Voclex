@@ -13,16 +13,16 @@ namespace Application.Services
             this.context = context;
         }
 
-        public async Task CorrectGuess(int dictionaryItemId, int userId)
+        public async Task CorrectGuess(int termId, int userId)
         {
-            var relevantProgressItem = await GetDictionaryItemProgress(dictionaryItemId, userId);
+            var relevantProgressItem = await GetDictionaryItemProgress(termId, userId);
             relevantProgressItem.CorrectGuess();
             await context.SaveChangesAsync();
         }
 
-        public async Task IncorrectGuess(int dictionaryItemId, int userId)
+        public async Task IncorrectGuess(int termId, int userId)
         {
-            var relevantProgressItem = await GetDictionaryItemProgress(dictionaryItemId, userId);
+            var relevantProgressItem = await GetDictionaryItemProgress(termId, userId);
             relevantProgressItem.IncorrectGuess();
             await context.SaveChangesAsync();
         }
@@ -38,17 +38,17 @@ namespace Application.Services
             var relevantProgressItem =
                 await context.DictionaryItemProgresses
                     .FirstOrDefaultAsync(i =>
-                        i.DictionaryItemId == dictionaryItemId && i.UserId == userId);
+                        i.TermId == dictionaryItemId && i.UserId == userId);
             return relevantProgressItem;
         }
 
         private async Task<DictionaryItemProgress> CreateNewDictionaryItemProgress(int dictionaryItemId, int userId)
         {
             var userFromDbTask = context.Users.FindAsync(userId);
-            var dictionaryItemFromDbTask = context.DictionaryItems.FindAsync(dictionaryItemId);
+            var termFromDbTask = context.Terms.FindAsync(dictionaryItemId);
 
             DictionaryItemProgress relevantProgressItem =
-                new (await userFromDbTask, await dictionaryItemFromDbTask);
+                new (await userFromDbTask, await termFromDbTask);
 
             context.DictionaryItemProgresses.Add(relevantProgressItem);
             return relevantProgressItem;

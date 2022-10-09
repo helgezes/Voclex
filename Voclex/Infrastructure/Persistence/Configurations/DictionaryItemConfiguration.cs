@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    sealed class DictionaryItemConfiguration : IEntityTypeConfiguration<DictionaryItem>
+    sealed class DictionaryItemConfiguration : IEntityTypeConfiguration<Term>
     {
-        public void Configure(EntityTypeBuilder<DictionaryItem> builder)
+        public void Configure(EntityTypeBuilder<Term> builder)
         {
             builder.Property(d => d.Value).HasMaxLength(600).IsRequired();
 

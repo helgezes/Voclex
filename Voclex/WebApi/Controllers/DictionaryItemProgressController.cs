@@ -13,15 +13,15 @@ namespace WebApi.Controllers
         }
 
         [HttpPost(nameof(CorrectGuess))]
-        public async Task CorrectGuess(int dictionaryItemId, int userId)
+        public async Task CorrectGuess(int termId, int userId)
         {
-            await _progressService.CorrectGuess(dictionaryItemId, userId);
+            await _progressService.CorrectGuess(termId, userId);
         }
 
         [HttpPost(nameof(IncorrectGuess))]
-        public async Task IncorrectGuess(int dictionaryItemId, int userId)
+        public async Task IncorrectGuess(int termId, int userId)
         {
-            await _progressService.IncorrectGuess(dictionaryItemId, userId);
+            await _progressService.IncorrectGuess(termId, userId);
         }
     }
 }

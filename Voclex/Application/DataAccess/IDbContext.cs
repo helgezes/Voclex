@@ -7,7 +7,7 @@ namespace Application.DataAccess
     {
         DbSet<TermsDictionary> TermsDictionaries { get; }
 
-        DbSet<DictionaryItem> DictionaryItems { get; }
+        DbSet<Term> Terms { get; }
 
         DbSet<Definition> Definitions { get; }
 

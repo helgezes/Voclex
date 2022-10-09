@@ -8,12 +8,12 @@ namespace Application.Models
 {
     public class DictionaryItemProgress : Entity
     {
-        public DictionaryItemProgress(User user, DictionaryItem dictionaryItem) : this()
+        public DictionaryItemProgress(User user, Term term) : this()
         {
             UserId = user.Id;
             User = user;
-            DictionaryItemId = dictionaryItem.Id;
-            DictionaryItem = dictionaryItem;
+            TermId = term.Id;
+            Term = term;
         }
 
         private DictionaryItemProgress()
@@ -24,8 +24,8 @@ namespace Application.Models
         public int UserId { get; }
         public User User { get; } = null!;
 
-        public int DictionaryItemId { get; }
-        public DictionaryItem DictionaryItem { get; } = null!;
+        public int TermId { get; }
+        public Term Term { get; } = null!;
 
         public byte GuessedTimesCount { get; private set; }
 

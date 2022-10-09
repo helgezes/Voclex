@@ -9,7 +9,7 @@ namespace Infrastructure.Persistence
     {
         public DbSet<TermsDictionary> TermsDictionaries => Set<TermsDictionary>();
 
-        public DbSet<DictionaryItem> DictionaryItems => Set<DictionaryItem>();
+        public DbSet<Term> Terms => Set<Term>();
 
         public DbSet<Definition> Definitions => Set<Definition>();
 
