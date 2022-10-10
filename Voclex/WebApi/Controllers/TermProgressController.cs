@@ -1,5 +1,6 @@
 ﻿using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 
 namespace WebApi.Controllers
 {
@@ -13,15 +14,15 @@ namespace WebApi.Controllers
         }
 
         [HttpPost(nameof(CorrectGuess))]
-        public async Task CorrectGuess(int termId, int userId)
+        public async Task CorrectGuess([FromQuery] TermProgressDto termProgressDto) //without FromQueryAttribute asp.net core does not respect [BindRequired] on properties 
         {
-            await _progressService.CorrectGuess(termId, userId);
+            await _progressService.CorrectGuess(termProgressDto.TermId, termProgressDto.UserId);
         }
 
         [HttpPost(nameof(IncorrectGuess))]
-        public async Task IncorrectGuess(int termId, int userId)
+        public async Task IncorrectGuess([FromQuery] TermProgressDto termProgressDto)
         {
-            await _progressService.IncorrectGuess(termId, userId);
+            await _progressService.IncorrectGuess(termProgressDto.TermId, termProgressDto.UserId);
         }
     }
 }

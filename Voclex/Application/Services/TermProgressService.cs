@@ -27,6 +27,7 @@ namespace Application.Services
             await context.SaveChangesAsync();
         }
 
+
         private async Task<TermProgress> GetTermProgress(int termId, int userId)
         {
             return await GetTermProgressFromDbIfExists(termId, userId) ??
