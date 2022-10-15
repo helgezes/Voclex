@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.ModelInterfaces;
 
 namespace Application.Models
 {
-    public abstract class Entity
+    public abstract class Entity : IIdentifiable
     {
         public int Id { get; protected set; }
     }

@@ -15,6 +15,8 @@ namespace Application.DataAccess
 
         DbSet<TermProgress> TermProgresses { get; }
 
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

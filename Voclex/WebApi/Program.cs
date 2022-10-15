@@ -1,7 +1,9 @@
 using Application.DataAccess;
+using Application.Models;
 using Application.Services;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 
 [assembly: ApiController]
 
@@ -18,7 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IDbContext>(provider => 
     provider.GetRequiredService<ApplicationDbContext>());
 
+builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
+
 builder.Services.AddScoped<TermProgressService>();
+builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
 
 var app = builder.Build();
 
