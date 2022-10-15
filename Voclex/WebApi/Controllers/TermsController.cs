@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Models;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
@@ -18,7 +19,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get([Required]int id)
         {
             var result = await service.GetByIdAsync(id);
             if (result == null)
@@ -29,7 +30,7 @@ namespace WebApi.Controllers
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IEnumerable<TermDto>> GetList(int page, int pageSize) //todo check validity of page and pagesize
+        public Task<IEnumerable<TermDto>> GetList([Required] int page, [Required] int pageSize) //todo check validity of page and pagesize
         {
             return service.GetAsync(page, pageSize);
         }
@@ -37,15 +38,29 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Update(TermDto dto)
         {
-            if (await service.UpdateAsync(dto) == null)
-                return NotFound();
-
-            return Ok();
+            return OkOrNotFound(await service.UpdateAsync(dto) != null);
         }
-        
-        //todo add create and delete
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete([Required] int id)
+        {
+            return OkOrNotFound(await service.Delete(id));
+        }
+
+        private ActionResult OkOrNotFound(bool condition)
+        {
+            if (condition)
+                return Ok();
+
+            return NotFound();
+        }
+
+        //todo add create
     }
 }
