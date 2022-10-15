@@ -2,6 +2,7 @@
 using Application.Models;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shared;
 
 namespace WebApi.Controllers
@@ -14,6 +15,26 @@ namespace WebApi.Controllers
         public TermsController(GenericCrudService<Term, TermDto> service)
         {
             this.service = service;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Create(TermDto dto)
+        {
+            if (dto.Id != default(int)) 
+                return BadRequest("This is method for creation. Id should be 0. For updating existing object use different method.");
+
+            try
+            {
+                await service.Create(dto);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Creation failed. Check your model and try again.");
+            }
+
+            return Ok();
         }
 
         [HttpGet]
@@ -60,7 +81,5 @@ namespace WebApi.Controllers
 
             return NotFound();
         }
-
-        //todo add create
     }
 }

@@ -18,6 +18,17 @@ namespace Application.Services
             this.mapper = mapper;
         }
 
+        public async Task<TModel> Create(TDto dto, bool saveChanges = true)
+        {
+            var mappedModel = mapper.Map<TModel>(dto);
+
+            await context.Set<TModel>().AddAsync(mappedModel);
+
+            if (saveChanges) await context.SaveChangesAsync();
+
+            return mappedModel;
+        }
+
         public async Task<IEnumerable<TDto>> GetAsync(int page, int pageSize)
         {
             return await context.Set<TModel>()

@@ -2,11 +2,14 @@
 {
     public sealed class TermDto : Dto
     {
-        public TermDto(int id, string value) : base(id)
+        public TermDto(int id, string value, int termsDictionaryId) : base(id)
         {
             Value = value;
+            TermsDictionaryId = termsDictionaryId;
         }
-        
-        public string Value { get; set; }
+
+        public int TermsDictionaryId { get; }
+
+        public string Value { get; set; } //todo validation attributes
     }
 }

@@ -2,10 +2,14 @@
 {
     public class Term : Entity
     {
-        public Term(string value, TermsDictionary termsDictionary) : this(value)
+        public Term(string value, TermsDictionary termsDictionary) : this(termsDictionary.Id, value)
         {
             TermsDictionary = termsDictionary;
-            TermsDictionaryId = termsDictionary.Id;
+        }
+
+        private Term(int termsDictionaryId, string value) : this(value)
+        {
+            TermsDictionaryId = termsDictionaryId;
         }
 
         private Term(string value) 
