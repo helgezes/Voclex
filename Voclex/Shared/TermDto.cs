@@ -1,4 +1,6 @@
-﻿namespace Shared
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace Shared
 {
     public sealed class TermDto : Dto
     {
@@ -8,8 +10,10 @@
             TermsDictionaryId = termsDictionaryId;
         }
 
-        public int TermsDictionaryId { get; }
+        [BindRequired]
+        public int TermsDictionaryId { get; set; }
 
-        public string Value { get; set; } //todo validation attributes
+        [BindRequired]
+        public string Value { get; set; }
     }
 }
