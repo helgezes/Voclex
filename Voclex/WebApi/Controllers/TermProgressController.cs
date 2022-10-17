@@ -24,5 +24,11 @@ namespace WebApi.Controllers
         {
             await _progressService.IncorrectGuess(termProgressDto.TermId, termProgressDto.UserId);
         }
+
+        [HttpPost(nameof(AlreadyKnow))]
+        public async Task AlreadyKnow([FromQuery] TermProgressDto termProgressDto)
+        {
+            await _progressService.AlreadyKnow(termProgressDto.TermId, termProgressDto.UserId);
+        }
     }
 }

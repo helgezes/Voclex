@@ -43,5 +43,10 @@ namespace Application.Models
             if(GuessedTimesCount > 0)
                 GuessedTimesCount--;
         }
+
+        public void AlreadyKnow()
+        {
+            GuessedTimesCount = MaximumGuessedTimesCount;
+        }
     }
 }

@@ -27,6 +27,13 @@ namespace Application.Services
             await context.SaveChangesAsync();
         }
 
+        public async Task AlreadyKnow(int termId, int userId)
+        {
+            var relevantProgressItem = await GetTermProgress(termId, userId);
+            relevantProgressItem.AlreadyKnow();
+            await context.SaveChangesAsync();
+        }
+
 
         private async Task<TermProgress> GetTermProgress(int termId, int userId)
         {
