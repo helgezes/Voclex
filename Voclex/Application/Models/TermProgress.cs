@@ -8,6 +8,8 @@ namespace Application.Models
 {
     public class TermProgress : Entity
     {
+        public const byte MaximumGuessedTimesCount = 6;
+
         public TermProgress(User user, Term term) : this()
         {
             UserId = user.Id;
@@ -32,7 +34,7 @@ namespace Application.Models
 
         public void CorrectGuess()
         {
-            if(GuessedTimesCount < byte.MaxValue)
+            if(GuessedTimesCount < MaximumGuessedTimesCount)
                 GuessedTimesCount++;
         }
 
