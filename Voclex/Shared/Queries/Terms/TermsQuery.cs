@@ -30,7 +30,7 @@ public class TermsQuery : IQuery<Term>
             case TermsListEnumQueryVariants.GetOnlyNew:
                 var knownTermIdsForThatUser = context.TermProgresses
                     .Where(t => t.UserId == UserId)
-                    .Select(x => x.TermId).ToArray();
+                    .Select(x => x.TermId).ToArray(); //todo check performance of implementation in one query with usage of navigational properties. should be checked on prod data.
                 return term => DictionariesIds.Contains(term.TermsDictionaryId) &&
                                !knownTermIdsForThatUser.Contains(term.Id);
 
