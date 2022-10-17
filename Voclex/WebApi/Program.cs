@@ -27,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 
 builder.Services.AddScoped<TermProgressService>();
 builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
+builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
 
 var app = builder.Build();
 

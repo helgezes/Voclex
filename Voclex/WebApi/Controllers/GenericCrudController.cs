@@ -41,7 +41,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public virtual async Task<ActionResult> Get([Required] int id)
+        public virtual async Task<ActionResult> Read([Required] int id)
         {
             var result = await service.GetByIdAsync(id);
             if (result == null)
@@ -49,7 +49,6 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
-
 
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]

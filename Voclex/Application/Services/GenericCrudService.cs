@@ -1,8 +1,6 @@
 ﻿using Application.DataAccess;
 using Application.ModelInterfaces;
-using Application.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
@@ -28,17 +26,7 @@ namespace Application.Services
 
             return mappedModel;
         }
-
-        public async Task<IEnumerable<TDto>> GetAsync(int page, int pageSize)
-        {
-            return await context.Set<TModel>()
-                .AsNoTracking()
-                .OrderBy(m => m.Id)
-                .Skip((page - 1) * pageSize).Take(pageSize)
-                .ProjectTo<TDto>(mapper.ConfigurationProvider)
-                .ToArrayAsync();
-        }
-
+        
         public async Task<TDto?> GetByIdAsync(int id)
         {
             var model = await context
