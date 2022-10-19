@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{2EAFB4AA-32B1-4943-A3BA-0E1D3A701B96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorLibrary", "RazorLibrary\RazorLibrary.csproj", "{C9F39E64-D765-4124-A758-5494E8A5872E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorLibrary", "RazorLibrary\RazorLibrary.csproj", "{C9F39E64-D765-4124-A758-5494E8A5872E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAssemblyClient", "BlazorWebAssemblyClient\BlazorWebAssemblyClient.csproj", "{81C6CC55-3B74-4E33-A640-638528D99D48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssemblyClient", "BlazorWebAssemblyClient\BlazorWebAssemblyClient.csproj", "{81C6CC55-3B74-4E33-A640-638528D99D48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
