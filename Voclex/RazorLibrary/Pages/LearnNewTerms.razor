@@ -7,19 +7,21 @@
 
 <PageTitle>Learn New Terms</PageTitle>
 
-<div>
+<div class="container">
 	@if (currentTerm != null)
 	{
 		<div>
-			@currentTerm.Value
-			<button @onclick="AlreadyKnowThis">I already know this</button>
-			<button @onclick="LearnThisTerm">I want to learn it</button>
+			<p>@currentTerm.Value</p>
+			<p>
+				<button @onclick="AlreadyKnowThis" type="button" class="btn btn-outline-primary btn-lg">I already know this</button>
+				<button @onclick="LearnThisTerm" type="button" class="btn btn-outline-primary btn-lg">I want to learn it</button>
+			</p>
 		</div>
 	}
 	else
 	{
 		<div>
-			There are no more words to display!
+			<p>There are no more words to display!</p>
 		</div>
 	}
 </div>
@@ -64,19 +66,6 @@
 			await SetNewCurrentTermAndLoadIfNeeded();
 		}
 	}
-	
-	private async Task<int> GetTotalPagesCount()
-	{
-		var queryObject = new TermsQuery(userId,
-			TermsListEnumQueryVariants.GetOnlyNew,
-			dictionariesIds);
-
-		var newTermsCount = await Http.GetFromJsonAsync<int>(
-			$"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
-
-		var totalPageCount = (int)Math.Ceiling(newTermsCount / (decimal)pageSize);
-		return totalPageCount;
-	}
 
 	public async Task SetNewCurrentTermAndLoadIfNeeded()
 	{
@@ -94,6 +83,19 @@
 		{
 			terms.Enqueue(term);
 		}
+	}
+
+	private async Task<int> GetTotalPagesCount()
+	{
+		var queryObject = new TermsQuery(userId,
+			TermsListEnumQueryVariants.GetOnlyNew,
+			dictionariesIds);
+
+		var newTermsCount = await Http.GetFromJsonAsync<int>(
+			$"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
+
+		var totalPageCount = (int)Math.Ceiling(newTermsCount / (decimal)pageSize);
+		return totalPageCount;
 	}
 
 	private async Task<TermDto[]> GetNewTerms(int page)
