@@ -1,0 +1,131 @@
+﻿@page "/LearnNewTerm"
+@inject HttpClient Http
+@using global::Shared
+@using System.Net.Http.Json
+@using global::Shared.Queries.Terms
+@using RazorLibrary.Helpers
+
+<div>
+	@if (currentTerm != null)
+	{
+		<div>
+			@currentTerm.Value
+			<button @onclick="AlreadyKnowThis">I already know this</button>
+			<button @onclick="LearnThisWord">I want to learn it</button>
+		</div>
+	}
+	else
+	{
+		<div>
+			There are no more words to display!
+		</div>
+	}
+</div>
+
+@code {
+	const int pageSize = 7;
+	private readonly Queue<TermDto> terms = new();
+	
+	private readonly int userId = 1;
+	private readonly int[] dictionariesIds = new[] { 1, 2 };
+
+	private TermDto? currentTerm;
+	private int totalPagesCount;
+	private int currentPage = 1;
+
+	protected override async Task OnInitializedAsync()
+	{
+		totalPagesCount = await GetTotalPagesCount();
+
+		await AddNewTerms(currentPage);
+
+		SetNewCurrentTerm();
+	}
+
+
+	private async Task AlreadyKnowThis()
+	{
+		var response = await PostCurrentTermProgressToPath("TermProgress/AlreadyKnow");
+
+		if(response.IsSuccessStatusCode)
+		{
+			await SetNewCurrentTermAndLoadIfNeeded();
+		}
+	}
+
+	private async Task LearnThisWord()
+	{
+		var response = await PostCurrentTermProgressToPath("TermProgress/IncorrectGuess");
+
+		if (response.IsSuccessStatusCode)
+		{
+			await SetNewCurrentTermAndLoadIfNeeded();
+		}
+	}
+	
+	private async Task<int> GetTotalPagesCount()
+	{
+		var queryObject = new TermsQuery(userId,
+			TermsListEnumQueryVariants.GetOnlyNew,
+			dictionariesIds);
+
+		var newTermsCount = await Http.GetFromJsonAsync<int>(
+			$"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
+
+		var totalPageCount = (int)Math.Ceiling(newTermsCount / (decimal)pageSize);
+		return totalPageCount;
+	}
+
+	public async Task SetNewCurrentTermAndLoadIfNeeded()
+	{
+		SetNewCurrentTerm();
+		if (terms.Any() || currentPage >= totalPagesCount) return;
+
+		await AddNewTerms(++currentPage);
+	}
+
+	private async Task AddNewTerms(int page)
+	{
+		var newTerms = await GetNewTerms(page);
+
+		foreach (var term in newTerms)
+		{
+			terms.Enqueue(term);
+		}
+	}
+
+	private async Task<TermDto[]> GetNewTerms(int page)
+	{
+		var termsListQuery = new TermsListQuery(
+			page, pageSize,
+			userId, 
+			TermsListEnumQueryVariants.GetOnlyNew, 
+			dictionariesIds);
+
+		var newTerms = await Http.GetFromJsonAsync<TermDto[]>(
+			$"Terms/GetList{termsListQuery.ObjectPropertiesToQueryString()}");
+
+		return newTerms;
+	}
+
+	private void SetNewCurrentTerm()
+	{
+		terms.TryDequeue(out currentTerm);
+	}
+
+	private async Task<HttpResponseMessage> PostCurrentTermProgressToPath(string path)
+	{
+		var termProgressDtoAsQueryString = GetCurrentTermProgressDtoAsQueryString();
+		var response = await Http.PostAsync(
+			$"{path}{termProgressDtoAsQueryString}", null);
+		return response;
+	}
+
+	private string GetCurrentTermProgressDtoAsQueryString()
+	{
+		var queryObject = new TermProgressDto(currentTerm.Id, userId);
+		var termProgressDtoAsQueryString = queryObject.ObjectPropertiesToQueryString();
+		return termProgressDtoAsQueryString;
+	}
+}
+

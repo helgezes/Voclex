@@ -11,7 +11,7 @@ using Shared;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("https://localhost:7181")));
+builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("https://localhost:7181").AllowAnyMethod().AllowAnyHeader()));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
