@@ -31,6 +31,7 @@ builder.Services.AddScoped<TermProgressService>();
 builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
 builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
 builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
+builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
 
 var app = builder.Build();
 
