@@ -30,13 +30,14 @@ builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 builder.Services.AddScoped<TermProgressService>();
 builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
 builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
+builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
 
 var app = builder.Build();
 
 await SeedDevelopmentDb(app);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

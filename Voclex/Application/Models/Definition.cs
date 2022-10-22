@@ -1,6 +1,8 @@
-﻿namespace Application.Models
+﻿using Application.ModelInterfaces;
+
+namespace Application.Models
 {
-    public class Definition : Entity
+    public class Definition : Entity, ITermRelated
     {
         public Definition(string value, Term term) : this(value)
         {
