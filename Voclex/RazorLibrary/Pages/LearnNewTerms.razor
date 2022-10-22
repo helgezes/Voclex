@@ -4,6 +4,7 @@
 @using global::Shared.DataTransferObjects
 @using global::Shared.Queries.Terms
 @using RazorLibrary.Helpers
+@using RazorLibrary.Shared.LearningModules
 
 <PageTitle>Learn New Terms</PageTitle>
 
@@ -12,6 +13,7 @@
 	{
 		<div>
 			<p>@currentTerm.Value</p>
+			<Definition CurrentTermId="@currentTerm.Id" LoadedTermsIds="@terms.Select(t => t.Id).Append(currentTerm.Id).ToArray()" CurrentPage="currentPage"/>
 			<p>
 				<button @onclick="AlreadyKnowThis" type="button" class="btn btn-outline-primary btn-lg">I already know this</button>
 				<button @onclick="LearnThisTerm" type="button" class="btn btn-outline-primary btn-lg">I want to learn it</button>
