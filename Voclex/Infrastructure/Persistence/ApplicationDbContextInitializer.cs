@@ -20,20 +20,29 @@ namespace Infrastructure.Persistence
             TermsDictionary newDict = new("Test dictionary");
             context.Add(newDict);
 
-            #region Terms and Definitions
+            #region Terms, Definitions and Examples
 
             Term newDictItem;
             context.Terms.Add(newDictItem = new Term("view", newDict));
             context.Definitions.Add(new Definition("the things you can see from a place (usually attractive)", newDictItem));
+            context.Examples.Add(new Example(@"•There were magnificent views of the surrounding countryside.
+•Most rooms enjoy panoramic views of the ocean.
+•The view from the top of the tower was spectacular.
+•I'd like a room with a view.", newDictItem));
             context.Terms.Add(newDictItem = new Term("suburbs", newDict));
-            context.Definitions.Add(new Definition("an area where people live outside the centre of a city", newDictItem));
+            context.Definitions.Add(new Definition("an area where people live outside the centre of a city", newDictItem)); 
+            context.Examples.Add(new Example(@"•a London suburb
+•They live in the suburbs.", newDictItem));
             context.Terms.Add(newDictItem = new Term("rough", newDict));
             context.Definitions.Add(new Definition("a ______ area is a place where there is a lot of violence and crime", newDictItem));
             context.Terms.Add(newDictItem = new Term("neighbourhood", newDict));
             context.Definitions.Add(new Definition("a part of a town or city where people live", newDictItem));
-            context.Terms.Add(newDictItem = new Term("basement", newDict));
+            context.Terms.Add(newDictItem = new Term("basement", newDict)); 
+            context.Examples.Add(new Example(@"•Kitchen goods are sold in the basement.", newDictItem));
             context.Definitions.Add(new Definition("a room or area below ground level under a house or building where you can liveor work", newDictItem));
             context.Terms.Add(newDictItem = new Term("cellar", newDict));
+            context.Examples.Add(new Example(@"•We looked all over the house, even down in the coal cellar.
+•We keep onions and apples in the cellar.", newDictItem));
             context.Definitions.Add(new Definition("a room under a house that is used for storing things", newDictItem));
             context.Terms.Add(newDictItem = new Term("en-suite", newDict));
             context.Definitions.Add(new Definition("bathroom a bathroom that is directly connected to a bedroom", newDictItem));

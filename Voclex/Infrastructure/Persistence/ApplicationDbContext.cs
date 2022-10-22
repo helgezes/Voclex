@@ -13,6 +13,8 @@ namespace Infrastructure.Persistence
 
         public DbSet<Definition> Definitions => Set<Definition>();
 
+        public DbSet<Example> Examples => Set<Example>();
+
         public DbSet<User> Users => Set<User>();
 
         public DbSet<TermProgress> TermProgresses => 
@@ -32,6 +34,7 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new DefinitionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new TermProgressConfiguration());
+            modelBuilder.ApplyConfiguration(new ExampleConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -25,7 +25,7 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
     protected TDto[]? itemsForThatPage;
     protected int itemsLoadedForPage = -1;
 
-    protected abstract string ApiPath { get; }
+    protected abstract string ApiPath { get; } //todo we can make this virtual and use type name as convention
 
     protected override async Task OnParametersSetAsync()
     {
