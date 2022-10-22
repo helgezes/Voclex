@@ -13,7 +13,11 @@
 	{
 		<div>
 			<p>@currentTerm.Value</p>
-			<Definition CurrentTermId="@currentTerm.Id" LoadedTermsIds="@terms.Select(t => t.Id).Append(currentTerm.Id).ToArray()" CurrentPage="currentPage"/>
+			@{ var learningModuleParameters = GetLearningModuleParameters();}
+			@foreach (var learningModule in learningModules)
+			{
+				<DynamicComponent Type="learningModule" Parameters="learningModuleParameters"></DynamicComponent>
+			}
 			<p>
 				<button @onclick="AlreadyKnowThis" type="button" class="btn btn-outline-primary btn-lg">I already know this</button>
 				<button @onclick="LearnThisTerm" type="button" class="btn btn-outline-primary btn-lg">I want to learn it</button>
@@ -34,6 +38,7 @@
 	
 	private readonly int userId = 1; //todo settings
 	private readonly int[] dictionariesIds = new[] { 1, 2 };
+	private readonly Type[] learningModules = new[] { typeof(Definition) };
 
 	private TermDto? currentTerm;
 	private int totalPagesCount;
@@ -133,5 +138,22 @@
 		var termProgressDtoAsQueryString = queryObject.ObjectPropertiesToQueryString();
 		return termProgressDtoAsQueryString;
 	}
+
+	private IDictionary<string, object> GetLearningModuleParameters()
+	{
+		return new Dictionary<string, object>
+		{
+			{
+				"CurrentTermId", currentTerm.Id
+			},
+			{
+				"LoadedTermsIds", terms.Select(t => t.Id).Append(currentTerm.Id).ToArray()
+			},
+			{
+				"CurrentPage", currentPage
+			}
+		};
+	}
+
 }
 
