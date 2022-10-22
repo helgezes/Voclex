@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using AutoMapper;
 using Shared;
+using Shared.DataTransferObjects;
 
 namespace Infrastructure.AutoMapperProfiles
 {

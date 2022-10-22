@@ -5,6 +5,7 @@ using Application.Services;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
+using Shared.DataTransferObjects;
 
 [assembly: ApiController]
 

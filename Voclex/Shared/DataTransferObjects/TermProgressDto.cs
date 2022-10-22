@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Shared
+namespace Shared.DataTransferObjects
 {
     public sealed class TermProgressDto
     {

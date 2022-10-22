@@ -1,6 +1,6 @@
 ﻿using Application.ModelInterfaces;
 
-namespace Shared
+namespace Shared.DataTransferObjects
 {
     public abstract class Dto : IIdentifiable
     {
