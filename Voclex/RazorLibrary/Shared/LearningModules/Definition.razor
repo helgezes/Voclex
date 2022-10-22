@@ -1,7 +1,6 @@
 ﻿@using global::Shared.DataTransferObjects
 @using System.Net.Http.Json
-@using global::Shared.Queries.Definitions
 @using RazorLibrary.Helpers
-@inject HttpClient Http
+@inherits LearningModule<DefinitionDto>
 
-<p>@currentDefinition?.Value</p>
+<p>@current?.Value</p>

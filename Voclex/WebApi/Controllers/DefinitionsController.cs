@@ -2,7 +2,7 @@
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
-using Shared.Queries.Definitions;
+using Shared.Queries.TermsRelated;
 
 namespace WebApi.Controllers
 {
@@ -18,9 +18,9 @@ namespace WebApi.Controllers
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IEnumerable<DefinitionDto>> GetList([FromQuery] DefinitionsListQuery definitionsListQuery)
+        public Task<IEnumerable<DefinitionDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
         {
-            return definitionService.GetListAsync(definitionsListQuery.TermsIds);
+            return definitionService.GetListAsync(termsRelatedListQuery.TermsIds);
         }
     }
 }

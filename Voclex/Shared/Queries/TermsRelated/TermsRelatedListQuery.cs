@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Shared.Queries.Definitions
+namespace Shared.Queries.TermsRelated
 {
-	public sealed class DefinitionsListQuery
+	public sealed class TermsRelatedListQuery
 	{
-        public DefinitionsListQuery(int[] termsIds)
+        public TermsRelatedListQuery(int[] termsIds)
         {
             this.TermsIds = termsIds;
         }
 
-        public DefinitionsListQuery(){}
+        public TermsRelatedListQuery(){}
 
         [BindRequired]
         public int[] TermsIds { get; init; }

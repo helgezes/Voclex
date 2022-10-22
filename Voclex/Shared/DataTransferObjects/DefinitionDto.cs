@@ -1,8 +1,9 @@
-﻿using Application.Models;
+﻿using Application.ModelInterfaces;
+using Application.Models;
 
 namespace Shared.DataTransferObjects
 {
-    public sealed class DefinitionDto
+    public sealed class DefinitionDto : ITermRelated
     {
         public DefinitionDto(int termId, string value)
         {
