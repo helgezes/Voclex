@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Queries.TermsRelated
 {
@@ -11,7 +12,7 @@ namespace Shared.Queries.TermsRelated
 
         public TermsRelatedListQuery(){}
 
-        [BindRequired]
+        [Required]
         public int[] TermsIds { get; init; }
 	}
 }

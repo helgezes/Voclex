@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.DataTransferObjects
 {
@@ -12,10 +13,10 @@ namespace Shared.DataTransferObjects
 
         public TermProgressDto() { }
 
-        [BindRequired]
+        [Required]
         public int TermId { get; set; }
 
-        [BindRequired]
+        [Required]
         public int UserId { get; set; }
     }
 }
