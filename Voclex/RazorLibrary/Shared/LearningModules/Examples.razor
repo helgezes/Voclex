@@ -1,0 +1,13 @@
+﻿@using global::Shared.DataTransferObjects
+@inherits LearningModule<ExampleDto>
+
+@if (current != null)
+{
+	var examples = current.Value.Split(new []{'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
+	<p><b>
+		@foreach (var example in examples)
+		{
+			@example
+		}
+	</b></p>
+}
