@@ -46,6 +46,8 @@ await SeedDevelopmentDb(app);
 
 app.UseCors();
 
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
