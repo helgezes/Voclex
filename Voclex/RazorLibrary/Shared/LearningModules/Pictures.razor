@@ -1,0 +1,9 @@
+﻿@using global::Shared.DataTransferObjects
+@inherits LearningModule<PictureDto>
+
+@if (current != null)
+{
+	<div>
+		<img src="@($"{pictureHost.TrimEnd('\\')}{current.Path}")"/>
+	</div>
+}
