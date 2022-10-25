@@ -32,6 +32,7 @@ builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
 builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
 builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
+builder.Services.AddScoped<TermRelatedService<Picture, PictureDto>>();
 
 var app = builder.Build();
 
