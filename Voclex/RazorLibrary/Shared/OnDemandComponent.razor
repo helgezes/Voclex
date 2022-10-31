@@ -1,0 +1,36 @@
+﻿<div class="row py-2">
+	@if (state == ComponentState.Visible)
+	{
+		@ChildContent
+	}
+	else if (state == ComponentState.OnDemand)
+	{
+		<button type="button" class="btn btn-primary btn-lg btn-block" @onclick="MakeVisible">Show @ComponentName</button>
+	}
+</div>
+
+@code {
+	public enum ComponentState
+	{OnDemand,Visible}
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	[Parameter]
+	public ComponentState InitialState { get; set; }
+	
+	[Parameter]
+	public string? ComponentName { get; set; }
+
+	protected ComponentState state;
+	protected override void OnInitialized()
+	{
+		state = InitialState;
+	}
+
+	private void MakeVisible()
+	{
+		state = ComponentState.Visible;
+	}
+
+}
