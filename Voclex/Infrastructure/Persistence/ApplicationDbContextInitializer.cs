@@ -20,6 +20,11 @@ namespace Infrastructure.Persistence
             TermsDictionary newDict = new("Test dictionary");
             context.Add(newDict);
 
+            for (var i = 2; i < 20; i++)
+            {
+                context.Add(new TermsDictionary("Test dictionary " + i.ToString()));
+            }
+
             #region Terms, Definitions, Pictures and Examples
 
             Term newDictItem;

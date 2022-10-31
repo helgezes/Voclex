@@ -43,7 +43,7 @@
 @code {
 	protected override TermsListEnumQueryVariants QueryVariant => TermsListEnumQueryVariants.GetOnlyForRepetition;
 	
-	private readonly GuessingModule[] guessingModules = new[] {
+	private readonly GuessingModule[] guessingModules = new[] { //todo
 		new GuessingModule(typeof(Definition), OnDemandComponent.ComponentState.OnDemand, "Definition"),
 		new GuessingModule(typeof(Pictures), OnDemandComponent.ComponentState.OnDemand, "Picture")
 	};
