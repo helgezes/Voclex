@@ -1,0 +1,93 @@
+﻿@page "/terms-repetition"
+@using RazorLibrary.Shared.LearningModules
+@using RazorLibrary.Shared
+@using global::Shared.Queries.Terms
+@inherits TermsPage
+
+<PageTitle>Terms Repetition</PageTitle>
+
+<div class="container">
+	@if (CurrentTerm != null && showTerm)
+	{
+		<Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></Term>
+		<p>
+			<button @onclick="CorrectGuess" type="button" class="btn btn-outline-primary btn-lg">I got it</button>
+			<button @onclick="IncorrectGuess" type="button" class="btn btn-outline-primary btn-lg">Keep showing it</button>
+		</p>
+	}
+	else if (CurrentTerm != null)
+	{
+		var learningModuleParameters = GetLearningModuleParameters();
+		@foreach (var guessingModule in guessingModules)
+		{
+			<OnDemandComponent InitialState="guessingModule.InitialState" ComponentName="@guessingModule.Name">
+				<DynamicComponent Type="guessingModule.Module" Parameters="learningModuleParameters"></DynamicComponent>
+			</OnDemandComponent>
+		}
+		<div class="row py-2">
+			<form @onsubmit="TryGuess">
+				<input class="border-primary  @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @bind="guess" placeholder="Enter your guess"/>
+				<button type="submit">Submit my answer</button>
+				<div class="invalid-feedback">
+					Wrong guess! Try again.
+				</div>
+			</form>
+		</div>
+	}
+	else
+	{
+		<div>No more terms to repeat!</div>
+	}
+</div>
+
+@code {
+	protected override TermsListEnumQueryVariants QueryVariant => TermsListEnumQueryVariants.GetOnlyForRepetition;
+	
+	private readonly GuessingModule[] guessingModules = new[] {
+		new GuessingModule(typeof(Definition), OnDemandComponent.ComponentState.OnDemand, "Definition"),
+		new GuessingModule(typeof(Pictures), OnDemandComponent.ComponentState.OnDemand, "Picture")
+	};
+	private const int maxTriesNumber = 3;
+
+	private string guess;
+	private int triesNumber = default;
+	private bool showTerm = false;
+
+	private void TryGuess()
+	{
+		if (guess?.ToUpper() == CurrentTerm!.Value.ToUpper())
+		{
+			showTerm = true;
+		}
+		else
+		{
+			triesNumber++;
+			if (triesNumber >= maxTriesNumber)
+			{
+				showTerm = true;
+			}
+		}
+
+		guess = string.Empty;
+	}
+
+	protected override void OnTermSet()
+	{
+		triesNumber = default;
+		showTerm = false;
+	}
+
+	public sealed class GuessingModule
+	{
+		public GuessingModule(Type module, OnDemandComponent.ComponentState initialState, string name)
+		{
+			Module = module;
+			InitialState = initialState;
+			Name = name;
+		}
+
+		public Type Module { get; init; }
+		public OnDemandComponent.ComponentState InitialState { get; init; }
+		public string Name { get; init; }
+	}
+}
