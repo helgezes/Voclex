@@ -1,18 +1,15 @@
 ﻿@page "/learn-new-terms"
-@inject HttpClient Http
-@using System.Net.Http.Json
-@using global::Shared.DataTransferObjects
 @using global::Shared.Queries.Terms
-@using RazorLibrary.Helpers
 @using RazorLibrary.Shared.LearningModules
+@inherits TermsPage
 
 <PageTitle>Learn New Terms</PageTitle>
 
 <div class="container">
-	@if (currentTerm != null)
+	@if (CurrentTerm != null)
 	{
 		<div>
-			<p>@currentTerm.Value</p>
+			<p>@CurrentTerm.Value</p>
 
 			@{ var learningModuleParameters = GetLearningModuleParameters();}
 			@foreach (var learningModule in learningModules)
@@ -22,7 +19,7 @@
 
 			<p>
 				<button @onclick="AlreadyKnowThis" type="button" class="btn btn-outline-primary btn-lg">I already know this</button>
-				<button @onclick="LearnThisTerm" type="button" class="btn btn-outline-primary btn-lg">I want to learn it</button>
+				<button @onclick="IncorrectGuess" type="button" class="btn btn-outline-primary btn-lg">I want to learn it</button>
 			</p>
 		</div>
 	}
@@ -35,127 +32,8 @@
 </div>
 
 @code {
-	const int pageSize = 7;
-	private readonly Queue<TermDto> terms = new();
-	
-	private readonly int userId = 1; //todo settings
-	private readonly int[] dictionariesIds = new[] { 1, 2 };
 	private readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
 
-	private TermDto? currentTerm;
-	private int totalPagesCount;
-	private int currentPage = 1;
-
-	protected override async Task OnInitializedAsync()
-	{
-		totalPagesCount = await GetTotalPagesCount();
-
-		await AddNewTerms(currentPage);
-
-		SetNewCurrentTerm();
-	}
-
-
-	private async Task AlreadyKnowThis()
-	{
-		var response = await PostCurrentTermProgressToPath("TermProgress/AlreadyKnow");
-
-		if(response.IsSuccessStatusCode)
-		{
-			await SetNewCurrentTermAndLoadIfNeeded();
-		}
-	}
-
-	private async Task LearnThisTerm()
-	{
-		var response = await PostCurrentTermProgressToPath("TermProgress/IncorrectGuess");
-
-		if (response.IsSuccessStatusCode)
-		{
-			await SetNewCurrentTermAndLoadIfNeeded();
-		}
-	}
-
-	public async Task SetNewCurrentTermAndLoadIfNeeded()
-	{
-		SetNewCurrentTerm();
-		if (terms.Any() || currentPage >= totalPagesCount) return;
-
-		await AddNewTerms(++currentPage);
-	}
-
-	private async Task AddNewTerms(int page)
-	{
-		var newTerms = await GetNewTerms(page);
-
-		foreach (var term in newTerms)
-		{
-			terms.Enqueue(term);
-		}
-	}
-
-	private async Task<int> GetTotalPagesCount()
-	{
-		var queryObject = new TermsQuery(userId,
-			TermsListEnumQueryVariants.GetOnlyNew,
-			dictionariesIds);
-
-		var newTermsCount = await Http.GetFromJsonAsync<int>(
-			$"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
-
-		var totalPageCount = (int)Math.Ceiling(newTermsCount / (decimal)pageSize);
-		return totalPageCount;
-	}
-
-	private async Task<TermDto[]> GetNewTerms(int page)
-	{
-		var termsListQuery = new TermsListQuery(
-			page, pageSize,
-			userId, 
-			TermsListEnumQueryVariants.GetOnlyNew, 
-			dictionariesIds);
-
-		var newTerms = await Http.GetFromJsonAsync<TermDto[]>(
-			$"Terms/GetList{termsListQuery.ObjectPropertiesToQueryString()}");
-
-		return newTerms;
-	}
-
-	private void SetNewCurrentTerm()
-	{
-		terms.TryDequeue(out currentTerm);
-	}
-
-	private async Task<HttpResponseMessage> PostCurrentTermProgressToPath(string path)
-	{
-		var termProgressDtoAsQueryString = GetCurrentTermProgressDtoAsQueryString();
-		var response = await Http.PostAsync(
-			$"{path}{termProgressDtoAsQueryString}", null);
-		return response;
-	}
-
-	private string GetCurrentTermProgressDtoAsQueryString()
-	{
-		var queryObject = new TermProgressDto(currentTerm.Id, userId);
-		var termProgressDtoAsQueryString = queryObject.ObjectPropertiesToQueryString();
-		return termProgressDtoAsQueryString;
-	}
-
-	private IDictionary<string, object> GetLearningModuleParameters()
-	{
-		return new Dictionary<string, object>
-		{
-			{
-				"CurrentTermId", currentTerm.Id
-			},
-			{
-				"LoadedTermsIds", terms.Select(t => t.Id).Append(currentTerm.Id).ToArray()
-			},
-			{
-				"CurrentPage", currentPage
-			}
-		};
-	}
-
+	protected override TermsListEnumQueryVariants QueryVariant => TermsListEnumQueryVariants.GetOnlyNew;
 }
 
