@@ -30,6 +30,7 @@ builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 builder.Services.AddScoped<TermProgressService>();
 builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
 builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
+builder.Services.AddScoped<GenericGetListService<TermsDictionary, TermsDictionaryDto>>();
 builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
 builder.Services.AddScoped<TermRelatedService<Picture, PictureDto>>();

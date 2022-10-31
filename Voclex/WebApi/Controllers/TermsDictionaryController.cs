@@ -2,33 +2,32 @@
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DataTransferObjects;
-using Shared.Queries.Terms;
+using Shared.Queries.TermsDictionary;
 
 namespace WebApi.Controllers
 {
-    [Route("[controller]")]
-    public class TermsController : GenericCrudController<Term, TermDto>
+	[Route("[controller]")]
+	public class TermsDictionaryController : ControllerBase
     {
-        private readonly GenericGetListService<Term, TermDto> listService;
-        public TermsController(GenericCrudService<Term, TermDto> service, 
-            GenericGetListService<Term, TermDto> listService) : base(service)
+        private readonly GenericGetListService<TermsDictionary, TermsDictionaryDto> listService;
+
+        public TermsDictionaryController(GenericGetListService<TermsDictionary, TermsDictionaryDto> listService)
         {
             this.listService = listService;
         }
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IEnumerable<TermDto>> GetList([FromQuery] TermsListQuery query) //todo check validity of page and pagesize
+        public Task<IEnumerable<TermsDictionaryDto>> GetList([FromQuery] TermsDictionariesListQuery query) 
         {
             return listService.GetAsync(query);
         }
 
         [HttpGet(nameof(GetCount))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<int> GetCount([FromQuery] TermsQuery query)
+        public Task<int> GetCount([FromQuery] TermsDictionariesQuery query)
         {
             return listService.GetCount(query);
         }
-
     }
 }
