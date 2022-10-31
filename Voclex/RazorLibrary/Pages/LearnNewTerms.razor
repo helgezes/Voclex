@@ -1,5 +1,6 @@
 ﻿@page "/learn-new-terms"
 @using global::Shared.Queries.Terms
+@using RazorLibrary.Shared
 @using RazorLibrary.Shared.LearningModules
 @inherits TermsPage
 
@@ -9,13 +10,7 @@
 	@if (CurrentTerm != null)
 	{
 		<div>
-			<p>@CurrentTerm.Value</p>
-
-			@{ var learningModuleParameters = GetLearningModuleParameters();}
-			@foreach (var learningModule in learningModules)
-			{
-				<DynamicComponent Type="learningModule" Parameters="learningModuleParameters"></DynamicComponent>
-			}
+			<Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></Term>
 
 			<p>
 				<button @onclick="AlreadyKnowThis" type="button" class="btn btn-outline-primary btn-lg">I already know this</button>

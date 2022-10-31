@@ -1,0 +1,19 @@
+﻿@using global::Shared.DataTransferObjects
+@using RazorLibrary.Shared.LearningModules
+<p>@CurrentTerm</p>
+
+@foreach (var learningModule in learningModules)
+{
+	<DynamicComponent Type="learningModule" Parameters="LearningModuleParameters"></DynamicComponent>
+}
+
+@code {
+	private readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
+
+	[Parameter]
+	public string CurrentTerm { get; set; }
+
+	[Parameter]
+	public IDictionary<string, object> LearningModuleParameters { get; set; }
+
+}
