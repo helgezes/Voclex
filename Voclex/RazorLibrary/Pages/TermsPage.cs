@@ -33,6 +33,8 @@ namespace RazorLibrary.Pages
             SetNewCurrentTerm();
         }
 
+        protected virtual void OnTermSet()
+        {}
 
         protected async Task AlreadyKnowThis()
         {
@@ -47,6 +49,16 @@ namespace RazorLibrary.Pages
         protected async Task IncorrectGuess()
         {
             var response = await PostCurrentTermProgressToPath("TermProgress/IncorrectGuess");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await SetNewCurrentTermAndLoadIfNeeded();
+            }
+        }
+
+        protected async Task CorrectGuess()
+        {
+            var response = await PostCurrentTermProgressToPath("TermProgress/CorrectGuess");
 
             if (response.IsSuccessStatusCode)
             {
@@ -102,6 +114,7 @@ namespace RazorLibrary.Pages
         private void SetNewCurrentTerm()
         {
             LoadedTerms.TryDequeue(out CurrentTerm);
+            OnTermSet();
         }
 
         private async Task<HttpResponseMessage> PostCurrentTermProgressToPath(string path)
