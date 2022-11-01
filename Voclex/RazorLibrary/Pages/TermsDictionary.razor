@@ -1,0 +1,45 @@
+﻿@page "/dictionary/{id:int}"
+@inject HttpClient Http
+@using global::Shared.Queries.Terms
+@using RazorLibrary.Helpers
+@using System.Net.Http.Json
+@using global::Shared.DataTransferObjects
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<PageTitle>Dictionary</PageTitle>
+
+<div class="container">
+	<Virtualize Items="terms" Context="term">
+		<ItemContent>
+			<div class="py-3 border btn-outline-info row">
+				<div class="col-10">@term.Value</div>
+				<div class="col-1 fa fa-pencil"></div>
+				<div class="col-1 fa fa-trash"></div>
+			</div>
+		</ItemContent>
+	</Virtualize>
+	<div class="py-3 border btn-outline-success row">
+		<div class="d-flex justify-content-center">Add new term</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private readonly List<TermDto> terms = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		var queryObject = 
+			new TermsListQuery(1, int.MaxValue, //todo load only chunks and cache it somehow. Virtualize ItemsProvider works strangely, mb made a custom one.
+			Settings.UserId, TermsListEnumQueryVariants.GetAll,
+			new []{Id}); //todo dictionary id
+
+		var newTerms =
+			await Http.GetFromJsonAsync<TermDto[]>(
+				"Terms/GetList" + queryObject.ObjectPropertiesToQueryString());
+
+		terms.AddRange(newTerms);
+	}
+}

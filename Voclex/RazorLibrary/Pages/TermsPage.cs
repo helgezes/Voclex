@@ -18,8 +18,8 @@ namespace RazorLibrary.Pages
         protected readonly Queue<TermDto> LoadedTerms = new();
         protected TermDto? CurrentTerm;
 
-        private readonly int userId = 1; //todo settings
-        private readonly int[] dictionariesIds = new[] { 1, 2 };
+        private readonly int userId = Settings.UserId;
+        private readonly int[] dictionariesIds = Settings.DictionariesIds;
 
         private int totalPagesCount;
         private int currentPage = 1;
