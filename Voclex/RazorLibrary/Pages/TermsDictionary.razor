@@ -13,12 +13,14 @@
 		<ItemContent>
 			<div class="py-3 border btn-outline-info row">
 				<div class="col-10">@term.Value</div>
-				<div class="col-1 fa fa-pencil"></div>
-				<div class="col-1 fa fa-trash"></div>
+				<button type="button" class="btn btn-success col-1 fa fa-pencil">
+				</button>
+				<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
+				</button>
 			</div>
 		</ItemContent>
 	</Virtualize>
-	<div class="py-3 border btn-outline-success row">
+	<div class="py-3 border btn-outline-primary row">
 		<div class="d-flex justify-content-center">Add new term</div>
 	</div>
 </div>
@@ -41,5 +43,11 @@
 				"Terms/GetList" + queryObject.ObjectPropertiesToQueryString());
 
 		terms.AddRange(newTerms);
+	}
+
+	private async Task Delete(TermDto term)
+	{
+		await Http.DeleteAsync($"Terms?id={term.Id}");
+		terms.Remove(term);
 	}
 }
