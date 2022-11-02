@@ -1,7 +1,6 @@
 ﻿using Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared;
-using Shared.DataTransferObjects;
+using SharedLibrary.DataTransferObjects;
 
 namespace WebApi.Controllers
 {

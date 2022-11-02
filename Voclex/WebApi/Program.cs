@@ -4,8 +4,7 @@ using Application.Models;
 using Application.Services;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-using Shared;
-using Shared.DataTransferObjects;
+using SharedLibrary.DataTransferObjects;
 
 [assembly: ApiController]
 

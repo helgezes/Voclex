@@ -2,7 +2,7 @@
 using Application.DataAccess;
 using Application.Services;
 
-namespace Shared.Queries.TermsDictionary
+namespace SharedLibrary.Queries.TermsDictionary
 {
 	public class TermsDictionariesQuery : IQuery<Application.Models.TermsDictionary>
 	{

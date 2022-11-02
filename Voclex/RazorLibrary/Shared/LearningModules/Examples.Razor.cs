@@ -1,4 +1,4 @@
-﻿using Shared.DataTransferObjects;
+﻿using SharedLibrary.DataTransferObjects;
 
 namespace RazorLibrary.Shared.LearningModules
 {

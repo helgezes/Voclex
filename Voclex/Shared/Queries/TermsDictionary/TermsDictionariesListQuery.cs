@@ -1,6 +1,6 @@
 ﻿using Application.Services;
 
-namespace Shared.Queries.TermsDictionary
+namespace SharedLibrary.Queries.TermsDictionary
 {
 	public sealed class TermsDictionariesListQuery : TermsDictionariesQuery, IListQuery<Application.Models.TermsDictionary>
 	{

@@ -1,6 +1,6 @@
 ﻿using Application.Models;
 using Application.Services;
-using Shared.DataTransferObjects;
+using SharedLibrary.DataTransferObjects;
 
 namespace WebApi.Controllers
 {

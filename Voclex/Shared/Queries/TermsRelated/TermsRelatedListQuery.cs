@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Shared.Queries.TermsRelated
+namespace SharedLibrary.Queries.TermsRelated
 {
 	public sealed class TermsRelatedListQuery
 	{

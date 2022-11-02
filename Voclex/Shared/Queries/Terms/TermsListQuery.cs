@@ -1,7 +1,7 @@
 ﻿using Application.Models;
 using Application.Services;
 
-namespace Shared.Queries.Terms;
+namespace SharedLibrary.Queries.Terms;
 
 public class TermsListQuery : TermsQuery, IListQuery<Term>
 {

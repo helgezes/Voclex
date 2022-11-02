@@ -2,7 +2,7 @@
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
-using Shared.Queries.TermsRelated;
+using SharedLibrary.Queries.TermsRelated;
 
 namespace RazorLibrary.Shared.LearningModules;
 

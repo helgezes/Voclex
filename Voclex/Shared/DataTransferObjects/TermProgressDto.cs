@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Shared.DataTransferObjects
+namespace SharedLibrary.DataTransferObjects
 {
     public sealed class TermProgressDto
     {

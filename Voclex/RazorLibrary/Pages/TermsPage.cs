@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
-using Shared.DataTransferObjects;
-using Shared.Queries.Terms;
+using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Queries.Terms;
 
 namespace RazorLibrary.Pages
 {

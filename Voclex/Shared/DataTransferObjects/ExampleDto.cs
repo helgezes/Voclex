@@ -1,7 +1,6 @@
 ﻿using Application.ModelInterfaces;
-using Application.Models;
 
-namespace Shared.DataTransferObjects
+namespace SharedLibrary.DataTransferObjects
 {
     public sealed class ExampleDto : ITermRelated
     {

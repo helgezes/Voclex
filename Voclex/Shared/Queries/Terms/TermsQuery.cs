@@ -3,7 +3,7 @@ using Application.DataAccess;
 using Application.Models;
 using Application.Services;
 
-namespace Shared.Queries.Terms;
+namespace SharedLibrary.Queries.Terms;
 
 public class TermsQuery : IQuery<Term>
 {
