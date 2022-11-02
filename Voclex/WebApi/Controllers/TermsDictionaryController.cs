@@ -1,17 +1,19 @@
 ﻿using Application.Models;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared.DataTransferObjects;
-using Shared.Queries.TermsDictionary;
+using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Queries.TermsDictionary;
 
 namespace WebApi.Controllers
 {
 	[Route("[controller]")]
-	public class TermsDictionaryController : ControllerBase
+	public class TermsDictionaryController : GenericCrudController<TermsDictionary, TermsDictionaryDto>
     {
         private readonly GenericGetListService<TermsDictionary, TermsDictionaryDto> listService;
 
-        public TermsDictionaryController(GenericGetListService<TermsDictionary, TermsDictionaryDto> listService)
+        public TermsDictionaryController(
+            GenericGetListService<TermsDictionary, TermsDictionaryDto> listService,
+            GenericCrudService<TermsDictionary, TermsDictionaryDto> crudService) : base(crudService)
         {
             this.listService = listService;
         }
