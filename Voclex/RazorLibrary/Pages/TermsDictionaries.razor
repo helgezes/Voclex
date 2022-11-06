@@ -13,27 +13,31 @@
 		<Virtualize Items="dictionaries" Context="dictionary">
 			<ItemContent>
 				<div class="py-3 list-group-item d-flex btn btn-outline-info">
-					<a href="/dictionary/@dictionary.Id" class="col-11">
-						<div  class="text-start">@dictionary.Title</div>
+					<a href="/dictionary/@dictionary.Id" class="col-11 text-decoration-none">
+						<div class="text-start">@dictionary.Title</div>
 					</a>
 					<button type="button" @onclick="() => Edit(dictionary)" class="btn btn-success col-1 fa fa-pencil" data-bs-toggle="modal" data-bs-target="#@editModalId">
 					</button>
 				</div>
 			</ItemContent>
 		</Virtualize>
-		<div class="py-3 border btn btn-outline-primary list-group-item">
+		<button type="button" @onclick="OpenCreateModal" class="py-3 border btn btn-outline-primary list-group-item" data-bs-toggle="modal" data-bs-target="#@createModalId">
 			<div class="d-flex justify-content-center">Add new dictionary</div>
-		</div>
+		</button>
 	</div>
 </div>
 
-<DictionaryEdit ModalId="@editModalId" Dictionary="currentEditDictionary" OnChangesSaved="StateHasChanged"></DictionaryEdit>
+<DictionaryEdit ModalId="@editModalId" Dictionary="currentEditDictionary" SaveChangesHttpMethod="Http.PutAsJsonAsync" OnChangesSaved="OnEditChangesSaved"></DictionaryEdit>
+<DictionaryEdit ModalId="@createModalId" Dictionary="newDictionary" SaveChangesHttpMethod="Http.PostAsJsonAsync" OnChangesSaved="OnCreateChangesSaved"></DictionaryEdit>
 
 @code {
-	private const string editModalId = "dictionaryEditModal";
 	private readonly List<TermsDictionaryDto> dictionaries = new();
-
+	
+	private const string editModalId = "dictionaryEditModal";
 	private TermsDictionaryDto? currentEditDictionary = null;
+	    
+	private const string createModalId = "dictionaryCreateModal";
+	private TermsDictionaryDto? newDictionary = null;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -49,5 +53,23 @@
 	private void Edit(TermsDictionaryDto dictionary)
 	{
 		currentEditDictionary = dictionary;
+	}
+
+	private void OnEditChangesSaved(DictionaryEdit.ChangesSavedArgs args)
+	{
+		currentEditDictionary!.Title = args.Dictionary.Title;
+	}
+
+	private void OpenCreateModal()
+	{
+		newDictionary = new TermsDictionaryDto(0, String.Empty);
+	}
+
+	private async Task OnCreateChangesSaved(DictionaryEdit.ChangesSavedArgs args)
+	{
+		var newModel = args.Dictionary;
+		var newModelId = int.Parse(await args.Response.Content.ReadAsStringAsync());
+		newModel.Id = newModelId;
+		dictionaries.Add(newModel);
 	}
 }
