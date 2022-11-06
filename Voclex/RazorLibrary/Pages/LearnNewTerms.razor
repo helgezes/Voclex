@@ -1,6 +1,5 @@
 ﻿@page "/learn-new-terms"
 @using RazorLibrary.Shared
-@using RazorLibrary.Shared.LearningModules
 @using SharedLibrary.Queries.Terms
 @inherits TermsPage
 
@@ -27,8 +26,6 @@
 </div>
 
 @code {
-	private readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
-
 	protected override TermsListEnumQueryVariants QueryVariant => TermsListEnumQueryVariants.GetOnlyNew;
 }
 

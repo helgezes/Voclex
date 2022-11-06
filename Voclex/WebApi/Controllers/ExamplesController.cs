@@ -6,7 +6,8 @@ namespace WebApi.Controllers
 {
 	public class ExamplesController : GenericTermsRelatedController<Example, ExampleDto>
 	{
-        public ExamplesController(TermRelatedService<Example, ExampleDto> service) : base(service)
+        public ExamplesController(TermRelatedService<Example, ExampleDto> service, 
+            GenericCrudService<Example, ExampleDto> genericCrudService) : base(service, genericCrudService)
         {
         }
     }

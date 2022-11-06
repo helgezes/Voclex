@@ -2,13 +2,16 @@
 
 namespace SharedLibrary.DataTransferObjects
 {
-    public sealed class PictureDto : ITermRelated
+    public sealed class PictureDto : ITermRelated, IIdentifiable
     {
-        public PictureDto(int termId, string path)
+        public PictureDto(int id, int termId, string path)
         {
+            Id = id;
             TermId = termId;
             Path = path;
         }
+
+        public int Id { get; init; }
 
         public int TermId { get; init; }
         

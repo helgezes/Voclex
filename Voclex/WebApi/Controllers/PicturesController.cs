@@ -6,8 +6,9 @@ namespace WebApi.Controllers
 {
     public class PicturesController : GenericTermsRelatedController<Picture, PictureDto>
     {
-        public PicturesController(TermRelatedService<Picture, PictureDto> service) : 
-            base(service)
-        { }
+        public PicturesController(TermRelatedService<Picture, PictureDto> service, 
+            GenericCrudService<Picture, PictureDto> genericCrudService) : base(service, genericCrudService)
+        {
+        }
     }
 }
