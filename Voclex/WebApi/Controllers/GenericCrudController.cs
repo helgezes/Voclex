@@ -26,14 +26,15 @@ namespace WebApi.Controllers
 
             try
             {
-                await service.Create(dto);
+                var newModel = await service.Create(dto);
+
+                return Ok(newModel.Id);
             }
             catch (DbUpdateException)
             {
                 return BadRequest("Creation failed. Check your model and try again.");
             }
 
-            return Ok();
         }
 
         [HttpGet]
