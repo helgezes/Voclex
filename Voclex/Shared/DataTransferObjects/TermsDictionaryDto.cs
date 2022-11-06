@@ -10,6 +10,6 @@ namespace SharedLibrary.DataTransferObjects
         }
 
         [Required]
-        public string Title { get; init; }
+        public string Title { get; set; }
     }
 }

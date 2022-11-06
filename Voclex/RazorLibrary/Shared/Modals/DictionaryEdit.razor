@@ -1,0 +1,65 @@
+﻿@using SharedLibrary.DataTransferObjects
+@using Microsoft.AspNetCore.Components.Forms
+@using RazorLibrary.Helpers
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<div class="modal fade" id="@ModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalTitle">Dictionary</h5>        
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<EditForm Model="@modelDictionary" OnValidSubmit="SaveChanges">
+				<div class="modal-body">
+					<DataAnnotationsValidator />
+					<ValidationSummary />
+					<p>
+						<label>
+							Title:
+							<InputText id="title" @bind-Value="@modelDictionary.Title" />
+						</label>
+					</p>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
+				</div>
+			</EditForm>
+		</div>
+	</div>
+</div>
+@code
+{
+	private TermsDictionaryDto modelDictionary = new(0, String.Empty);
+
+	[Parameter]
+	public TermsDictionaryDto? Dictionary { get; set; }
+
+	[Parameter]
+	public string ModalId { get; set; }
+
+	[Parameter] 
+	public EventCallback<TermsDictionaryDto> OnChangesSaved { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		if (Dictionary != null && modelDictionary != Dictionary)
+		{
+			modelDictionary = new TermsDictionaryDto(Dictionary.Id, Dictionary.Title);
+		}
+		base.OnParametersSet();
+	}
+
+
+	private async Task SaveChanges()
+	{
+		var response = await Http.PutAsJsonAsync("TermsDictionary", modelDictionary);
+		if(!response.IsSuccessStatusCode || Dictionary == null) return;
+
+		Dictionary.Title = modelDictionary.Title;
+		await OnChangesSaved.InvokeAsync(modelDictionary);
+	}
+}
