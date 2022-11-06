@@ -9,17 +9,22 @@
 
 <PageTitle>Dictionaries</PageTitle>
 <div class="container">
-	<Virtualize Items="dictionaries" Context="dictionary">
-		<ItemContent>
-			<div class="py-3 border btn-outline-info row">
-				<a href="/dictionary/@dictionary.Id" class="col-10">
-					<div class="">@dictionary.Title</div>
-				</a>
-				<button type="button" @onclick="() => Edit(dictionary)" class="btn btn-success col-1 fa fa-pencil" data-bs-toggle="modal" data-bs-target="#@editModalId">
-				</button>
-			</div>
-		</ItemContent>
-	</Virtualize>
+	<div class="list-group">		
+		<Virtualize Items="dictionaries" Context="dictionary">
+			<ItemContent>
+				<div class="py-3 list-group-item d-flex btn btn-outline-info">
+					<a href="/dictionary/@dictionary.Id" class="col-11">
+						<div  class="text-start">@dictionary.Title</div>
+					</a>
+					<button type="button" @onclick="() => Edit(dictionary)" class="btn btn-success col-1 fa fa-pencil" data-bs-toggle="modal" data-bs-target="#@editModalId">
+					</button>
+				</div>
+			</ItemContent>
+		</Virtualize>
+		<div class="py-3 border btn btn-outline-primary list-group-item">
+			<div class="d-flex justify-content-center">Add new dictionary</div>
+		</div>
+	</div>
 </div>
 
 <DictionaryEdit ModalId="@editModalId" Dictionary="currentEditDictionary" OnChangesSaved="StateHasChanged"></DictionaryEdit>
