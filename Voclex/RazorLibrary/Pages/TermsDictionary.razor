@@ -9,19 +9,21 @@
 <PageTitle>Dictionary</PageTitle>
 
 <div class="container">
-	<Virtualize Items="terms" Context="term">
-		<ItemContent>
-			<div class="py-3 border btn-outline-info row">
-				<div class="col-10">@term.Value</div>
-				<button type="button" class="btn btn-success col-1 fa fa-pencil">
-				</button>
-				<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
-				</button>
-			</div>
-		</ItemContent>
-	</Virtualize>
-	<div class="py-3 border btn-outline-primary row">
-		<div class="d-flex justify-content-center">Add new term</div>
+	<div class="list-group">
+		<Virtualize Items="terms" Context="term">
+			<ItemContent>
+				<div class="py-3 list-group-item d-flex btn btn-outline-info">
+					<div class="col-10 text-start">@term.Value</div>
+					<button type="button" class="btn btn-success col-1 fa fa-pencil">
+					</button>
+					<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
+					</button>
+				</div>
+			</ItemContent>
+		</Virtualize>
+		<div class="py-3 btn btn-outline-primary list-group-item">
+			<div class="d-flex justify-content-center">Add new term</div>
+		</div>
 	</div>
 </div>
 
