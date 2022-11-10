@@ -15,11 +15,12 @@
 				<InputText id="value" @bind-Value="@currentTerm.Value" />
 			</label>
 		</p>
+		@{ var parameters = GetLearningModuleParameters();}
 		@for (int i = 0; i < modules.Length; i++)
 		{
 			var module = modules[i];
 			var i2 = i;
-			<DynamicComponent Type="module" @ref="editableLearningModulesar[i2]"></DynamicComponent>
+			<DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
 		}
 		<button type="submit" class="btn btn-primary">Save</button>
 	</EditForm>
@@ -31,13 +32,13 @@
 
 	private TermDto currentTerm = new(0, string.Empty, 1); //todo dictionary id;
 
-	private readonly Type[] modules = new[] { typeof(EditDefinition), typeof(EditDefinition) };
+	private readonly Type[] modules = new[] { typeof(EditDefinition) };
 
-	private DynamicComponent[] editableLearningModulesar;
+	private DynamicComponent[] editableLearningModules;
 
 	protected override async Task OnInitializedAsync()
 	{	//todo mb form as a component, add and edit page separate, using this component
-		editableLearningModulesar = new DynamicComponent[modules.Length];
+		editableLearningModules = new DynamicComponent[modules.Length];
 
 		TermDto? loadedTerm;
 		if (Id != default && (loadedTerm = await Http.GetFromJsonAsync<TermDto>($"Terms?id={Id}")) != null)
@@ -48,5 +49,19 @@
 	private async Task SaveChanges()
 	{
 		var response = await Http.PutAsJsonAsync("Terms", currentTerm);
+
+		var modulesSaveChangesTasks = editableLearningModules
+			.Select(m => ((IEditableLearningModule)m.Instance).SaveChanges())
+			.ToArray();
+
+		await Task.WhenAll(modulesSaveChangesTasks);
+	}
+
+	protected IDictionary<string, object> GetLearningModuleParameters()
+	{
+		return new Dictionary<string, object>
+		{
+			{ "TermId", Id }
+		};
 	}
 }

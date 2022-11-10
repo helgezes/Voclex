@@ -1,7 +1,16 @@
 ﻿@inherits EditLearningModule<SharedLibrary.DataTransferObjects.DefinitionDto>
 
-.<h3>EditDefinition</h3>
+@if (firstEntity != null)
+{
+	<p>
+		<label>
+			Definition:
+			<textarea id="definition-value" @bind="@firstEntity.Value"></textarea>
+		</label>
+	</p>
+}
 
 @code {
-
+	protected override string GetListApiPath => "Definitions/GetList";
+	protected override string SaveChangesApiPath => "Definitions";
 }

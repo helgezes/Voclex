@@ -15,6 +15,6 @@ namespace SharedLibrary.DataTransferObjects
 
         public int TermId { get; init; }
         
-        public string Value { get; init; }
+        public string Value { get; set; }
     }
 }
