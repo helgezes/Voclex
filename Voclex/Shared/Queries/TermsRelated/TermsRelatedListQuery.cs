@@ -5,7 +5,7 @@ namespace SharedLibrary.Queries.TermsRelated
 {
 	public sealed class TermsRelatedListQuery
 	{
-        public TermsRelatedListQuery(int[] termsIds)
+        public TermsRelatedListQuery(params int[] termsIds)
         {
             this.TermsIds = termsIds;
         }
