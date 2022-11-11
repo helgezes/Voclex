@@ -1,0 +1,16 @@
+﻿@using SharedLibrary.DataTransferObjects
+
+@if (Current != null)
+{
+	<p>
+		<label>
+			Definition:
+			<textarea id="definition-value" @bind="@Current.Value"></textarea>
+		</label>
+	</p>
+}
+
+@code {
+	[Parameter]
+	public DefinitionDto? Current { get; set; }
+}
