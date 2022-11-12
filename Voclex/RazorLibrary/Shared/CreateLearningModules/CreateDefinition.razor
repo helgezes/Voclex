@@ -1,0 +1,13 @@
+﻿@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.Shared.LearningModulesInputs
+@inherits CreateLearningModule<SharedLibrary.DataTransferObjects.DefinitionDto>
+
+<DefinitionInput Current="FirstEntity"></DefinitionInput>
+
+@code {
+	protected override string SaveChangesApiPath => "Definitions";
+	protected override DefinitionDto CreateNewDto()
+	{
+		return new DefinitionDto(0, 0, string.Empty);
+	}
+}
