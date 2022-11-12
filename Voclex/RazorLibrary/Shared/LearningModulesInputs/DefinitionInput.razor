@@ -2,12 +2,10 @@
 
 @if (Current != null)
 {
-	<p>
-		<label>
-			Definition:
-			<textarea id="definition-value" @bind="@Current.Value"></textarea>
-		</label>
-	</p>
+	<div class="form-floating mb-3">
+		<textarea class="form-control" id="definition-value" @bind="@Current.Value"></textarea>
+		<label for="definition-value">Definition</label>
+	</div>
 }
 
 @code {

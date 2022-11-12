@@ -9,12 +9,12 @@
 	<EditForm Model="currentTerm" OnValidSubmit="SaveChanges">
 		<DataAnnotationsValidator />
 		<ValidationSummary />
-		<p>
-			<label>
-				Term:
-				<InputText id="value" @bind-Value="@currentTerm.Value" />
-			</label>
-		</p>
+
+		<div class="form-floating mb-3">
+			<InputText class="form-control" id="term-value" @bind-Value="@currentTerm.Value"/>
+			<label for="term-value">Term</label>
+		</div>
+
 		@{ var parameters = GetLearningModuleParameters();}
 		@for (var i = 0; i < modules.Length; i++)
 		{
