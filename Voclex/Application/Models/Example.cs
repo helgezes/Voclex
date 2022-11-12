@@ -18,7 +18,7 @@ namespace Application.Models
             Value = value;
         }
 
-        public int TermId { get; }
+        public int TermId { get; init; }
 
         public Term Term { get; } = null!;
 
