@@ -14,8 +14,8 @@
 			<ItemContent>
 				<div class="py-3 list-group-item d-flex btn btn-outline-info">
 					<div class="col-10 text-start">@term.Value</div>
-					<button type="button" class="btn btn-success col-1 fa fa-pencil">
-					</button>
+					<a type="button" href="/term/edit/@term.Id" class="btn btn-success col-1 fa fa-pencil" target="_blank">
+					</a>
 					<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
 					</button>
 				</div>

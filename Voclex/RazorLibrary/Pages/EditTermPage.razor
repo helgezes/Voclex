@@ -48,10 +48,11 @@
 
 	private async Task SaveChanges()
 	{
-		var response = await Http.PutAsJsonAsync("Terms", currentTerm);
+		var responseTask = Http.PutAsJsonAsync("Terms", currentTerm);
 
 		var modulesSaveChangesTasks = editableLearningModules
 			.Select(m => ((IEditableLearningModule)m.Instance).SaveChanges())
+			.Append(responseTask)
 			.ToArray();
 
 		await Task.WhenAll(modulesSaveChangesTasks);
