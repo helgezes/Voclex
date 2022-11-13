@@ -2,6 +2,7 @@
 @using SharedLibrary.DataTransferObjects
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Net.Http.Json
+@using RazorLibrary.Shared
 @using RazorLibrary.Shared.EditLearningModules
 @inject HttpClient Http
 
@@ -22,6 +23,7 @@
 			var i2 = i;
 			<DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
 		}
+		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
 		<button type="submit" class="btn btn-primary">Save</button>
 	</EditForm>
 </div>
@@ -35,6 +37,7 @@
 	private readonly Type[] modules = new[] { typeof(EditDefinition) };
 
 	private DynamicComponent[] editableLearningModules;
+	private SuccessAlert? successAlert;
 
 	protected override async Task OnInitializedAsync()
 	{	//todo mb form as a component, add and edit page separate, using this component
@@ -56,6 +59,8 @@
 			.ToArray();
 
 		await Task.WhenAll(modulesSaveChangesTasks);
+
+		await successAlert!.Show(5000);
 	}
 
 	protected IDictionary<string, object> GetLearningModuleParameters()

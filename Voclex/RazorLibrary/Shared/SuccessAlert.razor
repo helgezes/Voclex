@@ -1,0 +1,35 @@
+﻿@if (show)
+{
+	<div class="alert alert-success" role="alert">
+		@Text
+	</div>
+}
+
+@code {
+
+	[Parameter]
+	public string Text { get; set; } = "Success!";
+
+	[Parameter]
+	public bool ShowInitially { get; set; } = false;
+
+	private bool show;
+
+	protected override void OnParametersSet()
+	{
+		show = ShowInitially;
+		base.OnParametersSet();
+	}
+
+	public async Task Show(int? delayInMilliseconds = null)
+	{
+		show = true;
+		StateHasChanged();
+
+		if(!delayInMilliseconds.HasValue) return;
+		await Task.Delay(delayInMilliseconds.Value);
+
+		show = false;
+		StateHasChanged();
+	} 
+}
