@@ -2,9 +2,10 @@
 @using SharedLibrary.DataTransferObjects
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Net.Http.Json
+@using Microsoft.JSInterop
 @using RazorLibrary.Shared.CreateLearningModules
 @inject HttpClient Http
-@inject NavigationManager NavManager
+@inject IJSRuntime JS
 
 <div class="container">
 	<EditForm Model="newTerm" OnValidSubmit="SaveChanges">
@@ -27,6 +28,24 @@
 	</EditForm>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="successfulCreation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">Success</h1>
+			</div>
+			<div class="modal-body">
+				New term successfully added!
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" @onclick="() => DisposeModalAndGoToUrl(GoBackToDictionaryUrl)"> Go back to dictionary</button>
+				<button type="button" class="btn btn-primary" @onclick="() => DisposeModalAndGoToUrl(ContinueEditingUrl)">Continue editing</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 @code {
 	[Parameter]
 	public int DictionaryId { get; set; }
@@ -34,8 +53,13 @@
 	private readonly Type[] modules = new[] { typeof(CreateDefinition) };
 
 	private TermDto newTerm = null!;
+	private int newTermId = 0;
 
 	private DynamicComponent[] editableLearningModules;
+	private IJSObjectReference jsModule;
+
+	private string GoBackToDictionaryUrl => $"/dictionary/{DictionaryId}";
+	private string ContinueEditingUrl => $"/term/edit/{newTermId}";
 
 	protected override void OnInitialized()
 	{
@@ -44,17 +68,30 @@
 		base.OnInitialized();
 	}
 
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		jsModule = await JS.InvokeAsync<IJSObjectReference>(
+			"import", $"./_content/{nameof(RazorLibrary)}/Pages/{nameof(CreateTermPage)}.razor.js");
+
+		await base.OnAfterRenderAsync(firstRender);
+	}
+
 	private async Task SaveChanges()
 	{
 		var response = await Http.PostAsJsonAsync("Terms", newTerm);
-		var termId = int.Parse(await response.Content.ReadAsStringAsync());
+		newTermId = int.Parse(await response.Content.ReadAsStringAsync());
 
 		var modulesSaveChangesTasks = editableLearningModules
-			.Select(m => ((ICreatableLearningModule)m.Instance).SaveChanges(termId))
+			.Select(m => ((ICreatableLearningModule)m.Instance).SaveChanges(newTermId))
 			.ToArray();
 
 		await Task.WhenAll(modulesSaveChangesTasks);
 
-		NavManager.NavigateTo($"/term/edit/{termId}");
+		await jsModule.InvokeVoidAsync("ShowSuccessfulCreationModal");
+	}
+
+	private async Task DisposeModalAndGoToUrl(string path)
+	{
+		await jsModule.InvokeVoidAsync("DisposeModalAndGoToUrl", path);
 	}
 }
