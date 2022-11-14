@@ -18,6 +18,9 @@ namespace RazorLibrary.Shared.EditLearningModules
         [Parameter]
         public int TermId { get; set; }
 
+        [Parameter] 
+        public EventCallback OnInitializationComplete { get; set; }
+
         protected abstract string GetListApiPath { get; }
         protected abstract string SaveChangesApiPath { get; }
 
@@ -32,6 +35,8 @@ namespace RazorLibrary.Shared.EditLearningModules
             var queryObject = new TermsRelatedListQuery(TermId);
             currentEntities =
                 await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
+            
+            await OnInitializationComplete.InvokeAsync();
         }
     }
 

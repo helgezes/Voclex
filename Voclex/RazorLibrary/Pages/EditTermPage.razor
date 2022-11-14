@@ -24,7 +24,7 @@
 			<DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
 		}
 		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
-		<button type="submit" class="btn btn-primary">Save</button>
+		<button type="submit" class="btn btn-primary" disabled="@(!saveEnabled)">Save</button>
 	</EditForm>
 </div>
 
@@ -39,6 +39,9 @@
 	private DynamicComponent[] editableLearningModules;
 	private SuccessAlert? successAlert;
 
+	private bool saveEnabled = false;
+	private int learningModulesInitializedCount = 0;
+
 	protected override async Task OnInitializedAsync()
 	{	//todo mb form as a component, add and edit page separate, using this component
 		editableLearningModules = new DynamicComponent[modules.Length];
@@ -51,6 +54,17 @@
 
 	private async Task SaveChanges()
 	{
+		saveEnabled = false;
+
+		await SendChangesToServer();
+
+		saveEnabled = true;
+
+		successAlert!.Show(5000);
+	}
+	
+	private async Task SendChangesToServer()
+	{
 		var responseTask = Http.PutAsJsonAsync("Terms", currentTerm);
 
 		var modulesSaveChangesTasks = editableLearningModules
@@ -59,15 +73,21 @@
 			.ToArray();
 
 		await Task.WhenAll(modulesSaveChangesTasks);
-
-		await successAlert!.Show(5000);
 	}
 
+	private void OnLearningModuleInitialized()
+	{
+		learningModulesInitializedCount++;
+		if(learningModulesInitializedCount < modules.Length) return;
+
+		saveEnabled = true;
+	}
 	protected IDictionary<string, object> GetLearningModuleParameters()
 	{
 		return new Dictionary<string, object>
 		{
-			{ "TermId", Id }
+			{ "TermId", Id },
+			{ "OnInitializationComplete", EventCallback.Factory.Create(this, OnLearningModuleInitialized) }
 		};
 	}
 }

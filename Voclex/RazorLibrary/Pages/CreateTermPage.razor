@@ -70,10 +70,11 @@
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if(!firstRender) return;
+
 		jsModule = await JS.InvokeAsync<IJSObjectReference>(
 			"import", $"./_content/{nameof(RazorLibrary)}/Pages/{nameof(CreateTermPage)}.razor.js");
-
-		await base.OnAfterRenderAsync(firstRender);
+				
 	}
 
 	private async Task SaveChanges()
