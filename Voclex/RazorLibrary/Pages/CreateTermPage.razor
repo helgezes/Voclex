@@ -24,7 +24,7 @@
 			<DynamicComponent Type="module" @ref="editableLearningModules[i2]"></DynamicComponent>
 		}
 
-		<button type="submit" class="btn btn-primary">Save</button>
+		<button type="submit" class="btn btn-primary" disabled="@(!saveEnabled)">Save</button>
 	</EditForm>
 </div>
 
@@ -54,6 +54,7 @@
 
 	private TermDto newTerm = null!;
 	private int newTermId = 0;
+	private bool saveEnabled;
 
 	private DynamicComponent[] editableLearningModules;
 	private IJSObjectReference jsModule;
@@ -65,7 +66,7 @@
 	{
 		editableLearningModules = new DynamicComponent[modules.Length];
 		newTerm = new(0, string.Empty, DictionaryId);
-		base.OnInitialized();
+		saveEnabled = true;
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -79,6 +80,8 @@
 
 	private async Task SaveChanges()
 	{
+		saveEnabled = false;
+
 		var response = await Http.PostAsJsonAsync("Terms", newTerm);
 		newTermId = int.Parse(await response.Content.ReadAsStringAsync());
 
