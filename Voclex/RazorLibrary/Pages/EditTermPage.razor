@@ -42,7 +42,11 @@
 	private TermDto currentTerm = new(0, string.Empty, 1); //todo dictionary id;
 
 	private readonly Dictionary<Type, Type> editToCreateModules =
-		new() { { typeof(EditDefinition), typeof(CreateDefinition) } };
+		new()
+		{
+			{ typeof(EditDefinition), typeof(CreateDefinition) }, 
+			{ typeof(EditExamples), typeof(CreateExamples) }
+		};
 	private readonly List<Type> createModules = new();
 	private Type[] editModules;
 

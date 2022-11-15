@@ -9,8 +9,8 @@ namespace RazorLibrary.Shared.EditLearningModules
 {
 	public abstract class EditLearningModule<TDto> : ComponentBase, IEditableLearningModule where TDto : class, ITermRelated, IIdentifiable
     {
-        protected TDto? firstEntity => currentEntities?.FirstOrDefault();
-        protected TDto[]? currentEntities; //if we will have multiple objects for one term. todo will we actually need this?
+        protected TDto? FirstEntity => CurrentEntities?.FirstOrDefault();
+        protected TDto[]? CurrentEntities; //if we will have multiple objects for one term. todo will we actually need this?
 
         [Inject]
         public HttpClient Http { get; set; } = null!;
@@ -26,17 +26,17 @@ namespace RazorLibrary.Shared.EditLearningModules
 
         public virtual async Task SaveChanges()
         {
-            var responseTasks = currentEntities.Select(e => Http.PutAsJsonAsync(SaveChangesApiPath, e)).ToArray(); //todo make savable only when everything is loaded
+            var responseTasks = CurrentEntities.Select(e => Http.PutAsJsonAsync(SaveChangesApiPath, e)).ToArray(); //todo make savable only when everything is loaded
             await Task.WhenAll(responseTasks);
         }
 
         protected override async Task OnInitializedAsync()
         {
             var queryObject = new TermsRelatedListQuery(TermId);
-            currentEntities =
+            CurrentEntities =
                 await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
             
-            await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), firstEntity != null));
+            await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), FirstEntity != null));
         }
     }
 

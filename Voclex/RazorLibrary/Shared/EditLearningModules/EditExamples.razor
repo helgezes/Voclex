@@ -1,0 +1,9 @@
+﻿@using RazorLibrary.Shared.LearningModulesInputs
+@inherits EditLearningModule<SharedLibrary.DataTransferObjects.ExampleDto>
+
+<ExamplesInput Current="FirstEntity"></ExamplesInput>
+
+@code {
+	protected override string GetListApiPath => "Examples/GetList";
+	protected override string SaveChangesApiPath => "Examples";
+}
