@@ -1,0 +1,41 @@
+﻿@if (show)
+{
+	@ChildContent
+}
+else
+{
+	<div class="form-floating mb-3">
+		 @ComponentName:
+		<button type="button" class="btn btn-primary fa fa-plus-circle" @onclick="MakeVisible"></button>
+	</div>
+}
+
+@code {
+	//todo mb reuse code with OnDemandComponent
+	[Parameter]
+	public bool ShowInitially { get; set; }
+
+	[Parameter]
+	public string? ComponentName { get; set; }
+
+	[Parameter] 
+	public EventCallback OnShown { get; set; }
+	
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+
+	private bool show;
+
+	protected override async Task OnInitializedAsync()
+	{
+		show = ShowInitially;
+		if (show)
+			await OnShown.InvokeAsync();
+	}
+
+	private async Task MakeVisible()
+	{
+		show = true;
+		await OnShown.InvokeAsync();
+	}
+}

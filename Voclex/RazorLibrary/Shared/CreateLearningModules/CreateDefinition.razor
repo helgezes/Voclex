@@ -2,7 +2,9 @@
 @using RazorLibrary.Shared.LearningModulesInputs
 @inherits CreateLearningModule<SharedLibrary.DataTransferObjects.DefinitionDto>
 
-<DefinitionInput Current="FirstEntity"></DefinitionInput>
+<CreationOnDemand OnShown="EnableModuleCreation" ComponentName="Definition">
+	<DefinitionInput Current="FirstEntity"></DefinitionInput>
+</CreationOnDemand>
 
 @code {
 	protected override string SaveChangesApiPath => "Definitions";
