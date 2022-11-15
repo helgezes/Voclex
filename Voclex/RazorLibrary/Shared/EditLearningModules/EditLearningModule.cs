@@ -19,7 +19,7 @@ namespace RazorLibrary.Shared.EditLearningModules
         public int TermId { get; set; }
 
         [Parameter] 
-        public EventCallback OnInitializationComplete { get; set; }
+        public EventCallback<OnInitializationEventArgs> OnInitializationComplete { get; set; }
 
         protected abstract string GetListApiPath { get; }
         protected abstract string SaveChangesApiPath { get; }
@@ -36,12 +36,25 @@ namespace RazorLibrary.Shared.EditLearningModules
             currentEntities =
                 await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
             
-            await OnInitializationComplete.InvokeAsync();
+            await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), firstEntity != null));
         }
     }
 
     public interface IEditableLearningModule
     {
         Task SaveChanges();
+    }
+
+    public sealed class OnInitializationEventArgs
+    {
+        public OnInitializationEventArgs(Type type, bool isEntityLoaded)
+        {
+            Type = type;
+            IsEntityLoaded = isEntityLoaded;
+        }
+
+        public Type Type { get; init; }
+
+        public bool IsEntityLoaded { get; init; }
     }
 }
