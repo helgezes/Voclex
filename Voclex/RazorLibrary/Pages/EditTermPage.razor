@@ -42,8 +42,8 @@
 	private TermDto currentTerm = new(0, string.Empty, 1); //todo dictionary id;
 
 	private readonly Dictionary<Type, Type> editToCreateModules =
-		new Dictionary<Type, Type> { { typeof(EditDefinition), typeof(CreateDefinition) } };
-	private readonly List<Type> createModules = new List<Type>();
+		new() { { typeof(EditDefinition), typeof(CreateDefinition) } };
+	private readonly List<Type> createModules = new();
 	private Type[] editModules;
 
 	private DynamicComponent[] editableLearningModules;
