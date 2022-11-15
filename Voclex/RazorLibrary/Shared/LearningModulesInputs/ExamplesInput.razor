@@ -1,0 +1,14 @@
+﻿@using SharedLibrary.DataTransferObjects
+
+@if (Current != null)
+{
+	<div class="form-floating mb-3">
+		<textarea class="form-control" id="example-value" @bind="@Current.Value"></textarea>
+		<label for="example-value">Example</label>
+	</div>
+}
+
+@code {
+	[Parameter]
+	public ExampleDto? Current { get; set; }
+}

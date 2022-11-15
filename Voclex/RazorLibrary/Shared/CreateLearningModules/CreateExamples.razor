@@ -1,0 +1,17 @@
+﻿@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.Shared.LearningModulesInputs
+@inherits CreateLearningModule<SharedLibrary.DataTransferObjects.ExampleDto>
+
+<CreationOnDemand OnShown="EnableModuleCreation" ComponentName="Example">
+	<ExamplesInput Current="FirstEntity"></ExamplesInput>
+</CreationOnDemand>
+
+
+@code {
+	protected override string SaveChangesApiPath => "Examples";
+	protected override ExampleDto CreateNewDto()
+	{
+		return new ExampleDto(0, 0, string.Empty);
+	}
+
+}

@@ -1,8 +1,9 @@
 ﻿using Application.ModelInterfaces;
+using SharedLibrary.DataTransferObjects.Interfaces;
 
 namespace SharedLibrary.DataTransferObjects
 {
-    public sealed class ExampleDto : ITermRelated, IIdentifiable
+    public sealed class ExampleDto : ITermRelatedEditable, IIdentifiable
     {
         public ExampleDto(int id, int termId, string value)
         {
@@ -13,8 +14,8 @@ namespace SharedLibrary.DataTransferObjects
 
         public int Id { get; init; }
 
-        public int TermId { get; init; }
+        public int TermId { get; set; }
         
-        public string Value { get; init; }
+        public string Value { get; set; }
     }
 }
