@@ -15,7 +15,7 @@ namespace RazorLibrary.Shared.CreateLearningModules
         protected TDto FirstEntity => CurrentEntities.First();
         protected readonly TDto[] CurrentEntities;
 
-        private bool moduleCreationEnabled;
+        protected bool isModuleCreationEnabled;
 
         [Inject]
         public HttpClient Http { get; set; } = null!;
@@ -26,7 +26,7 @@ namespace RazorLibrary.Shared.CreateLearningModules
 
         public virtual async Task SaveChanges(int termId)
         {
-            if (!moduleCreationEnabled) return;
+            if (!isModuleCreationEnabled) return;
 
             var responseTasks = CurrentEntities.Select(e =>
             {
@@ -38,7 +38,7 @@ namespace RazorLibrary.Shared.CreateLearningModules
 
         protected void EnableModuleCreation()
         {
-            moduleCreationEnabled = true;
+            isModuleCreationEnabled = true;
         }
     }
 
