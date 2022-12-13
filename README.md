@@ -1,6 +1,7 @@
+<a name="readme-top"></a>
+
 # Voclex
 
-<a name="readme-top"></a>
 
 <!-- TABLE OF CONTENTS -->
 <details>
