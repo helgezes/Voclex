@@ -2,7 +2,6 @@
 
 # Voclex
 
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -30,6 +29,10 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
+*(Combined from the first syllables of Vocabulary and Lexicon.)* 
+
+**Voclex is a tool for learning vocabulary with spaced-based repetition flashcards**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
