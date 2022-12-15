@@ -9,7 +9,13 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#current-state-of-the-application">Current State Of The Application</a></li>
+        <li>
+          <a href="#technical-details">Technical Details</a>
+          <ul>
+            <li><a href="#list-of-the-technologies-used">List Of The Technologies Used</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li>
@@ -62,7 +68,7 @@ Also, the look of the application is very basic as I'm not a designer and my `CS
 
 
 
-### Tecnhical Details
+### Technical Details
 
 The main programming language used in the application is `C#`, but there are also some `JavaScript` libraries. 
 
@@ -82,7 +88,7 @@ _With this architecture we are able to create a cross-platform application that 
   This is not a comprehensive list of the actual .csproj projects, it's just those logical parts that I wanted to be highlighted here.
 </sub>
 
-#### List Of Technologies Used
+#### List Of The Technologies Used
 `C#`, `ASP.NET Core`, `SQL`, `Entity Framework Core`, `Blazor`, `.NET MAUI`, `HTML`, `CSS`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
