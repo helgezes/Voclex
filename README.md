@@ -25,7 +25,6 @@
         <li><a href="#debugging-with-visual-studio">Debugging With Visual Studio</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -144,19 +143,14 @@ Alternatively, you can do some requests from the client application and debug th
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+For now I'm the only author, but contributors are always welcomed and appretiated! 
 
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You might want to discuss what you want to do with me before writing any code (see the contacts below). You can also simply open an issue with the tag "enhancement".
+ 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- LICENSE -->
@@ -170,5 +164,9 @@ Distributed under the  GPL-3.0 license. See `LICENSE` for more information.
 
 <!-- CONTACT -->
 ## Contact
+
+Email - helgezes@gmail.com
+
+LinkedIn - https://www.linkedin.com/in/helgezes/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
