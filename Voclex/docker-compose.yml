@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+
+  webapi:
+    build:
+      context: .
+      dockerfile: /WebApi/Dockerfile
+    ports:
+        - "61072:80"
+    environment: 
+        - ASPNETCORE_ENVIRONMENT=Development
+
+    
+  blazorclient:
+    build:
+      context: .
+      dockerfile: /BlazorWebAssemblyClient/Dockerfile
+    ports:
+        - "5181:80"

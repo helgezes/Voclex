@@ -11,7 +11,7 @@ using SharedLibrary.DataTransferObjects;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("https://localhost:7181").AllowAnyMethod().AllowAnyHeader()));
+builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("http://localhost:5181", "https://localhost:7181").AllowAnyMethod().AllowAnyHeader()));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -43,7 +43,7 @@ var app = builder.Build();
 await SeedDevelopmentDb(app);
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
