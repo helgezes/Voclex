@@ -21,7 +21,8 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#quickstart-with-docker">Quickstart With Docker</a></li>
+        <li><a href="#debugging-with-visual-studio">Debugging With Visual Studio</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -97,9 +98,48 @@ _With this architecture we are able to create a cross-platform application that 
 
 <!-- GETTING STARTED -->
 ## Getting Started
+All of the instructions below assume that you have cloned this repository onto your machine. Additionally, for all of the instructions except for **Debug With Multiple Startup Projects**, you will need to have a [Docker Desktop](https://www.docker.com/products/docker-desktop/) instance installed and running.
 
-### Prerequisites
+### Quickstart With Docker
+1. Navigate to `Voclex` folder inside the root of the repository.
+2. Execute `docker-compose up` inside this folder.
 
+This will run the `Web API` on `http://localhost:61072/` and the `Blazor WebAssembly Client` on `http://localhost:5181/`.
+
+Type `http://localhost:5181/` in your browser to access the application UI.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Debugging With Visual Studio
+
+To debug the application with Visual Studio you have 3 options.
+
+#### Debug With Multiple Startup Projects
+1. Open `Voclex.sln` in [Visual Studio](https://visualstudio.microsoft.com/downloads/).
+2. Select both the `BlazorWebAssembly` and the `WebApi` projects as a startup projects using the [multiple startup projects](https://learn.microsoft.com/en-us/visualstudio/ide/how-to-set-multiple-startup-projects?view=vs-2022) feature.
+3. Press `Start Debugging` (F5 on Windows by default).
+
+#### Debug The Client Application
+
+1. Navigate to `Voclex` folder inside the root of the repository.
+2. Run `docker build -t voclexwebapi -f ".\WebApi\Dockerfile" .`.
+3. Run `docker run -p "61072:80" -e ASPNETCORE_ENVIRONMENT=Development voclexwebapi`. This will run  the `Web API` on `http://localhost:61072/`.
+4. Open `Voclex.sln` in [Visual Studio](https://visualstudio.microsoft.com/downloads/).
+5. Select the `BlazorWebAssemblyClient` project as a startup project.
+6. Press `Start Debugging`.
+7. Go to `http://localhost:61072/`
+
+#### Debug The Web API
+1. Open `Voclex.sln` in [Visual Studio](https://visualstudio.microsoft.com/downloads/).
+2. Select the `WebApi` project as a startup project.
+3. Press `Start Debugging` (F5 on Windows by default).
+4. Go to `http://localhost:61072/swagger`.
+
+Alternatively, you can do some requests from the client application and debug their effects on the Web API. 
+
+5. Run `docker build -t voclexblazorclient -f ".\BlazorWebAssemblyClient\Dockerfile" .`
+6. Run `docker run -p "5181:80" voclexblazorclient`.
+7. Go to `http://localhost:5181/`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
