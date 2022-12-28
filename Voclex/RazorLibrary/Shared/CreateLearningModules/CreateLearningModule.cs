@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
-using SharedLibrary.DataTransferObjects.Interfaces;
 
 namespace RazorLibrary.Shared.CreateLearningModules
 {

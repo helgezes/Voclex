@@ -1,7 +1,10 @@
 using System.Text.Json.Serialization;
 using Application.DataAccess;
+using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services;
+using Application.Services.Factories;
+using Application.Services.Factories.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
@@ -37,6 +40,9 @@ builder.Services.AddScoped<GenericGetListService<TermsDictionary, TermsDictionar
 builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
 builder.Services.AddScoped<TermRelatedService<Picture, PictureDto>>();
+builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFactory>();
+builder.Services.AddScoped<GenericCrudService<Picture, IPictureDto>>();
+builder.Services.AddScoped<PicturesService>();
 
 var app = builder.Build();
 

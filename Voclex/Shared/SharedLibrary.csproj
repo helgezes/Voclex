@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DataTransferObjects\Interfaces\" />
     <Folder Include="Queries\Terms\" />
   </ItemGroup>
 

@@ -1,8 +1,8 @@
-﻿using Application.ModelInterfaces;
+﻿using Application.ModelInterfaces.DtoInterfaces;
 
 namespace SharedLibrary.DataTransferObjects
 {
-    public sealed class PictureDto : ITermRelated, IIdentifiable
+    public sealed class PictureDto : IPictureDto
     {
         public PictureDto(int id, int termId, string path)
         {
@@ -11,10 +11,12 @@ namespace SharedLibrary.DataTransferObjects
             Path = path;
         }
 
+        public PictureDto(){}
+
         public int Id { get; init; }
 
-        public int TermId { get; init; }
-        
-        public string Path { get; init; }
+        public int TermId { get; set; }
+
+        public string? Path { get; set; } = string.Empty;
     }
 }

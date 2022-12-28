@@ -1,5 +1,4 @@
 ﻿using Application.ModelInterfaces;
-using SharedLibrary.DataTransferObjects.Interfaces;
 
 namespace SharedLibrary.DataTransferObjects
 {
