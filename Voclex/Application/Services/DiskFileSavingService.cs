@@ -6,12 +6,14 @@ namespace Application.Services
     public sealed class DiskFileSavingService : IFileSavingService
     {
         private readonly string[] picturesExtensions;
-        private readonly string folderPath;
+        private readonly string folderAbsolutePath;
+        private readonly string folderEndpointPath;
 
-        public DiskFileSavingService(string[] picturesExtensions, string folderPath)
+        public DiskFileSavingService(string[] picturesExtensions, string folderAbsolutePath, string folderEndpointPath)
         {
             this.picturesExtensions = picturesExtensions;
-            this.folderPath = folderPath;
+            this.folderAbsolutePath = folderAbsolutePath;
+            this.folderEndpointPath = folderEndpointPath;
         }
 
         public async Task<string> SaveFileAsync(IFormFile file)
@@ -22,9 +24,9 @@ namespace Application.Services
 
             CreateDirectoryIfNotExists();
 
-            var filePath = await SaveFileToFolder(file, folderPath);
-
-            return filePath;
+            var filePath = await SaveFileToFolder(file, folderAbsolutePath);
+            
+            return $"{folderEndpointPath}{Path.GetFileName(filePath)}";
         }
         
 
@@ -37,8 +39,8 @@ namespace Application.Services
 
         private void CreateDirectoryIfNotExists()
         {
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
+            if (!Directory.Exists(folderAbsolutePath))
+                Directory.CreateDirectory(folderAbsolutePath);
         }
 
         private static async Task<string> SaveFileToFolder(IFormFile file, string folderPath)

@@ -7,6 +7,7 @@ using Application.Services.Factories;
 using Application.Services.Factories.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 using SharedLibrary.DataTransferObjects;
 
 [assembly: ApiController]
@@ -58,6 +59,12 @@ if (app.Environment.IsDevelopment())
 app.UseCors();
 
 app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(DiskFileSavingServiceFactory.PicturesFolderPath),
+    RequestPath = DiskFileSavingServiceFactory.PicturesEndpointFolderPath.TrimEnd('/')
+});
 
 //app.UseHttpsRedirection();
 
