@@ -4,6 +4,7 @@ using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Queries.TermsRelated;
 
 namespace WebApi.Controllers
 {
@@ -11,10 +12,18 @@ namespace WebApi.Controllers
     public sealed class PicturesController : ControllerBase
     {
         private readonly PicturesService picturesService;
-
-        public PicturesController(PicturesService picturesService)
+        private readonly TermRelatedService<Picture, PictureDto> listService;
+        public PicturesController(PicturesService picturesService, TermRelatedService<Picture, PictureDto> listService)
         {
             this.picturesService = picturesService;
+            this.listService = listService;
+        }
+
+        [HttpGet(nameof(GetList))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public Task<IEnumerable<PictureDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
+        {
+            return listService.GetListAsync(termsRelatedListQuery.TermsIds);
         }
 
         [HttpPost(nameof(Create))]
