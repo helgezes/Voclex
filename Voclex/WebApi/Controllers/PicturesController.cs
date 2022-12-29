@@ -49,7 +49,12 @@ namespace WebApi.Controllers
                 return BadRequest(argumentException.Message);
             }
         }
-        
+
+        [HttpDelete]
+        public async Task<bool> Delete([Required] int id)
+        {
+            return await picturesService.Delete(id);
+        }
     }
 
 }

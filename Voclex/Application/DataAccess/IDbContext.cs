@@ -11,6 +11,8 @@ namespace Application.DataAccess
 
         DbSet<Definition> Definitions { get; }
 
+        DbSet<Picture> Pictures { get; }
+
         DbSet<User> Users { get; }
 
         DbSet<TermProgress> TermProgresses { get; }

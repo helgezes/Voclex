@@ -28,7 +28,12 @@ namespace Application.Services
             
             return $"{folderEndpointPath}{Path.GetFileName(filePath)}";
         }
-        
+
+        public void DeleteFile(string fileName)//todo async?
+        {
+            File.Delete($"{folderAbsolutePath}{fileName}"); 
+        }
+
 
         private void CheckFileExtension(string fileExtension)
         {
