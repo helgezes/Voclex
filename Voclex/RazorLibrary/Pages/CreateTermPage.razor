@@ -50,7 +50,7 @@
 	[Parameter]
 	public int DictionaryId { get; set; }
 
-	private readonly Type[] modules = new[] { typeof(CreateDefinition), typeof(CreateExamples) };
+	private readonly Type[] modules = new[] { typeof(CreateDefinition), typeof(CreateExamples), typeof(CreatePicture) };
 
 	private TermDto newTerm = null!;
 	private int newTermId = 0;
