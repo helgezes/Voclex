@@ -60,6 +60,8 @@ app.UseCors();
 
 app.UseStaticFiles();
 
+
+Directory.CreateDirectory(DiskFileSavingServiceFactory.PicturesFolderPath);
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(DiskFileSavingServiceFactory.PicturesFolderPath),

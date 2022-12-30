@@ -50,10 +50,30 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<bool> Delete([Required] int id)
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update([FromForm] PictureDto dto, IFormFile file)
         {
-            return await picturesService.Delete(id);
+            return OkOrNotFound(await picturesService.UpdateAsync(dto, file) != null);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete([Required] int id)
+        {
+            return OkOrNotFound(await picturesService.Delete(id));
+        }
+
+
+        private ActionResult OkOrNotFound(bool condition)
+        {
+            if (condition)
+                return Ok();
+
+            return NotFound();
         }
     }
 
