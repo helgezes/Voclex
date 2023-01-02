@@ -51,7 +51,7 @@
 	private Type[] editModules;
 
 	private DynamicComponent[] editableLearningModules;
-	private DynamicComponent[] creatableLearningModules = Array.Empty<DynamicComponent>();
+	private DynamicComponent?[] creatableLearningModules;
 	private SuccessAlert? successAlert;
 
 	private bool saveEnabled = false;
@@ -60,9 +60,10 @@
 	protected override async Task OnInitializedAsync()
 	{   //todo mb form as a component, add and edit page separate, using this component
 		editModules = editToCreateModules.Keys.ToArray();
-		editableLearningModules = new DynamicComponent[editModules.Length];
+		editableLearningModules = new DynamicComponent[editToCreateModules.Count];
+		creatableLearningModules = new DynamicComponent[editToCreateModules.Count];
 
-		TermDto? loadedTerm;
+	    TermDto? loadedTerm;
 		if (Id != default && (loadedTerm = await Http.GetFromJsonAsync<TermDto>($"Terms?id={Id}")) != null)
 			currentTerm = loadedTerm;
 				
@@ -86,8 +87,9 @@
 		var modulesSaveChangesTasks = editableLearningModules
 			.Select(m => ((IEditableLearningModule)m.Instance).SaveChanges())
 			.Append(responseTask)
-			.Concat(creatableLearningModules.Select(m => 
-				((ICreatableLearningModule)m.Instance).SaveChanges(currentTerm.Id)))
+			.Concat(creatableLearningModules.Where(m => m != null)
+			    .Select(m => ((ICreatableLearningModule)m.Instance)
+			        .SaveChanges(currentTerm.Id)))
 			.ToArray();
 
 		await Task.WhenAll(modulesSaveChangesTasks);
@@ -109,7 +111,6 @@
 		if (eventArgs.IsEntityLoaded || createModules.Contains(createModule)) return;
 
 		createModules.Add(createModule);
-		creatableLearningModules = new DynamicComponent[createModules.Count];
 	}
 
 	protected IDictionary<string, object> GetLearningModuleParameters()
