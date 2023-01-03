@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             return listService.GetListAsync(termsRelatedListQuery.TermsIds);
         }
 
-        [HttpPost(nameof(Create))]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Create([FromForm] PictureDto dto, IFormFile file) 
