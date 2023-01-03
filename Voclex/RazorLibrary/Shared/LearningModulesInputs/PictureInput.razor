@@ -1,0 +1,10 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<div class="mb-3">
+    <InputFile OnChange="OnFileInput" accept="image/png, image/jpeg, image/gif"></InputFile>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public EventCallback<InputFileChangeEventArgs> OnFileInput { get; set; }
+}

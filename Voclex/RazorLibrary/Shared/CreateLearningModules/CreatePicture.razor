@@ -1,12 +1,10 @@
 ﻿@using SharedLibrary.DataTransferObjects
 @using Microsoft.AspNetCore.Components.Forms
+@using RazorLibrary.Shared.LearningModulesInputs
 @using RazorLibrary.Helpers
 @inherits CreateLearningModule<SharedLibrary.DataTransferObjects.PictureDto>
 
-<div class="mb-3">
-	<InputFile OnChange="OnFileInput" accept="image/png, image/jpeg, image/gif"></InputFile>
-</div>
-
+<PictureInput OnFileInput="OnFileInput"></PictureInput>
 
 @code {
 	private IBrowserFile? file;
@@ -25,7 +23,7 @@
 
 	    var content = new MultipartFormDataContentBuilder()
 	        .AddObjectPublicProperties(FirstEntity)
-	        .AddFile(file, MaxAllowedFileSizeInMb)
+	        .AddFile(file!, MaxAllowedFileSizeInMb)
 	        .Build();
 
 		await Http.PostAsync(SaveChangesApiPath, content);
