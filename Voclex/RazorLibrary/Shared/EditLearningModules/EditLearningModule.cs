@@ -26,7 +26,7 @@ namespace RazorLibrary.Shared.EditLearningModules
 
         public virtual async Task SaveChanges()
         {
-            var responseTasks = CurrentEntities.Select(e => Http.PutAsJsonAsync(SaveChangesApiPath, e)).ToArray(); //todo make savable only when everything is loaded
+            var responseTasks = CurrentEntities.Select(e => Http.PutAsJsonAsync(SaveChangesApiPath, e)).ToArray();
             await Task.WhenAll(responseTasks);
         }
 

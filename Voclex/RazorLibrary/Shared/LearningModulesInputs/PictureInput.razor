@@ -1,10 +1,41 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
 
 <div class="mb-3">
-    <InputFile OnChange="OnFileInput" accept="image/png, image/jpeg, image/gif"></InputFile>
+    <InputFile OnChange="OnChange" @ref="inputFileElement" accept="image/png, image/jpeg, image/gif"></InputFile>
 </div>
 
-@code {
+<div class="mb-3">
+    <img @ref="imageThumbnailElement" style="max-height: 250px; max-width: 400px"/>
+</div>
+
+@code {//todo move all style tags to css files
     [Parameter, EditorRequired]
     public EventCallback<InputFileChangeEventArgs> OnFileInput { get; set; }
+
+    private ElementReference imageThumbnailElement;
+    private InputFile inputFileElement = null!;
+    private IJSObjectReference jsModule = null!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(!firstRender) return;
+
+        jsModule = await JS.InvokeAsync<IJSObjectReference>(
+            "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/{nameof(PictureInput)}.razor.js");
+				
+    }
+
+    private async Task OnChange(InputFileChangeEventArgs args)
+    {
+        await ShowUploadedImageThumbnail();
+        await OnFileInput.InvokeAsync(args);
+    }
+
+    private ValueTask ShowUploadedImageThumbnail()
+    {
+        return jsModule.InvokeVoidAsync("previewImage", inputFileElement.Element, imageThumbnailElement);
+    }
 }
