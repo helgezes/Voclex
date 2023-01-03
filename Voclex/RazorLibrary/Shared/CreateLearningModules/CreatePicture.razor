@@ -1,7 +1,6 @@
 ﻿@using SharedLibrary.DataTransferObjects
 @using Microsoft.AspNetCore.Components.Forms
-@using System.Net.Http.Json
-@using System.Reflection
+@using RazorLibrary.Helpers
 @inherits CreateLearningModule<SharedLibrary.DataTransferObjects.PictureDto>
 
 <div class="mb-3">
@@ -21,41 +20,22 @@
 	public override async Task SaveChanges(int termId)
 	{
 		if (!IsModuleCreationEnabled) return;
+		
+	    FirstEntity.TermId = termId;
 
-		var content = new MultipartFormDataContent();
-
-		AddDtoToFormContent(termId, content);
-
-		AddFileToFormContent(content);
+	    var content = new MultipartFormDataContentBuilder()
+	        .AddObjectPublicProperties(FirstEntity)
+	        .AddFile(file, MaxAllowedFileSizeInMb)
+	        .Build();
 
 		await Http.PostAsync(SaveChangesApiPath, content);
 	}
 
-	private void AddDtoToFormContent(int termId, MultipartFormDataContent content)
-	{
-		FirstEntity.TermId = termId;
-		foreach (var property in typeof(PictureDto).GetProperties(BindingFlags.Public | BindingFlags.Instance))
-		{
-			var propertyValue = property.GetValue(FirstEntity)?.ToString();
-			if(propertyValue == null) continue;
-
-			content.Add(new StringContent(propertyValue), property.Name);
-		}
-	}
-
-	private void AddFileToFormContent(MultipartFormDataContent content)
-	{
-		var fileContent = new StreamContent(file.OpenReadStream(MaxAllowedFileSizeInMb * 1024 * 1024));
-		fileContent.Headers.Add("Content-Type", "application/octet-stream");
-		content.Add(fileContent, "file", file.Name);
-	}
-
-
-	private void OnFileInput(InputFileChangeEventArgs e)
+    private void OnFileInput(InputFileChangeEventArgs e)
 	{
 		file = e.File;
 		EnableModuleCreation();
 	}
-
-	    private const int MaxAllowedFileSizeInMb = 5;
+	    
+	private const int MaxAllowedFileSizeInMb = 5;
 }
