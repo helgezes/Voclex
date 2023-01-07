@@ -30,19 +30,26 @@ namespace RazorLibrary.Shared.EditLearningModules
             await Task.WhenAll(responseTasks);
         }
 
-        protected override async Task OnInitializedAsync()
+        public async Task LoadEntities()
         {
-            var queryObject = new TermsRelatedListQuery(TermId);
-            CurrentEntities =
-                await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
-            
-            await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), FirstEntity != null));
+	        var queryObject = new TermsRelatedListQuery(TermId);
+	        CurrentEntities =
+		        await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
+
+	        await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), FirstEntity != null));
+        }
+
+		protected override async Task OnInitializedAsync()
+        {
+	        await LoadEntities();
         }
     }
 
     public interface IEditableLearningModule
     {
         Task SaveChanges();
+        Task LoadEntities();
+
     }
 
     public sealed class OnInitializationEventArgs

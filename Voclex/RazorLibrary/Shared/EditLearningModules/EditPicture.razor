@@ -13,10 +13,10 @@
 	</div>
 }
 
-@if (FirstEntity != null)
-{
+<div hidden="@(FirstEntity == null)">
     <PictureInput OnFileInput="OnFileInput"></PictureInput>
-}
+</div>
+
 
 @code {
 	protected override string GetListApiPath => "Pictures/GetList";

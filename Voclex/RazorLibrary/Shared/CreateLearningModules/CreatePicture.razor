@@ -15,9 +15,9 @@
 		return new PictureDto(0, 0, string.Empty);
 	}
 
-	public override async Task SaveChanges(int termId)
+	public override async Task<bool> SaveChanges(int termId)
 	{
-		if (!IsModuleCreationEnabled) return;
+		if (!IsModuleCreationEnabled) return false;
 		
 	    FirstEntity.TermId = termId;
 
@@ -27,6 +27,8 @@
 	        .Build();
 
 		await Http.PostAsync(SaveChangesApiPath, content);
+
+	    return true;
 	}
 
     private void OnFileInput(InputFileChangeEventArgs e)

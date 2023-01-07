@@ -23,9 +23,9 @@ namespace RazorLibrary.Shared.CreateLearningModules
 
         protected abstract TDto CreateNewDto();
 
-        public virtual async Task SaveChanges(int termId)
+        public virtual async Task<bool> SaveChanges(int termId)
         {
-            if (!IsModuleCreationEnabled) return;
+            if (!IsModuleCreationEnabled) return false;
 
             var responseTasks = CurrentEntities.Select(e =>
             {
@@ -33,6 +33,8 @@ namespace RazorLibrary.Shared.CreateLearningModules
                 return Http.PostAsJsonAsync(SaveChangesApiPath, e);
             }).ToArray();
             await Task.WhenAll(responseTasks);
+
+            return true;
         }
 
         protected void EnableModuleCreation()
@@ -43,6 +45,6 @@ namespace RazorLibrary.Shared.CreateLearningModules
 
     public interface ICreatableLearningModule
     {
-        Task SaveChanges(int termId);
+        Task<bool> SaveChanges(int termId);
     }
 }
