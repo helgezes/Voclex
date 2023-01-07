@@ -31,7 +31,9 @@
 			<DynamicComponent Type="module" @ref="creatableLearningModules[i2]"></DynamicComponent>
 		}
 		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
-		<button type="submit" class="btn btn-success" disabled="@(!saveEnabled)">Save</button>
+		<div class="form-floating mb-3">
+			<button type="submit" class="btn btn-success" disabled="@(!saveEnabled)">Save</button>
+		</div>
 	</EditForm>
 </div>
 
@@ -45,7 +47,8 @@
 		new()
 		{
 			{ typeof(EditDefinition), typeof(CreateDefinition) }, 
-			{ typeof(EditExamples), typeof(CreateExamples) }
+			{ typeof(EditExamples), typeof(CreateExamples) },
+			{ typeof(EditPicture), typeof(CreatePicture) }
 		};
 	private readonly List<Type> createModules = new();
 	private Type[] editModules;

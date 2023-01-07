@@ -2,14 +2,14 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 
+<div class="mb-3" hidden="@(!showThumbnail)">
+    <img @ref="imageThumbnailElement" style="max-height: 250px; max-width: 400px" />
+</div>
 
 <div class="mb-3">
     <InputFile OnChange="OnChange" @ref="inputFileElement" accept="image/png, image/jpeg, image/gif"></InputFile>
 </div>
 
-<div class="mb-3">
-    <img @ref="imageThumbnailElement" style="max-height: 250px; max-width: 400px"/>
-</div>
 
 @code {//todo move all style tags to css files
     [Parameter, EditorRequired]
@@ -18,6 +18,7 @@
     private ElementReference imageThumbnailElement;
     private InputFile inputFileElement = null!;
     private IJSObjectReference jsModule = null!;
+    private bool showThumbnail = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -36,6 +37,7 @@
 
     private ValueTask ShowUploadedImageThumbnail()
     {
+        showThumbnail = true;
         return jsModule.InvokeVoidAsync("previewImage", inputFileElement.Element, imageThumbnailElement);
     }
 }
