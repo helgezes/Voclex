@@ -1,0 +1,48 @@
+﻿.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 950px;
+    height: 800px;
+    margin: 0 auto;
+}
+
+.main-button {
+    display: inline-block;
+    text-decoration: none;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    line-height: 300px;
+    font-size: 20px;
+    color: black;
+    border: 3px solid black;
+    background-color: white;
+    margin: 10px 10px;
+}
+
+.main-button:hover {
+    background-color: #45a049;
+    color: white;
+}
+
+@media (max-width: 800px) {
+    .container {
+        max-width: 600px;
+        width: 100vw;
+        max-height: 600px;
+        height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        margin: 40px 0;
+    }
+    .main-button {
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        line-height: 200px;
+        font-size: 15px;
+        display: block;
+        margin: 10px 0;
+    }
+}
