@@ -24,15 +24,15 @@
 				<DynamicComponent Type="guessingModule.Module" Parameters="learningModuleParameters"></DynamicComponent>
 			</OnDemandComponent>
 		}
-		<div class="row py-2">
-			<form @onsubmit="TryGuess">
-				<input class="border-primary  @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @bind="guess" placeholder="Enter your guess"/>
-				<button type="submit">Submit my answer</button>
-				<div class="invalid-feedback">
-					Wrong guess! Try again.
-				</div>
-			</form>
-		</div>
+	    <div class="row py-2">
+			<form class="submit-answer @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @onsubmit="TryGuess">
+                <input class="form-control border-primary" @bind="guess" placeholder="Enter your guess">
+                <button type="submit" class="btn submit-button">Submit my answer</button>
+            </form>
+            <div class="invalid-feedback">
+                Wrong guess! Try again.
+            </div>
+        </div>
 	}
 	else
 	{
