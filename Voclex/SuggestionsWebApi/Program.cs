@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
 using SuggestionsWebApi.Services;
 using SuggestionsWebApi.Services.Implementations;
 using SuggestionsWebApi.Services.Implementations.Interfaces;
 using SuggestionsWebApi.Services.Interfaces;
+
+[assembly: ApiController]
 
 var builder = WebApplication.CreateBuilder(args);
 
