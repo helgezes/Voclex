@@ -1,13 +1,14 @@
 ﻿using System.Linq.Expressions;
 using Application.DataAccess;
 using Application.ModelInterfaces;
+using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
-    public class GenericGetListService<TModel, TDto> where TModel : class, IIdentifiable where TDto : class, IIdentifiable
+	public class GenericGetListService<TModel, TDto> : IGetListService<TModel, TDto> where TModel : class, IIdentifiable where TDto : class, IIdentifiable
     {
         private readonly IDbContext context;
         private readonly IMapper mapper;

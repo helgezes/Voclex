@@ -10,10 +10,10 @@ namespace WebApi.Controllers
 	[Route("[controller]")]
 	public class TermsDictionaryController : GenericCrudController<TermsDictionary, TermsDictionaryDto>
     {
-        private readonly GenericGetListService<TermsDictionary, TermsDictionaryDto> listService;
+        private readonly IGetListService<TermsDictionary, TermsDictionaryDto> listService;
 
         public TermsDictionaryController(
-            GenericGetListService<TermsDictionary, TermsDictionaryDto> listService,
+	        IGetListService<TermsDictionary, TermsDictionaryDto> listService,
             ICrudService<TermsDictionary, TermsDictionaryDto> crudService) : base(crudService)
         {
             this.listService = listService;
