@@ -11,8 +11,8 @@ namespace WebApi.Controllers
     public class TermsController : GenericCrudController<Term, TermDto>
     {
         private readonly IGetListService<Term, TermDto> listService;
-        public TermsController(ICrudService<Term, TermDto> service,
-	        IGetListService<Term, TermDto> listService) : base(service)
+        public TermsController(ICrudService<Term, TermDto> crudService,
+	        IGetListService<Term, TermDto> listService) : base(crudService)
         {
             this.listService = listService;
         }

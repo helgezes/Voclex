@@ -10,11 +10,11 @@ namespace WebApi.Controllers
     public abstract class GenericCrudController<TModel, TDto> : ControllerBase
         where TModel : class, IIdentifiable where TDto : class, IIdentifiable 
     {
-        protected readonly ICrudService<TModel, TDto> service;
+        protected readonly ICrudService<TModel, TDto> crudService;
 
-        protected GenericCrudController(ICrudService<TModel, TDto> service)
+        protected GenericCrudController(ICrudService<TModel, TDto> crudService)
         {
-            this.service = service;
+            this.crudService = crudService;
         }
 
         [HttpPost]
@@ -27,7 +27,7 @@ namespace WebApi.Controllers
 
             try
             {
-                var newModel = await service.Create(dto);
+                var newModel = await crudService.Create(dto);
 
                 return Ok(newModel.Id);
             }
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult> Read([Required] int id)
         {
-            var result = await service.GetByIdAsync(id);
+            var result = await crudService.GetByIdAsync(id);
             if (result == null)
                 return NotFound();
 
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult> Update(TDto dto)
         {
-            return OkOrNotFound(await service.UpdateAsync(dto) != null);
+            return OkOrNotFound(await crudService.UpdateAsync(dto) != null);
         }
 
         [HttpDelete]
@@ -64,7 +64,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult> Delete([Required] int id)
         {
-            return OkOrNotFound(await service.Delete(id));
+            return OkOrNotFound(await crudService.Delete(id));
         }
 
         protected ActionResult OkOrNotFound(bool condition)

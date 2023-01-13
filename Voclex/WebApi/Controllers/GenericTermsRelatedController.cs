@@ -12,18 +12,18 @@ public abstract class GenericTermsRelatedController<TModel, TDto> :
     where TModel : class, ITermRelated, IIdentifiable
     where TDto : class, IIdentifiable
 {
-    protected readonly ITermRelatedService<TDto> service;
+    protected readonly ITermRelatedService<TDto> termRelatedService;
 
-    protected GenericTermsRelatedController(ITermRelatedService<TDto> service,
+    protected GenericTermsRelatedController(ITermRelatedService<TDto> termRelatedService,
 	    ICrudService<TModel, TDto> crudService) : base(crudService)
     {
-        this.service = service;
+        this.termRelatedService = termRelatedService;
     }
 
     [HttpGet(nameof(GetList))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public Task<IEnumerable<TDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
     {
-        return service.GetListAsync(termsRelatedListQuery.TermsIds);
+        return termRelatedService.GetListAsync(termsRelatedListQuery.TermsIds);
     }
 }
