@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.Models;
 using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
@@ -12,8 +13,8 @@ namespace WebApi.Controllers
     public sealed class PicturesController : ControllerBase
     {
         private readonly PicturesService picturesService;
-        private readonly TermRelatedService<Picture, PictureDto> listService;
-        public PicturesController(PicturesService picturesService, TermRelatedService<Picture, PictureDto> listService)
+        private readonly ITermRelatedService<PictureDto> listService;
+        public PicturesController(PicturesService picturesService, ITermRelatedService<PictureDto> listService)
         {
             this.picturesService = picturesService;
             this.listService = listService;

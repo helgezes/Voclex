@@ -12,9 +12,9 @@ public abstract class GenericTermsRelatedController<TModel, TDto> :
     where TModel : class, ITermRelated, IIdentifiable
     where TDto : class, IIdentifiable
 {
-    protected readonly TermRelatedService<TModel, TDto> service;
+    protected readonly ITermRelatedService<TDto> service;
 
-    protected GenericTermsRelatedController(TermRelatedService<TModel, TDto> service,
+    protected GenericTermsRelatedController(ITermRelatedService<TDto> service,
 	    ICrudService<TModel, TDto> crudService) : base(crudService)
     {
         this.service = service;

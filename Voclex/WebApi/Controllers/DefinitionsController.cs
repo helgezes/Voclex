@@ -7,7 +7,7 @@ namespace WebApi.Controllers
 {
     public class DefinitionsController : GenericTermsRelatedController<Definition, DefinitionDto>
     {
-        public DefinitionsController(TermRelatedService<Definition, DefinitionDto> definitionService,
+        public DefinitionsController(ITermRelatedService<DefinitionDto> definitionService,
 	        ICrudService<Definition, DefinitionDto> crudService) : 
             base(definitionService, crudService)
         { }

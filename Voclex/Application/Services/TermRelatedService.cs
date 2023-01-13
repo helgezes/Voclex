@@ -1,12 +1,13 @@
 ﻿using Application.DataAccess;
 using Application.ModelInterfaces;
+using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
-	public class TermRelatedService<TModel, TDto> where TModel : class, ITermRelated
+	public class TermRelatedService<TModel, TDto> : ITermRelatedService<TDto> where TModel : class, ITermRelated
     {
         private readonly IDbContext context;
         private readonly IMapper mapper;

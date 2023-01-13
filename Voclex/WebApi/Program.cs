@@ -39,9 +39,9 @@ builder.Services.AddScoped<ICrudService<Example, ExampleDto>, GenericCrudService
 builder.Services.AddScoped<ICrudService<Picture, PictureDto>, GenericCrudService<Picture, PictureDto>>();
 builder.Services.AddScoped<IGetListService<Term, TermDto>, GenericGetListService<Term, TermDto>>();
 builder.Services.AddScoped<IGetListService<TermsDictionary, TermsDictionaryDto>, GenericGetListService<TermsDictionary, TermsDictionaryDto>>();
-builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
-builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
-builder.Services.AddScoped<TermRelatedService<Picture, PictureDto>>();
+builder.Services.AddScoped<ITermRelatedService<DefinitionDto>, TermRelatedService<Definition, DefinitionDto>>();
+builder.Services.AddScoped<ITermRelatedService<ExampleDto>, TermRelatedService<Example, ExampleDto>>();
+builder.Services.AddScoped<ITermRelatedService<PictureDto>, TermRelatedService<Picture, PictureDto>>();
 builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFactory>();
 builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudService<Picture, IPictureDto>>();
 builder.Services.AddScoped<PicturesService>();
