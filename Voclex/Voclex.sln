@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{85CDD1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiApplication", "MauiApplication\MauiApplication.csproj", "{8C99305C-780C-4450-9E8D-74B5B7D4CFF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuggestionsWebApi", "SuggestionsWebApi\SuggestionsWebApi.csproj", "{A2D8B9B4-8FC5-4381-A8F8-3C7009C90EDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{8C99305C-780C-4450-9E8D-74B5B7D4CFF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C99305C-780C-4450-9E8D-74B5B7D4CFF9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C99305C-780C-4450-9E8D-74B5B7D4CFF9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A2D8B9B4-8FC5-4381-A8F8-3C7009C90EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D8B9B4-8FC5-4381-A8F8-3C7009C90EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D8B9B4-8FC5-4381-A8F8-3C7009C90EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D8B9B4-8FC5-4381-A8F8-3C7009C90EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
