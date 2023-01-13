@@ -5,6 +5,7 @@ using Application.Models;
 using Application.Services;
 using Application.Services.Factories;
 using Application.Services.Factories.Interfaces;
+using Application.Services.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
@@ -31,18 +32,18 @@ builder.Services.AddScoped<IDbContext>(provider =>
 builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 
 builder.Services.AddScoped<TermProgressService>();
-builder.Services.AddScoped<GenericCrudService<Term, TermDto>>();
-builder.Services.AddScoped<GenericCrudService<TermsDictionary, TermsDictionaryDto>>();
-builder.Services.AddScoped<GenericCrudService<Definition, DefinitionDto>>();
-builder.Services.AddScoped<GenericCrudService<Example, ExampleDto>>();
-builder.Services.AddScoped<GenericCrudService<Picture, PictureDto>>();
+builder.Services.AddScoped<ICrudService<Term, TermDto>, GenericCrudService<Term, TermDto>>();
+builder.Services.AddScoped<ICrudService<TermsDictionary, TermsDictionaryDto>, GenericCrudService<TermsDictionary, TermsDictionaryDto>>();
+builder.Services.AddScoped<ICrudService<Definition, DefinitionDto>, GenericCrudService<Definition, DefinitionDto>>();
+builder.Services.AddScoped<ICrudService<Example, ExampleDto>, GenericCrudService<Example, ExampleDto>>();
+builder.Services.AddScoped<ICrudService<Picture, PictureDto>, GenericCrudService<Picture, PictureDto>>();
 builder.Services.AddScoped<GenericGetListService<Term, TermDto>>();
 builder.Services.AddScoped<GenericGetListService<TermsDictionary, TermsDictionaryDto>>();
 builder.Services.AddScoped<TermRelatedService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<TermRelatedService<Example, ExampleDto>>();
 builder.Services.AddScoped<TermRelatedService<Picture, PictureDto>>();
 builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFactory>();
-builder.Services.AddScoped<GenericCrudService<Picture, IPictureDto>>();
+builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudService<Picture, IPictureDto>>();
 builder.Services.AddScoped<PicturesService>();
 
 var app = builder.Build();

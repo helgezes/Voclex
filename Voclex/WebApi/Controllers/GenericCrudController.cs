@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.ModelInterfaces;
 using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,9 @@ namespace WebApi.Controllers
     public abstract class GenericCrudController<TModel, TDto> : ControllerBase
         where TModel : class, IIdentifiable where TDto : class, IIdentifiable 
     {
-        protected readonly GenericCrudService<TModel, TDto> service;
+        protected readonly ICrudService<TModel, TDto> service;
 
-        protected GenericCrudController(GenericCrudService<TModel, TDto> service)
+        protected GenericCrudController(ICrudService<TModel, TDto> service)
         {
             this.service = service;
         }

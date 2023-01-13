@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.Terms;
@@ -10,7 +11,7 @@ namespace WebApi.Controllers
     public class TermsController : GenericCrudController<Term, TermDto>
     {
         private readonly GenericGetListService<Term, TermDto> listService;
-        public TermsController(GenericCrudService<Term, TermDto> service, 
+        public TermsController(ICrudService<Term, TermDto> service, 
             GenericGetListService<Term, TermDto> listService) : base(service)
         {
             this.listService = listService;

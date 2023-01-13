@@ -1,5 +1,6 @@
 ﻿using Application.ModelInterfaces;
 using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.Queries.TermsRelated;
 
@@ -14,7 +15,7 @@ public abstract class GenericTermsRelatedController<TModel, TDto> :
     protected readonly TermRelatedService<TModel, TDto> service;
 
     protected GenericTermsRelatedController(TermRelatedService<TModel, TDto> service,
-        GenericCrudService<TModel, TDto> genericCrudService) : base(genericCrudService)
+	    ICrudService<TModel, TDto> crudService) : base(crudService)
     {
         this.service = service;
     }

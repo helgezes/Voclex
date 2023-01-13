@@ -10,12 +10,12 @@ namespace Application.Services
 {
     public sealed class PicturesService
     {
-        private readonly GenericCrudService<Picture, IPictureDto> crudService;
+        private readonly ICrudService<Picture, IPictureDto> crudService;
         private readonly IFileSavingService fileSavingService;
         private readonly IDbContext context;
 
         public PicturesService(
-            GenericCrudService<Picture, IPictureDto> crudService, 
+	        ICrudService<Picture, IPictureDto> crudService, 
             IFileSavingServiceFactory fileSavingServiceFactory, 
             IDbContext context)
         {

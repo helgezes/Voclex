@@ -1,11 +1,12 @@
 ﻿using Application.DataAccess;
 using Application.ModelInterfaces;
+using Application.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
-    public class GenericCrudService<TModel, TDto> where TModel : class, IIdentifiable where TDto : class, IIdentifiable
+	public class GenericCrudService<TModel, TDto> : ICrudService<TModel, TDto> where TModel : class, IIdentifiable where TDto : class, IIdentifiable
     {
         private readonly IDbContext context;
         private readonly IMapper mapper;

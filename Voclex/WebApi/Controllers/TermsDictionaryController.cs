@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using Application.Services;
+using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.TermsDictionary;
@@ -13,7 +14,7 @@ namespace WebApi.Controllers
 
         public TermsDictionaryController(
             GenericGetListService<TermsDictionary, TermsDictionaryDto> listService,
-            GenericCrudService<TermsDictionary, TermsDictionaryDto> crudService) : base(crudService)
+            ICrudService<TermsDictionary, TermsDictionaryDto> crudService) : base(crudService)
         {
             this.listService = listService;
         }
