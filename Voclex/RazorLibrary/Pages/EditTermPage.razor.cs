@@ -115,13 +115,21 @@ namespace RazorLibrary.Pages
             createModules.Add(createModule);
         }
 
-        protected IDictionary<string, object> GetLearningModuleParameters()
+        protected IDictionary<string, object> GetEditLearningModuleParameters()
         {
             return new Dictionary<string, object>
             {
-                { "TermId", Id },
+                { "Term", currentTerm },
                 { "OnInitializationComplete",
                     EventCallback.Factory.Create<OnInitializationEventArgs>(this, OnLearningModuleInitialized) }
+            };
+        }
+
+        protected IDictionary<string, object> GetCreateLearningModuleParameters()
+        {
+            return new Dictionary<string, object>
+            {
+                { "Term", currentTerm }
             };
         }
     }

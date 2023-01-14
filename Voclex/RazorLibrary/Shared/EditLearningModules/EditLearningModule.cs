@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
+using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.TermsRelated;
 
 namespace RazorLibrary.Shared.EditLearningModules
@@ -16,7 +17,7 @@ namespace RazorLibrary.Shared.EditLearningModules
         public HttpClient Http { get; set; } = null!;
 
         [Parameter]
-        public int TermId { get; set; }
+        public TermDto Term { get; set; } = null!;
 
         [Parameter] 
         public EventCallback<OnInitializationEventArgs> OnInitializationComplete { get; set; }
@@ -32,7 +33,7 @@ namespace RazorLibrary.Shared.EditLearningModules
 
         public async Task LoadEntities()
         {
-	        var queryObject = new TermsRelatedListQuery(TermId);
+	        var queryObject = new TermsRelatedListQuery(Term.Id);
 	        CurrentEntities =
 		        await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
 

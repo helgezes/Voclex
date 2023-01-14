@@ -30,7 +30,7 @@
 	    if (file == null) return;
 		
 	    var content = new MultipartFormDataContentBuilder()
-	        .AddObjectPublicProperties(FirstEntity ?? new PictureDto(0, TermId, string.Empty))
+	        .AddObjectPublicProperties(FirstEntity ?? new PictureDto(0, Term.Id, string.Empty))
 	        .AddFile(file)
 	        .Build();
 

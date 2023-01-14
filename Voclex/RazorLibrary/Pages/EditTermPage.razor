@@ -19,21 +19,23 @@
             </div>
 		</div>
 
-		@{ var parameters = GetLearningModuleParameters();}
+		@{ var editParameters = GetEditLearningModuleParameters();}
 		@for (var i = 0; i < editModules.Length; i++)
 		{
 			var module = editModules[i];
 			var i2 = i;
 			
 		    <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
-                <DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
+                <DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="editParameters"></DynamicComponent>
 		    </div>
 		}
+		
+        @{ var createParameters = GetCreateLearningModuleParameters();}
 		@for (var i = 0; i < createModules.Count; i++)
 		{
 			var module = createModules[i];
 		    <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
-                <DynamicComponent Type="module" @ref="creatableLearningModulesDictionary[module]"></DynamicComponent>
+                <DynamicComponent Type="module" @ref="creatableLearningModulesDictionary[module]" Parameters="createParameters"></DynamicComponent>
 		    </div>
 		}
 		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
