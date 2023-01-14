@@ -11,10 +11,12 @@
 	<EditForm Model="currentTerm" OnValidSubmit="SaveChanges">
 		<DataAnnotationsValidator />
 		<ValidationSummary />
-
-		<div class="form-floating mb-3">
-			<InputText class="form-control" id="term-value" @bind-Value="@currentTerm.Value"/>
-			<label for="term-value">Term</label>
+		
+        <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
+            <div class="form-floating mb-3">
+                <InputText class="form-control" id="term-value" @bind-Value="@currentTerm.Value"/>
+                <label for="term-value">Term</label>
+            </div>
 		</div>
 
 		@{ var parameters = GetLearningModuleParameters();}
@@ -22,12 +24,17 @@
 		{
 			var module = editModules[i];
 			var i2 = i;
-			<DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
+			
+		    <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
+                <DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
+		    </div>
 		}
 		@for (var i = 0; i < createModules.Count; i++)
 		{
 			var module = createModules[i];
-			<DynamicComponent Type="module" @ref="creatableLearningModulesDictionary[module]"></DynamicComponent>
+		    <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
+                <DynamicComponent Type="module" @ref="creatableLearningModulesDictionary[module]"></DynamicComponent>
+		    </div>
 		}
 		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
 		<div class="form-floating mb-3">
