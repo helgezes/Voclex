@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
+using SharedLibrary.DataTransferObjects;
 
 namespace RazorLibrary.Shared.CreateLearningModules
 {
@@ -18,6 +19,9 @@ namespace RazorLibrary.Shared.CreateLearningModules
 
         [Inject]
         public HttpClient Http { get; set; } = null!;
+
+        [Parameter]
+        public TermDto? Term { get; set; }
 
         protected abstract string SaveChangesApiPath { get; }
 

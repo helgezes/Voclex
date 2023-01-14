@@ -1,14 +1,76 @@
 ﻿@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.Extensions
+@using System.Net.Http.Json
 
 @if (Current != null)
 {
-	<div class="form-floating mb-3">
-		<textarea class="form-control" id="definition-value" @bind="@Current.Value"></textarea>
-		<label for="definition-value">Definition</label>
-	</div>
+    <div class="form-floating mb-2">
+        <textarea class="form-control" id="definition-value" @bind="@Current.Value"></textarea>
+        <label for="definition-value">Definition</label>
+    </div>
+
+    <div class="mb-2">
+        <button @onclick="LoadSuggestions" type="button" class="btn btn-secondary" disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">Load Definitions@(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)</button>
+    </div>
+
+    @if (suggestions?.Count > 0)
+    {
+        <div class="mb-2" style="max-height: 150px; overflow-y: scroll;">
+            <ul class="list-group">
+                @for (var i = 0; i < suggestions.Count; i++)
+                {
+                    var suggestion = suggestions[i];
+                    var index = i;
+                    <li class="list-group-item">
+                        <span>@suggestion</span>
+                        <button @onclick="() => AddSuggestion(index)" type="button" class="btn btn-primary">Add</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 }
 
 @code {
 	[Parameter]
 	public DefinitionDto? Current { get; set; }
+
+    [Parameter]
+    public TermDto? Term { get; set; }
+
+    [Inject]
+    public IHttpClientFactory HttpFactory { get; set; } = null!;
+
+    private HttpClient http = null!;
+    private List<string>? suggestions;
+    private string? suggestionsLoadedForTerm;
+
+    protected override void OnInitialized()
+    {
+        http = HttpFactory.CreateClient(ConfigureServices.SuggestionsHttpClientName);
+    }
+
+    private async Task LoadSuggestions()
+    {
+        if(!IsTermInputted()) return;
+
+        var termValue = Term!.Value;
+        suggestions = await http.GetFromJsonAsync<List<string>>($"Definitions?term={termValue}");
+        suggestionsLoadedForTerm = termValue;
+    }
+
+    private void AddSuggestion(int index)
+    {
+        var suggestion = suggestions![index];
+
+        Current!.Value += $"{(Current.Value.Length > 0 ? "\n" : string.Empty)}{suggestion}";
+
+        suggestions.Remove(suggestion);
+    }
+
+    private bool IsTermInputted()
+    {
+        return Term?.Value.Length > 0;
+    }
+
 }

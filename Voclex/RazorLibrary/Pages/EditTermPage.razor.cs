@@ -118,11 +118,11 @@ namespace RazorLibrary.Pages
         protected IDictionary<string, object> GetLearningModuleParameters()
         {
             return new Dictionary<string, object>
-        {
-            { "TermId", Id },
-            { "OnInitializationComplete",
-                EventCallback.Factory.Create<OnInitializationEventArgs>(this, OnLearningModuleInitialized) }
-        };
+            {
+                { "TermId", Id },
+                { "OnInitializationComplete",
+                    EventCallback.Factory.Create<OnInitializationEventArgs>(this, OnLearningModuleInitialized) }
+            };
         }
     }
 }

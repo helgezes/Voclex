@@ -17,13 +17,15 @@
                 <label for="term-value">Term</label>
             </div>
 		</div>
-		
+		@{
+		    var parameters = GetLearningModuleParameters();
+		}
 		@for (var i = 0; i < modules.Length; i++)
 		{
 			var module = modules[i];
 			var i2 = i;
 			<div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
-                <DynamicComponent Type="module" @ref="editableLearningModules[i2]"></DynamicComponent>
+                <DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="parameters"></DynamicComponent>
             </div>
 		}
 

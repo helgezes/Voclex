@@ -59,5 +59,13 @@ namespace RazorLibrary.Pages
         {
             await jsModule.InvokeVoidAsync("DisposeModalAndGoToUrl", path);
         }
+
+        protected IDictionary<string, object> GetLearningModuleParameters()
+        {
+            return new Dictionary<string, object>
+            {
+                { "Term", newTerm }
+            };
+        }
     }
 }
