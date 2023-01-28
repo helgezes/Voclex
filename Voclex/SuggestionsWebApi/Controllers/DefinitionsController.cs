@@ -15,7 +15,7 @@ namespace SuggestionsWebApi.Controllers
 		}
 
 		[HttpGet]
-		public string[] GetList(string term, string[]? serviceIds)
+		public string[] GetList([FromQuery] string term, [FromQuery] string[]? serviceIds)
 		{
 			return definitionsService.GetList(term, serviceIds ?? Array.Empty<string>());
 		}

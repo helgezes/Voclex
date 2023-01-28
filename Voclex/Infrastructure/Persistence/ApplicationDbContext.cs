@@ -22,6 +22,9 @@ namespace Infrastructure.Persistence
         public DbSet<TermProgress> TermProgresses => 
             Set<TermProgress>();
 
+        public DbSet<GuessedTimesCountToHoursWaiting> GuessedTimesCountToHoursWaiting =>
+            Set<GuessedTimesCountToHoursWaiting>();
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=TestDB;");
@@ -38,6 +41,7 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfiguration(new TermProgressConfiguration());
             modelBuilder.ApplyConfiguration(new ExampleConfiguration());
             modelBuilder.ApplyConfiguration(new PictureConfiguration());
+            modelBuilder.ApplyConfiguration(new GuessedTimesCountToHoursWaitingConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

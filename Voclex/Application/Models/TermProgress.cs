@@ -31,11 +31,15 @@ namespace Application.Models
 
         public byte GuessedTimesCount { get; private set; }
 
+        public DateTime LastGuessDateTime { get; private set; }
+
 
         public void CorrectGuess()
         {
             if(GuessedTimesCount < MaximumGuessedTimesCount)
                 GuessedTimesCount++;
+
+            UpdateLastGuessDateTime();
         }
 
         public void IncorrectGuess()
@@ -47,6 +51,11 @@ namespace Application.Models
         public void AlreadyKnow()
         {
             GuessedTimesCount = MaximumGuessedTimesCount;
+        }
+
+        private void UpdateLastGuessDateTime()
+        {
+            LastGuessDateTime = DateTime.Now;
         }
     }
 }

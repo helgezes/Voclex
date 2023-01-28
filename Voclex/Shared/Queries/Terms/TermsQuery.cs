@@ -2,10 +2,12 @@
 using Application.DataAccess;
 using Application.Models;
 using Application.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace SharedLibrary.Queries.Terms;
 
-public class TermsQuery : IQuery<Term>
+public class TermsQuery : IQuery<Term> //todo refactor this ?
 {
     public TermsQuery(int userId, TermsListEnumQueryVariants queryVariant, int[] dictionariesIds)
     {
@@ -35,11 +37,17 @@ public class TermsQuery : IQuery<Term>
                                !knownTermIdsForThatUser.Contains(term.Id);
 
             case TermsListEnumQueryVariants.GetOnlyForRepetition:
-
+                var currentDateTime = DateTime.Now;
+                
                 var termIdsInProgress = context.TermProgresses
-                    .Where(t => t.UserId == UserId &&
-                                t.GuessedTimesCount < TermProgress.MaximumGuessedTimesCount)
-                    .Select(x => x.TermId).ToArray();
+                    .Join(context.GuessedTimesCountToHoursWaiting, 
+                        p => p.GuessedTimesCount, 
+                        g => g.GuessedTimesCount, 
+                        (p, g) => new { TermProgress = p, GuessedTimesToHoursWaiting = g })
+                    .Where(x => x.TermProgress.UserId == UserId &&
+                                currentDateTime >= x.TermProgress.LastGuessDateTime.AddHours(x.GuessedTimesToHoursWaiting.HoursWaiting))
+                    .Select(x => x.TermProgress.TermId).ToArray();
+                
                 return term => DictionariesIds.Contains(term.TermsDictionaryId) &&
                                termIdsInProgress.Contains(term.Id);
 
