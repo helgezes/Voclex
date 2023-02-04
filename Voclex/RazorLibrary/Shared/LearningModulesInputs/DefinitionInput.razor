@@ -1,6 +1,8 @@
 ﻿@using SharedLibrary.DataTransferObjects
 @using RazorLibrary.Extensions
 @using System.Net.Http.Json
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
 
 @if (Current != null)
 {
@@ -44,6 +46,19 @@
     private HttpClient http = null!;
     private List<string>? suggestions;
     private string? suggestionsLoadedForTerm;
+    private bool adjustInputHeight;
+    private IJSObjectReference jsModule;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await AdjustInputHeight();
+
+        if (!firstRender) return;
+
+        jsModule = await JS.InvokeAsync<IJSObjectReference>(
+            "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/{nameof(DefinitionInput)}.razor.js");
+
+    }
 
     protected override void OnInitialized()
     {
@@ -66,6 +81,16 @@
         Current!.Value += $"{(Current.Value.Length > 0 ? "\n" : string.Empty)}{suggestion}";
 
         suggestions.Remove(suggestion);
+
+        adjustInputHeight = true;
+    }
+
+    private async Task AdjustInputHeight()
+    {
+        if(adjustInputHeight)
+            await jsModule.InvokeVoidAsync("AdjustInputHeight");
+
+        adjustInputHeight = false;
     }
 
     private bool IsTermInputted()
