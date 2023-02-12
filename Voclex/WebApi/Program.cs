@@ -6,9 +6,14 @@ using Application.Services;
 using Application.Services.Factories.Interfaces;
 using Application.Services.Interfaces;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Infrastructure.Services.Factories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
 
 [assembly: ApiController]
@@ -23,13 +28,20 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+AddSwagger(builder);
+
 
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IDbContext>(provider => 
     provider.GetRequiredService<ApplicationDbContext>());
 
+
+AddAuthentication(builder);
+
 builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
+
+builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
 builder.Services.AddScoped<TermProgressService>();
 builder.Services.AddScoped<ICrudService<Term, TermDto>, GenericCrudService<Term, TermDto>>();
@@ -44,7 +56,9 @@ builder.Services.AddScoped<ITermRelatedService<ExampleDto>, TermRelatedService<E
 builder.Services.AddScoped<ITermRelatedService<PictureDto>, TermRelatedService<Picture, PictureDto>>();
 builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFactory>();
 builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudService<Picture, IPictureDto>>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<PicturesService>();
+builder.Services.AddScoped<IAuthTokenService, JwtTokenService>();
 
 var app = builder.Build();
 
@@ -71,9 +85,10 @@ app.UseStaticFiles(new StaticFileOptions
 
 //app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers().RequireAuthorization();
 
 app.Run();
 
@@ -85,5 +100,56 @@ Task SeedDevelopmentDb(WebApplication app)
     using var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    return ApplicationDbContextInitializer.CreateAndSeedDbIfNeeded(context);
+    return ApplicationDbContextInitializer.CreateAndSeedDbIfNeeded(context, scope);
+}
+
+void AddSwagger(WebApplicationBuilder webApplicationBuilder)
+{
+    webApplicationBuilder.Services.AddSwaggerGen(option =>
+    {
+        option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+        option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter a valid token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "Bearer"
+        });
+        option.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+    });
+}
+
+void AddAuthentication(WebApplicationBuilder builder1)
+{
+    builder1.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ClockSkew = TimeSpan.Zero,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    "!SomethingSecret!"u8.ToArray() //todo store safely
+                ),
+            };
+        });
 }

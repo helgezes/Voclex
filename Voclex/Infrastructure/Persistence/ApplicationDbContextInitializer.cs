@@ -1,18 +1,20 @@
 ﻿using Application.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Persistence
 {
     public static class ApplicationDbContextInitializer
     {
-        public static async Task CreateAndSeedDbIfNeeded(ApplicationDbContext context)
+        public static async Task CreateAndSeedDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
         {
             //await context.Database.EnsureDeletedAsync();
             await context.Database.MigrateAsync();
-            await SeedDbIfNeeded(context);
+            await SeedDbIfNeeded(context, scope);
         }
 
-        public static async Task SeedDbIfNeeded(ApplicationDbContext context)
+        public static async Task SeedDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
         {
             if (context.TermsDictionaries.Any()) return;
 
@@ -155,7 +157,8 @@ namespace Infrastructure.Persistence
 
             #endregion
 
-            context.Users.Add(new User("Joe"));
+            var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
+            context.Users.Add(new User("Joe", "123456", hasher));
 
             await context.SaveChangesAsync();
         }

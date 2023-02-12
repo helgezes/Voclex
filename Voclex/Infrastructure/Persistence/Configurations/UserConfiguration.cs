@@ -9,6 +9,7 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(d => d.Name).HasMaxLength(100).IsRequired();
+            builder.Property(d => d.HashedPassword).HasMaxLength(100).IsRequired();
         }
     }
 }
