@@ -1,11 +1,11 @@
 ﻿@page "/login"
-@using Microsoft.JSInterop
 @using SharedLibrary.DataTransferObjects.Authentication
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using RazorLibrary.Helpers
 @inject HttpClient Http
-@inject IJSRuntime jsr
+@inject LocalStorage Storage
 @inject NavigationManager Navigation
 
 <h3>Login</h3>
@@ -41,7 +41,7 @@
         
         var result = await msg.Content.ReadFromJsonAsync<LoginResult>();
             
-        await jsr.InvokeVoidAsync("localStorage.setItem", "token", result!.Token);
+        await Storage.SetItem("token", result!.Token);
         
         Navigation.NavigateTo("/");
     }

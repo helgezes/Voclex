@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
+using RazorLibrary.Helpers;
 
 namespace RazorLibrary.Extensions
 {
@@ -12,6 +13,7 @@ namespace RazorLibrary.Extensions
         {
             collection.AddDefaultHttpClient();
             collection.AddSuggestionsHttpClient();
+            collection.AddScoped<LocalStorage>();
 
             return collection;
         }
@@ -37,9 +39,9 @@ namespace RazorLibrary.Extensions
 
     public sealed class AuthorizationHeaderHandler : DelegatingHandler
     {
-        private readonly IJSRuntime jsr;
+        private readonly LocalStorage jsr;
 
-        public AuthorizationHeaderHandler(IJSRuntime jsr)
+        public AuthorizationHeaderHandler(LocalStorage jsr)
         {
             this.jsr = jsr;
         }
@@ -47,7 +49,7 @@ namespace RazorLibrary.Extensions
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = await jsr.InvokeAsync<string>("localStorage.getItem", cancellationToken, "token");
+            var token = await jsr.GetItem("token", cancellationToken);
 
             if (token != null)
             {
