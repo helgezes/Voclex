@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Infrastructure.Services;
+namespace Application.Services.Interfaces;
 
 public interface IFileSavingService
 {
