@@ -1,7 +1,6 @@
-﻿using Application.Services.Factories.Interfaces;
-using Application.Services.Interfaces;
+﻿using Infrastructure.Services.Factories.Interfaces;
 
-namespace Application.Services.Factories;
+namespace Infrastructure.Services.Factories;
 
 public sealed class DiskFileSavingServiceFactory : IFileSavingServiceFactory
 {

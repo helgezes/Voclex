@@ -1,7 +1,6 @@
-﻿using Application.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public sealed class DiskFileSavingService : IFileSavingService
     {

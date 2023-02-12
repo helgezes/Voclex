@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ModelInterfaces\DtoInterfaces\" />
-    <Folder Include="Services\Factories\Interfaces\" />
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
