@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using RazorLibrary.Helpers;
+using RazorLibrary.Services;
+using SharedLibrary.Services;
+using SharedLibrary.Services.Interfaces;
 
 namespace RazorLibrary.Extensions
 {
@@ -13,7 +16,11 @@ namespace RazorLibrary.Extensions
         {
             collection.AddDefaultHttpClient();
             collection.AddSuggestionsHttpClient();
+
             collection.AddScoped<LocalStorage>();
+            collection.AddSingleton<ITokenValidator, ClientJwtTokenValidator>();
+            collection.AddScoped<IUserStorage, BrowserUserStorage>();
+            collection.AddScoped<IAuthenticatedUserService, JwtAuthenticatedUserService>();
 
             return collection;
         }

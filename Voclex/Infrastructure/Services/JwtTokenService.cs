@@ -40,7 +40,8 @@ namespace Infrastructure.Services
 
         private static Claim[] GetClaims(IUserDto user)
         {
-            return new[] { new Claim("name", user.Name) };
+            return new[] { new Claim("id", user.Id.ToString()),
+                new Claim("name", user.Name) };
         }
 
         private static SymmetricSecurityKey GetSymmetricSecurityKey()
