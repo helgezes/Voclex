@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Services.Interfaces;
 
-namespace RazorLibrary.Services
+namespace RazorLibrary.Services.Authentication
 {
     public sealed class ClientJwtTokenValidator : ITokenValidator
     {

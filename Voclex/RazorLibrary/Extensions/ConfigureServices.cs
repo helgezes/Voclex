@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using RazorLibrary.Helpers;
-using RazorLibrary.Services;
+using RazorLibrary.Services.Authentication;
 using SharedLibrary.Services;
 using SharedLibrary.Services.Interfaces;
 
@@ -17,9 +18,12 @@ namespace RazorLibrary.Extensions
             collection.AddDefaultHttpClient();
             collection.AddSuggestionsHttpClient();
 
-            collection.AddScoped<LocalStorage>();
+            collection.AddScoped<LocalStorage>(); 
             collection.AddSingleton<ITokenValidator, ClientJwtTokenValidator>();
             collection.AddScoped<IUserStorage, BrowserUserStorage>();
+            collection.AddAuthorizationCore();
+            collection.AddScoped<ClientJwtAuthenticationStateProvider>();
+            collection.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<ClientJwtAuthenticationStateProvider>());
             collection.AddScoped<IAuthenticatedUserService, JwtAuthenticatedUserService>();
 
             return collection;
