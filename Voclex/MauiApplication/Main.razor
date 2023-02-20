@@ -1,11 +1,17 @@
 ﻿@using RazorLibrary.Shared
 @using RazorLibrary.Pages 
 @using Microsoft.AspNetCore.Components.Authorization
+@using RazorLibrary.Shared.Authorization
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Main).Assembly" AdditionalAssemblies="new []{ typeof(CreateTermPage).Assembly }">
         <Found Context="routeData">
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <AuthorizeView>
+                <NotAuthorized>
+                    <RedirectToLogin />
+                </NotAuthorized>
+            </AuthorizeView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
