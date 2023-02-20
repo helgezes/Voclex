@@ -6,12 +6,11 @@
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Main).Assembly" AdditionalAssemblies="new []{ typeof(CreateTermPage).Assembly }">
         <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <AuthorizeView>
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     <RedirectToLogin />
                 </NotAuthorized>
-            </AuthorizeView>
+            </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>

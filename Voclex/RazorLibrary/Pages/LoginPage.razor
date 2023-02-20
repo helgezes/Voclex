@@ -5,6 +5,9 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using RazorLibrary.Helpers
 @using RazorLibrary.Services.Authentication
+
+@attribute [AllowAnonymous]
+
 @inject HttpClient Http
 @inject LocalStorage Storage
 @inject NavigationManager Navigation
