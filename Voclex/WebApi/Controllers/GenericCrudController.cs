@@ -4,6 +4,7 @@ using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -44,10 +45,7 @@ namespace WebApi.Controllers
         public virtual async Task<ActionResult> Read([Required] int id)
         {
             var result = await crudService.GetByIdAsync(id);
-            if (result == null)
-                return NotFound();
-
-            return Ok(result);
+            return this.OkWithResultOrNotFound(result);
         }
 
         [HttpPut]
@@ -56,7 +54,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult> Update(TDto dto)
         {
-            return OkOrNotFound(await crudService.UpdateAsync(dto) != null);
+            return this.OkOrNotFound(await crudService.UpdateAsync(dto) != null);
         }
 
         [HttpDelete]
@@ -64,15 +62,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public virtual async Task<ActionResult> Delete([Required] int id)
         {
-            return OkOrNotFound(await crudService.Delete(id));
-        }
-
-        protected ActionResult OkOrNotFound(bool condition)
-        {
-            if (condition)
-                return Ok();
-
-            return NotFound();
+            return this.OkOrNotFound(await crudService.Delete(id));
         }
     }
 }

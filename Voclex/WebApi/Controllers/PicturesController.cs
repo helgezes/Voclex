@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.TermsRelated;
+using WebApi.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -57,7 +58,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Update([FromForm] PictureDto dto, IFormFile file)
         {
-            return OkOrNotFound(await picturesService.UpdateAsync(dto, file) != null);
+            return this.OkOrNotFound(await picturesService.UpdateAsync(dto, file) != null);
         }
 
         [HttpDelete]
@@ -65,16 +66,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete([Required] int id)
         {
-            return OkOrNotFound(await picturesService.Delete(id));
-        }
-
-
-        private ActionResult OkOrNotFound(bool condition)
-        {
-            if (condition)
-                return Ok();
-
-            return NotFound();
+            return this.OkOrNotFound(await picturesService.Delete(id));
         }
     }
 
