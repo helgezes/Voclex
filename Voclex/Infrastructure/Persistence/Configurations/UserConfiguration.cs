@@ -10,6 +10,7 @@ namespace Infrastructure.Persistence.Configurations
         {
             builder.Property(d => d.Name).HasMaxLength(100).IsRequired();
             builder.Property(d => d.HashedPassword).HasMaxLength(100).IsRequired();
+            builder.HasIndex(u => u.Name).IsUnique(true);
         }
     }
 }
