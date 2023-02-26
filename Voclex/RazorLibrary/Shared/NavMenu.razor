@@ -20,11 +20,11 @@
                     </svg>
                     <span>@currentUser?.Name</span>
                 </button>
-                <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
             </Authorized>
         </AuthorizeView>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
 </div>
 
@@ -55,6 +55,20 @@
             </nav>
         </div>
     </Authorized>
+    <NotAuthorized>
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/login" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Login
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/registration" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Create new account
+                </NavLink>
+            </div>
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
