@@ -1,0 +1,75 @@
+﻿@page "/registration"
+@using SharedLibrary.DataTransferObjects.Authentication
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+@implements IDisposable
+
+@attribute [AllowAnonymous]
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>Sign Up</h3>
+
+<EditForm EditContext="editContext" OnValidSubmit="OnValid" style="max-width:500px;">
+    <DataAnnotationsValidator />
+    <div class="mb-2">
+        <InputText class="form-control" @bind-Value="registrationRequest.Username" placeholder="Enter Username"></InputText>
+        <ValidationMessage For="() => registrationRequest.Username"></ValidationMessage>
+    </div>
+    <div class="mb-2">
+        <InputText type="password" class="form-control" @bind-Value="registrationRequest.Password" placeholder="Enter Password"></InputText>
+        <ValidationMessage For="() => registrationRequest.Password"></ValidationMessage>
+    </div>
+    <div class="mb-2">
+        <span>Already have an account? <a href="/login">Login using your credentials</a></span>
+    </div>
+    <div class="mb-2 text-right">
+        <button class="btn btn-secondary" disabled="@isDisabled">Sign Up</button>
+    </div>
+</EditForm>
+
+@code {
+    private EditContext? editContext;
+    private ValidationMessageStore? messageStore;
+    private readonly RegistrationRequest registrationRequest = new ();
+    private bool isDisabled = false;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(registrationRequest);
+        editContext.OnValidationRequested += HandleValidationRequested;
+        messageStore = new ValidationMessageStore(editContext);
+    }
+
+    private void HandleValidationRequested(object? sender, 
+        ValidationRequestedEventArgs args)
+    {
+        messageStore?.Clear();
+    }
+
+    private async Task OnValid()
+    {
+        isDisabled = true;
+        using var msg = await Http.PostAsJsonAsync("/User/Register", registrationRequest);
+
+        if (!msg.IsSuccessStatusCode)
+        {
+            var errorMessage = await msg.Content.ReadAsStringAsync();
+
+            messageStore?.Add(() => registrationRequest.Username, errorMessage);
+            isDisabled = false;
+            return;
+        }
+
+        Navigation.NavigateTo("/login");
+    }
+
+    public void Dispose()
+    {
+        if(editContext is not null)
+            editContext.OnValidationRequested -= HandleValidationRequested;
+    }
+}
