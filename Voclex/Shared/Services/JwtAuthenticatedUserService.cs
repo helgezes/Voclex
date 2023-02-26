@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Application.ModelInterfaces.DtoInterfaces;
+using Application.Models;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Services.Interfaces;
 
@@ -47,8 +48,9 @@ namespace SharedLibrary.Services
         {
             var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
             var userName = token.Claims.First(c => c.Type == "name").Value;
+            var role = Enum.Parse<Role>(token.Claims.First(c => c.Type == "role").Value);
 
-            return new UserDto(userId, userName);
+            return new UserDto(userId, userName, role);
         }
     }
 }

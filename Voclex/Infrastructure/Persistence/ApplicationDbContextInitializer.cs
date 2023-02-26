@@ -158,7 +158,8 @@ namespace Infrastructure.Persistence
             #endregion
 
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
-            context.Users.Add(new User("Joe", "123456", hasher));
+            context.Users.Add(new User("Joe", "123456", Role.Admin, hasher));
+            context.Users.Add(new User("Marie", "1234", Role.User, hasher));
 
             await context.SaveChangesAsync();
         }

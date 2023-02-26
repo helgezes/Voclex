@@ -15,6 +15,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
+using WebApi.Constants;
 
 [assembly: ApiController]
 
@@ -38,6 +39,11 @@ builder.Services.AddScoped<IDbContext>(provider =>
 
 
 AddAuthentication(builder);
+
+builder.Services.AddAuthorization(o =>
+    o.AddPolicy(Policies.Admin, 
+        b => 
+            b.RequireAuthenticatedUser().RequireClaim("role", Role.Admin.ToString())));
 
 builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 
@@ -151,5 +157,6 @@ void AddAuthentication(WebApplicationBuilder builder1)
                     "!SomethingSecret!"u8.ToArray() //todo store safely
                 ),
             };
+            options.MapInboundClaims = false;
         });
 }

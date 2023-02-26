@@ -4,17 +4,22 @@ namespace Application.Models
 {
     public class User : Entity
     {
-        public User(string name, string password, IPasswordHasher<User> passwordHasher)
+        public User(string name, string password, Role role, IPasswordHasher<User> passwordHasher)
         {
             Name = name;
+            Role = role;
             HashedPassword = HashPassword(password, passwordHasher); 
         }
 
-        private User(){}
+        private User()
+        {
+        }
 
         public string Name { get; private set; }
 
         public string HashedPassword { get; private set; }
+
+        public Role Role { get; private set; }
 
         public bool VerifyPassword(string password, IPasswordHasher<User> passwordHasher)
         {
@@ -26,5 +31,11 @@ namespace Application.Models
         {
             return passwordHasher.HashPassword(this, password);
         }
+    }
+
+    public enum Role
+    {
+        User = 0,
+        Admin = 1
     }
 }
