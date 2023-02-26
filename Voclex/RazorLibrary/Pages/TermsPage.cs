@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.Terms;
+using SharedLibrary.Services.Interfaces;
 
 namespace RazorLibrary.Pages
 {
@@ -12,13 +13,16 @@ namespace RazorLibrary.Pages
 
         [Inject]
         public HttpClient Http { get; set; } = null!;
+        
+        [Inject]
+        public IAuthenticatedUserService UserService { get; set; } = null!;
 
         protected abstract TermsListEnumQueryVariants QueryVariant { get; }
 
         protected readonly Queue<TermDto> LoadedTerms = new();
         protected TermDto? CurrentTerm;
 
-        private readonly int userId = Settings.UserId;
+        private int userId = -1;
         private readonly int[] dictionariesIds = Settings.DictionariesIds;
 
         private int totalPagesCount;
@@ -27,6 +31,8 @@ namespace RazorLibrary.Pages
         protected override async Task OnInitializedAsync()
         {
             totalPagesCount = await GetTotalPagesCount();
+
+            userId = (await UserService.GetCurrentUser()).Id;
 
             await AddNewTerms(currentPage);
 

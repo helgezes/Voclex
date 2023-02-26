@@ -5,6 +5,9 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using SharedLibrary.DataTransferObjects
 @using SharedLibrary.Queries.Terms
+@using SharedLibrary.Services.Interfaces
+
+@inject IAuthenticatedUserService UserService
 
 <PageTitle>Dictionary</PageTitle>
 
@@ -37,9 +40,10 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+	    var user = await UserService.GetCurrentUser();
 		var queryObject = 
 			new TermsListQuery(1, int.MaxValue, //todo load only chunks and cache it somehow. Virtualize ItemsProvider works strangely, mb made a custom one.
-			Settings.UserId, TermsListEnumQueryVariants.GetAll,
+			user!.Id, TermsListEnumQueryVariants.GetAll,
 			new []{Id}); //todo dictionary id
 
 		var newTerms =
