@@ -1,4 +1,5 @@
 ﻿using Application.DataAccess;
+using Application.Exceptions;
 using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services.Interfaces;
@@ -29,6 +30,20 @@ namespace Application.Services
             if (!user.VerifyPassword(password, hasher)) return null;
 
             return mapper.Map<IUserDto>(user);
+        }
+
+        public async Task Register(IRegistrationRequest request)
+        {
+            var isEmailExists = await context.Users.AnyAsync(u => u.Name == request.Username);
+
+            if (isEmailExists)
+                throw new UserExistsException();
+
+            var user = mapper.Map<User>(request, op => op.Items[nameof(IPasswordHasher<User>)] = hasher);
+
+            await context.Users.AddAsync(user);
+
+            await context.SaveChangesAsync();
         }
     }
 }
