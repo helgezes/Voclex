@@ -8,7 +8,7 @@ namespace Application.Models
 {
     public class TermProgress : Entity
     {
-        public const byte MaximumGuessedTimesCount = 6;
+        public const byte MaximumGuessedTimesCount = 7;
 
         public TermProgress(User user, Term term) : this()
         {
