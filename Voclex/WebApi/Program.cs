@@ -15,6 +15,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Services.Interfaces;
 using WebApi.Constants;
 
 [assembly: ApiController]
@@ -29,6 +30,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddHttpContextAccessor();
 
 AddSwagger(builder);
 
@@ -65,6 +67,7 @@ builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudServic
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<PicturesService>();
 builder.Services.AddScoped<IAuthTokenService, JwtTokenService>();
+builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
 var app = builder.Build();
 

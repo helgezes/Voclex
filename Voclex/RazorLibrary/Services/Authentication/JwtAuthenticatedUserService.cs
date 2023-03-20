@@ -3,9 +3,10 @@ using System.Security.Claims;
 using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Services;
 using SharedLibrary.Services.Interfaces;
 
-namespace SharedLibrary.Services
+namespace RazorLibrary.Services.Authentication
 {
     public sealed class JwtAuthenticatedUserService : IAuthenticatedUserService
     {
@@ -36,21 +37,12 @@ namespace SharedLibrary.Services
 
             var token = ReadJwtToken(stringToken);
 
-            return currentUser = ConvertTokenClaimsToUser(token);
+            return currentUser = ClaimsUserConverter.ConvertClaimsToUser(token.Claims);
         }
 
         private static JwtSecurityToken ReadJwtToken(string stringToken)
         {
             return new JwtSecurityTokenHandler().ReadJwtToken(stringToken);
-        }
-
-        private static IUserDto ConvertTokenClaimsToUser(JwtSecurityToken token)
-        {
-            var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
-            var userName = token.Claims.First(c => c.Type == "name").Value;
-            var role = Enum.Parse<Role>(token.Claims.First(c => c.Type == "role").Value);
-
-            return new UserDto(userId, userName, role);
         }
     }
 }

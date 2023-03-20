@@ -3,6 +3,7 @@ using Application.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using SharedLibrary.Services;
 
 namespace Infrastructure.Services
 {
@@ -22,7 +23,7 @@ namespace Infrastructure.Services
         private static JwtSecurityToken GetJwtSecurityToken(IUserDto user)
         {
             return new JwtSecurityToken(
-                claims: GetClaims(user),
+                claims: ClaimsUserConverter.GetClaimsFromUser(user),
                 expires: GetExpiration(),
                 signingCredentials: GetSigningCredentials());
         }
@@ -37,15 +38,7 @@ namespace Infrastructure.Services
         {
             return DateTime.UtcNow.AddMinutes(expirationOffsetInMinutes);
         }
-
-        private static Claim[] GetClaims(IUserDto user)
-        {
-            return new[] { new Claim("id", user.Id.ToString()),
-                new Claim("name", user.Name),
-                new Claim("role", user.Role.ToString())
-            };
-        }
-
+        
         private static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
             return new SymmetricSecurityKey("!SomethingSecret!"u8.ToArray());

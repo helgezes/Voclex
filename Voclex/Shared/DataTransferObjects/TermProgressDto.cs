@@ -1,5 +1,7 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.Attributes;
+using SharedLibrary.Binders;
 
 namespace SharedLibrary.DataTransferObjects
 {
@@ -15,8 +17,8 @@ namespace SharedLibrary.DataTransferObjects
 
         [Required]
         public int TermId { get; set; }
-
-        [Required]
+        
+        [UserId]
         public int UserId { get; set; }
     }
 }
