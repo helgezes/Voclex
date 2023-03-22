@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.Binders;
-
-namespace SharedLibrary.Attributes
+﻿namespace SharedLibrary.Attributes
 {
-    public class UserIdAttribute : ModelBinderAttribute
+    public class UserIdAttribute : Attribute
     {
-        public UserIdAttribute() : base(typeof(UserIdBinder))
-        { }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SharedLibrary.Services.Interfaces;
 
-namespace SharedLibrary.Binders;
+namespace WebApi.Binding;
 
 public sealed class UserIdBinder : IModelBinder
 {

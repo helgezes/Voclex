@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Services.Interfaces;
+using WebApi.Binding;
 using WebApi.Constants;
 using WebApi.Filters;
 
@@ -26,7 +27,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("http://localhost:5181", "https://localhost:7181").AllowAnyMethod().AllowAnyHeader()));
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+    {
+        options.ModelBinderProviders.Insert(0, new UserIdBinderProvider());
+    })
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
