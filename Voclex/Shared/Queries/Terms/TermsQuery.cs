@@ -4,14 +4,14 @@ using Application.Models;
 using Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using SharedLibrary.Attributes;
 
 namespace SharedLibrary.Queries.Terms;
 
 public class TermsQuery : IQuery<Term> //todo refactor this ?
 {
-    public TermsQuery(int userId, TermsListEnumQueryVariants queryVariant, int[] dictionariesIds)
+    public TermsQuery(TermsListEnumQueryVariants queryVariant, int[] dictionariesIds)
     {
-        UserId = userId;
         DictionariesIds = dictionariesIds;
         QueryVariant = queryVariant;
     }
@@ -20,6 +20,7 @@ public class TermsQuery : IQuery<Term> //todo refactor this ?
 
     public int[] DictionariesIds { get; init; }
 
+    [UserId]
     public int UserId { get; init; }
 
     public TermsListEnumQueryVariants QueryVariant { get; init; }

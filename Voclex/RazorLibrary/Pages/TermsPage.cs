@@ -14,15 +14,11 @@ namespace RazorLibrary.Pages
         [Inject]
         public HttpClient Http { get; set; } = null!;
         
-        [Inject]
-        public IAuthenticatedUserService UserService { get; set; } = null!;
-
         protected abstract TermsListEnumQueryVariants QueryVariant { get; }
 
         protected readonly Queue<TermDto> LoadedTerms = new();
         protected TermDto? CurrentTerm;
-
-        private int userId = -1;
+        
         private readonly int[] dictionariesIds = Settings.DictionariesIds;
 
         private int totalPagesCount;
@@ -31,9 +27,7 @@ namespace RazorLibrary.Pages
         protected override async Task OnInitializedAsync()
         {
             totalPagesCount = await GetTotalPagesCount();
-
-            userId = (await UserService.GetCurrentUser()).Id;
-
+            
             await AddNewTerms(currentPage);
 
             SetNewCurrentTerm();
@@ -92,8 +86,7 @@ namespace RazorLibrary.Pages
 
         private async Task<int> GetTotalPagesCount()
         {
-            var queryObject = new TermsQuery(userId,
-                QueryVariant,
+            var queryObject = new TermsQuery(QueryVariant,
                 dictionariesIds);
 
             var newTermsCount = await Http.GetFromJsonAsync<int>(
@@ -107,7 +100,6 @@ namespace RazorLibrary.Pages
         {
             var termsListQuery = new TermsListQuery(
                 page, pageSize,
-                userId,
                 QueryVariant,
                 dictionariesIds);
 
