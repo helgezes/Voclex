@@ -5,10 +5,9 @@ namespace SharedLibrary.DataTransferObjects
 {
     public sealed class TermProgressDto
     {
-        public TermProgressDto(int termId, int userId)
+        public TermProgressDto(int termId)
         {
             TermId = termId;
-            UserId = userId;
         }
 
         public TermProgressDto() { }

@@ -133,7 +133,7 @@ namespace RazorLibrary.Pages
 
         private string GetCurrentTermProgressDtoAsQueryString()
         {
-            var queryObject = new TermProgressDto(CurrentTerm.Id, userId);
+            var queryObject = new TermProgressDto(CurrentTerm.Id);
             var termProgressDtoAsQueryString = queryObject.ObjectPropertiesToQueryString();
             return termProgressDtoAsQueryString;
         }
