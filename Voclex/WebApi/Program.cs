@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Services.Interfaces;
 using WebApi.Constants;
+using WebApi.Filters;
 
 [assembly: ApiController]
 
@@ -117,6 +118,7 @@ void AddSwagger(WebApplicationBuilder webApplicationBuilder)
     webApplicationBuilder.Services.AddSwaggerGen(option =>
     {
         option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+        option.OperationFilter<PropertyHidingFilter>();
         option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             In = ParameterLocation.Header,
