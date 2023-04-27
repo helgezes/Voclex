@@ -1,0 +1,68 @@
+﻿@using RazorLibrary.Extensions
+@using System.Net.Http.Json
+@using SharedLibrary.DataTransferObjects
+@inject IHttpClientFactory HttpFactory
+
+<div class="mb-2">
+    <button @onclick="LoadSuggestions" type="button" class="btn btn-secondary" disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">Load Definitions@(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)</button>
+</div>
+
+@if (suggestions?.Count > 0)
+{
+    <div class="mb-2" style="max-height: 150px; overflow-y: scroll;">
+        <ul class="list-group">
+            @for (var i = 0; i < suggestions.Count; i++)
+            {
+                var suggestion = suggestions[i];
+                var index = i;
+                <li class="list-group-item">
+                    <span>@suggestion</span>
+                    <button @onclick="() => AddSuggestion(index)" type="button" class="btn btn-primary">Add</button>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private HttpClient http = null!;
+    private List<string>? suggestions;
+    private string? suggestionsLoadedForTerm;
+
+    [Parameter, EditorRequired]
+    public TermDto? Term { get; set; }
+
+    [Parameter, EditorRequired]
+    public string SuggestionsPath { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<string> SuggestionAdded { get; set; }
+
+    protected override void OnInitialized()
+    {
+        http = HttpFactory.CreateClient(ConfigureServices.SuggestionsHttpClientName);
+    }
+
+    private async Task LoadSuggestions()
+    {
+        if (!IsTermInputted()) return;
+
+        var termValue = Term!.Value;
+        suggestions = await http.GetFromJsonAsync<List<string>>($"{SuggestionsPath}?term={termValue}");
+        suggestionsLoadedForTerm = termValue;
+    }
+
+    private async Task AddSuggestion(int index)
+    {
+        var suggestion = suggestions![index];
+
+        await SuggestionAdded.InvokeAsync(suggestion);
+
+        suggestions.Remove(suggestion);
+    }
+
+    private bool IsTermInputted()
+    {
+        return Term?.Value.Length > 0;
+    }
+}
