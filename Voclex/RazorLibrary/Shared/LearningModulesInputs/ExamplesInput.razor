@@ -1,4 +1,5 @@
 ﻿@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.Shared.LearningModulesInputs.Suggestions
 
 @if (Current != null)
 {
@@ -8,7 +9,18 @@
 	</div>
 }
 
+<StringSuggestionsComponent SuggestionsPath="Examples" Term="Term" SuggestionAdded="SuggestionAdded"></StringSuggestionsComponent>
+
 @code {
 	[Parameter]
 	public ExampleDto? Current { get; set; }
+
+	[Parameter]
+	public TermDto? Term { get; set; }
+	
+	private void SuggestionAdded(string suggestion)
+	{
+		Current!.Value += $"{(Current.Value.Length > 0 ? "\n" : string.Empty)}{suggestion}";
+	}
+
 }

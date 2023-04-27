@@ -22,9 +22,6 @@
 
     [Parameter]
     public TermDto? Term { get; set; }
-
-    [Inject]
-    public IHttpClientFactory HttpFactory { get; set; } = null!;
     
     private bool adjustInputHeight;
     private IJSObjectReference jsModule;

@@ -4,7 +4,7 @@
 @inject IHttpClientFactory HttpFactory
 
 <div class="mb-2">
-    <button @onclick="LoadSuggestions" type="button" class="btn btn-secondary" disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">Load Definitions@(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)</button>
+    <button @onclick="LoadSuggestions" type="button" class="btn btn-secondary" disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">Load @SuggestionsPath @(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)</button>
 </div>
 
 @if (suggestions?.Count > 0)
