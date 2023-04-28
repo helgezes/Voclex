@@ -4,12 +4,10 @@
 @using Microsoft.JSInterop
 @using RazorLibrary.Shared.LearningModulesInputs.Suggestions
 
-@inject IJSRuntime JS
-
 @if (Current != null)
 {
     <div class="form-floating mb-2">
-        <textarea class="form-control" id="definition-value" @bind="@Current.Value"></textarea>
+        <textarea class="form-control adjustable-height" id="definition-value" @bind="@Current.Value"></textarea>
         <label for="definition-value">Definition</label>
     </div>
 }
@@ -22,32 +20,9 @@
 
     [Parameter]
     public TermDto? Term { get; set; }
-    
-    private bool adjustInputHeight;
-    private IJSObjectReference jsModule;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await AdjustInputHeight();
-
-        if (!firstRender) return;
-
-        jsModule = await JS.InvokeAsync<IJSObjectReference>(
-            "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/{nameof(DefinitionInput)}.razor.js");
-
-    }
 
     private void SuggestionAdded(string suggestion)
     {
         Current!.Value += $"{(Current.Value.Length > 0 ? "\n" : string.Empty)}{suggestion}";
-        adjustInputHeight = true;
-    }
-
-    private async Task AdjustInputHeight()
-    {
-        if(adjustInputHeight)
-            await jsModule.InvokeVoidAsync("AdjustInputHeight");
-
-        adjustInputHeight = false;
     }
 }

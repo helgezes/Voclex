@@ -1,7 +1,9 @@
 ﻿@using RazorLibrary.Extensions
 @using System.Net.Http.Json
+@using Microsoft.JSInterop
 @using SharedLibrary.DataTransferObjects
 @inject IHttpClientFactory HttpFactory
+@inject IJSRuntime JS
 
 <div class="mb-2">
     <button @onclick="LoadSuggestions" type="button" class="btn btn-secondary" disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">Load @SuggestionsPath @(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)</button>
@@ -28,6 +30,8 @@
     private HttpClient http = null!;
     private List<string>? suggestions;
     private string? suggestionsLoadedForTerm;
+    private bool adjustInputHeight;
+    private IJSObjectReference jsModule;
 
     [Parameter, EditorRequired]
     public TermDto? Term { get; set; }
@@ -37,6 +41,18 @@
 
     [Parameter]
     public EventCallback<string> SuggestionAdded { get; set; }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await AdjustInputHeight();
+
+        if (!firstRender) return;
+
+        jsModule = await JS.InvokeAsync<IJSObjectReference>(
+            "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/Suggestions/{nameof(StringSuggestionsComponent)}.razor.js");
+
+    }
 
     protected override void OnInitialized()
     {
@@ -59,6 +75,16 @@
         await SuggestionAdded.InvokeAsync(suggestion);
 
         suggestions.Remove(suggestion);
+
+        adjustInputHeight = true;
+    }
+
+    private async Task AdjustInputHeight()
+    {
+        if (adjustInputHeight)
+            await jsModule.InvokeVoidAsync("AdjustAllInputHeights");
+
+        adjustInputHeight = false;
     }
 
     private bool IsTermInputted()
