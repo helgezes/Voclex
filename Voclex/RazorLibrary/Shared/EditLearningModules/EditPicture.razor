@@ -13,9 +13,10 @@
 	</div>
 }
 
-<div hidden="@(FirstEntity == null)">
+@if (FirstEntity != null)
+{
     <PictureInput OnFileInput="OnFileInput" Term="Term"></PictureInput>
-</div>
+}
 
 
 @code {
