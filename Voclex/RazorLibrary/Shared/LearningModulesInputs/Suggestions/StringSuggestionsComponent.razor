@@ -30,8 +30,8 @@
     private HttpClient http = null!;
     private List<string>? suggestions;
     private string? suggestionsLoadedForTerm;
-    private bool adjustInputHeight;
-    private IJSObjectReference jsModule;
+    private bool adjustInputHeight = true;
+    private IJSObjectReference? jsModule;
 
     [Parameter, EditorRequired]
     public TermDto? Term { get; set; }
@@ -45,13 +45,13 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/Suggestions/{nameof(StringSuggestionsComponent)}.razor.js");
+        }
+
         await AdjustInputHeight();
-
-        if (!firstRender) return;
-
-        jsModule = await JS.InvokeAsync<IJSObjectReference>(
-            "import", $"./_content/{nameof(RazorLibrary)}/Shared/LearningModulesInputs/Suggestions/{nameof(StringSuggestionsComponent)}.razor.js");
-
     }
 
     protected override void OnInitialized()
@@ -81,10 +81,12 @@
 
     private async Task AdjustInputHeight()
     {
-        if (adjustInputHeight)
+        if (adjustInputHeight && jsModule != null)
+        {
             await jsModule.InvokeVoidAsync("AdjustAllInputHeights");
+            adjustInputHeight = false;
+        }
 
-        adjustInputHeight = false;
     }
 
     private bool IsTermInputted()
