@@ -24,9 +24,24 @@ namespace RazorLibrary.Helpers
 
 		public MultipartFormDataContentBuilder AddFile(IBrowserFile file, int maxAllowedFileSizeInMb = 5, string nameInContent = "file")
 		{
-			var fileContent = new StreamContent(file.OpenReadStream(maxAllowedFileSizeInMb * 1024 * 1024));
+			var stream = file.OpenReadStream(ConvertMbToBytes(maxAllowedFileSizeInMb));
+			return AddStream(stream, file.Name, maxAllowedFileSizeInMb, nameInContent);
+		}
+
+		public MultipartFormDataContentBuilder AddStream(
+			Stream stream, 
+			string fileName,
+			int maxAllowedFileSizeInMb = 5,
+			string nameInContent = "file")
+		{
+			if (stream.Length > ConvertMbToBytes(maxAllowedFileSizeInMb))
+			{
+				throw new ArgumentException("File is too big");
+			}
+
+			var fileContent = new StreamContent(stream);
 			fileContent.Headers.Add("Content-Type", "application/octet-stream");
-			content.Add(fileContent, nameInContent, file.Name);
+			content.Add(fileContent, nameInContent, fileName);
 
 			return this;
 		}
@@ -43,6 +58,11 @@ namespace RazorLibrary.Helpers
 		public void Reset()
 		{
 			content = new MultipartFormDataContent();
+		}
+
+		private static int ConvertMbToBytes(int maxAllowedFileSizeInMb)
+		{
+			return maxAllowedFileSizeInMb * 1024 * 1024;
 		}
 	}
 }
