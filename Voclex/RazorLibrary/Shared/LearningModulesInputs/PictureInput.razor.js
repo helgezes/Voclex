@@ -3,3 +3,8 @@
     imgElem.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
     imgElem.src = url;
 }
+
+export function previewImageFromUrl(url, imgElem) {
+    imgElem.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
+    imgElem.src = url;
+}

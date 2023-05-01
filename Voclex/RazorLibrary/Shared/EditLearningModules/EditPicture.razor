@@ -14,12 +14,12 @@
 }
 
 <div hidden="@(FirstEntity == null)">
-    <PictureInput OnFileInput="OnFileInput"></PictureInput>
+    <PictureInput OnFileInput="OnFileInput" Term="Term"></PictureInput>
 </div>
 
 
 @code {
-	protected override string GetListApiPath => "Pictures/GetList";
+    protected override string GetListApiPath => "Pictures/GetList";
 	protected override string SaveChangesApiPath => "Pictures";
 
 	private string pictureHost;
@@ -31,7 +31,7 @@
 		
 	    var content = new MultipartFormDataContentBuilder()
 	        .AddObjectPublicProperties(FirstEntity ?? new PictureDto(0, Term.Id, string.Empty))
-	        .AddFile(file)
+	        .AddFile(file, MaxAllowedFileSizeInMb)
 	        .Build();
 
 	    if (FirstEntity != null)
@@ -59,8 +59,10 @@
 	    await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), false));
 	}
 
-    private void OnFileInput(InputFileChangeEventArgs args)
+	private void OnFileInput(IBrowserFile browserFile)
     {
-        file = args.File;
+		file = browserFile;
     }
+
+    private const int MaxAllowedFileSizeInMb = 10;
 }

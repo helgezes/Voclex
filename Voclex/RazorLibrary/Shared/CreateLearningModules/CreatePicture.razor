@@ -4,7 +4,7 @@
 @using RazorLibrary.Helpers
 @inherits CreateLearningModule<SharedLibrary.DataTransferObjects.PictureDto>
 
-<PictureInput OnFileInput="OnFileInput"></PictureInput>
+<PictureInput OnFileInput="OnFileInput" Term="Term"></PictureInput>
 
 @code {
 	private IBrowserFile? file;
@@ -31,11 +31,11 @@
 	    return true;
 	}
 
-    private void OnFileInput(InputFileChangeEventArgs e)
+	private void OnFileInput(IBrowserFile browserFile)
 	{
-		file = e.File;
+		file = browserFile;
 		EnableModuleCreation();
 	}
 	    
-	private const int MaxAllowedFileSizeInMb = 5;
+	private const int MaxAllowedFileSizeInMb = 10;
 }

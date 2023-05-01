@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
+@using RazorLibrary.Shared.LearningModulesInputs.Suggestions
+@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.DataTransferObjects
 @inject IJSRuntime JS
+@inject HttpClient Http
+
 
 <div class="mb-3" hidden="@(!showThumbnail)">
     <img @ref="imageThumbnailElement" style="max-height: 250px; max-width: 400px" />
@@ -10,10 +15,14 @@
     <InputFile OnChange="OnChange" @ref="inputFileElement" accept="image/png, image/jpeg, image/gif"></InputFile>
 </div>
 
+<PictureSuggestions OnPictureSuggestionSelectedCallback="OnPictureSuggestionSelected" Term="Term"></PictureSuggestions>
 
 @code {//todo move all style tags to css files
     [Parameter, EditorRequired]
-    public EventCallback<InputFileChangeEventArgs> OnFileInput { get; set; }
+    public EventCallback<IBrowserFile> OnFileInput { get; set; }
+
+    [Parameter, EditorRequired]
+    public TermDto? Term { get; set; }
 
     private ElementReference imageThumbnailElement;
     private InputFile inputFileElement = null!;
@@ -32,7 +41,7 @@
     private async Task OnChange(InputFileChangeEventArgs args)
     {
         await ShowUploadedImageThumbnail();
-        await OnFileInput.InvokeAsync(args);
+        await OnFileInput.InvokeAsync(args.File);
     }
 
     private ValueTask ShowUploadedImageThumbnail()
@@ -40,4 +49,51 @@
         showThumbnail = true;
         return jsModule.InvokeVoidAsync("previewImage", inputFileElement.Element, imageThumbnailElement);
     }
+
+    private async Task OnPictureSuggestionSelected(ImageSuggestion image)
+    {
+        await ShowSelectedSuggestionThumbnail(image);
+
+        var imageFile = await DownloadPicture(image);
+        await OnFileInput.InvokeAsync(imageFile);
+    }
+
+
+    private async Task ShowSelectedSuggestionThumbnail(ImageSuggestion image)
+    {
+        showThumbnail = true;
+        await jsModule.InvokeVoidAsync("previewImageFromUrl", image.PreviewUrl, imageThumbnailElement);
+    }
+
+    private async Task<MemoryBrowserFile> DownloadPicture(ImageSuggestion image)
+    {
+        var imageBytes = await Http.GetByteArrayAsync(image.FullSizeUrl);
+        var imageData = new MemoryStream(imageBytes);
+        var imageFile = new MemoryBrowserFile(imageData, image.FullSizeUrl);
+        return imageFile;
+    }
+
+    private sealed class MemoryBrowserFile : IBrowserFile
+    {
+        public MemoryBrowserFile(Stream data, string name)
+        {
+            Content = data;
+            Name = name;
+            LastModified = DateTimeOffset.Now;
+            Size = data.Length;
+            ContentType = "application/octet-stream";
+        }
+
+        public Stream Content { get; }
+        public string ContentType { get; }
+        public DateTimeOffset LastModified { get; }
+        public string Name { get; }
+        public long Size { get; }
+
+        public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
+        {
+            return Content;
+        }
+    }
+
 }

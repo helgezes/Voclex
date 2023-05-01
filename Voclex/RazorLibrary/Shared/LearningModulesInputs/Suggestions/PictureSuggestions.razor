@@ -1,0 +1,61 @@
+﻿@using System.Net.Http.Json
+@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.DataTransferObjects
+@using RazorLibrary.Extensions
+@inject IHttpClientFactory HttpFactory
+
+<div class="mb-3">
+    <button @onclick="SearchSuggestions" type="button" class="btn btn-secondary" 
+            disabled="@(!IsTermInputted() || suggestionsLoadedForTerm == Term?.Value)">
+        Load Pictures@(IsTermInputted() ? $" for {Term?.Value}" : string.Empty)
+    </button>
+</div>
+
+@if (suggestions.Any())
+{
+    <div class="image-gallery d-flex scrollbar">
+        @foreach (var image in suggestions)
+        {
+            <div class="image-thumbnail">
+                <img src="@image.PreviewUrl" @onclick="() => OnPictureSuggestionSelected(image)" style="max-height: 250px; max-width: 400px;" />
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public TermDto? Term { get; set; }
+
+    [Parameter]
+    public EventCallback<ImageSuggestion> OnPictureSuggestionSelectedCallback { get; set; }
+
+    private HttpClient http = null!;
+    private string searchTerm = "";
+    private ImageSuggestion[] suggestions = Array.Empty<ImageSuggestion>();
+    private string? suggestionsLoadedForTerm;
+
+    protected override void OnInitialized()
+    {
+        http = HttpFactory.CreateClient(ConfigureServices.SuggestionsHttpClientName);
+    }
+
+    private async Task SearchSuggestions()
+    {
+        var termValue = Term!.Value;
+
+        suggestions = await http.GetFromJsonAsync<ImageSuggestion[]>($"Pictures?term={termValue}") ?? Array.Empty<ImageSuggestion>();
+
+        suggestionsLoadedForTerm = termValue;
+    }
+
+    private async Task OnPictureSuggestionSelected(ImageSuggestion image)
+    {
+        await OnPictureSuggestionSelectedCallback.InvokeAsync(image);
+    }
+
+    private bool IsTermInputted()
+    {
+        return Term?.Value.Length > 0;
+    }
+}

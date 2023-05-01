@@ -1,0 +1,25 @@
+﻿.image-gallery {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    height: 300px;
+}
+.image-thumbnail {
+    display: inline-block;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #6c757d;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
