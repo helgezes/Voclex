@@ -3,13 +3,14 @@
 
 @if (Current != null)
 {
-	<div class="form-floating mb-3">
-		<textarea class="form-control adjustable-height" id="example-value" @bind="@Current.Value"></textarea>
-		<label for="example-value">Examples</label>
-	</div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control adjustable-height" id="example-value" @bind="@Current.Value"></textarea>
+        <label for="example-value">Examples</label>
+    </div>
+
+    <StringSuggestionsComponent SuggestionsPath="Examples" Term="Term" SuggestionAdded="SuggestionAdded"></StringSuggestionsComponent>
 }
 
-<StringSuggestionsComponent SuggestionsPath="Examples" Term="Term" SuggestionAdded="SuggestionAdded"></StringSuggestionsComponent>
 
 @code {
 	[Parameter]

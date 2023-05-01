@@ -10,9 +10,9 @@
         <textarea class="form-control adjustable-height" id="definition-value" @bind="@Current.Value"></textarea>
         <label for="definition-value">Definition</label>
     </div>
-}
 
-<StringSuggestionsComponent Term="Term" SuggestionAdded="SuggestionAdded" SuggestionsPath="Definitions"></StringSuggestionsComponent>
+    <StringSuggestionsComponent Term="Term" SuggestionAdded="SuggestionAdded" SuggestionsPath="Definitions"></StringSuggestionsComponent>
+}
 
 @code {
 	[Parameter]
