@@ -9,7 +9,7 @@ namespace Infrastructure.Services
 {
     public sealed class JwtTokenService : IAuthTokenService
     {
-        private const int expirationOffsetInMinutes = 24 * 60;
+        private const int expirationOffsetInMinutes = 24 * 30 * 60;
 
         public string CreateToken(IUserDto user)
         {
