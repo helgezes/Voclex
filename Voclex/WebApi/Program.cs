@@ -5,13 +5,16 @@ using Application.Models;
 using Application.Services;
 using Application.Services.Factories.Interfaces;
 using Application.Services.Interfaces;
+using Infrastructure.Filters;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Infrastructure.Services.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
@@ -27,15 +30,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options => options.AddDefaultPolicy(c => c.WithOrigins("http://localhost:5181", "https://localhost:7181").AllowAnyMethod().AllowAnyHeader()));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers(options =>
     {
+        options.Filters.Add<DictionaryIdValidationActionFilter>();
         options.ModelBinderProviders.Insert(0, new UserIdBinderProvider());
     })
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddSingleton<IConfigureOptions<MvcOptions>, ConfigureUserIdInputFormatter>();
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHttpContextAccessor();
 
 AddSwagger(builder);
 
