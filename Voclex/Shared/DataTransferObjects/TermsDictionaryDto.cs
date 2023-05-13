@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SharedLibrary.Attributes;
 
 namespace SharedLibrary.DataTransferObjects
 {
@@ -11,5 +12,8 @@ namespace SharedLibrary.DataTransferObjects
 
         [Required]
         public string Title { get; set; }
+
+        [UserId]
+        public int UserId { get; set; }
     }
 }
