@@ -6,7 +6,7 @@ namespace SharedLibrary.Queries.Terms;
 public class TermsListQuery : TermsQuery, IListQuery<Term>
 {
     public TermsListQuery(int page, int pageSize,
-        TermsListEnumQueryVariants queryVariant, int[] dictionariesIds) : 
+        TermsListEnumQueryVariants queryVariant, int[]? dictionariesIds = null) : 
         base(queryVariant, dictionariesIds)
     {
         Page = page;

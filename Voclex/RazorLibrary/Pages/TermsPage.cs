@@ -19,8 +19,6 @@ namespace RazorLibrary.Pages
         protected readonly Queue<TermDto> LoadedTerms = new();
         protected TermDto? CurrentTerm;
         
-        private readonly int[] dictionariesIds = Settings.DictionariesIds;
-
         private int totalPagesCount;
         private int currentPage = 1;
 
@@ -86,8 +84,7 @@ namespace RazorLibrary.Pages
 
         private async Task<int> GetTotalPagesCount()
         {
-            var queryObject = new TermsQuery(QueryVariant,
-                dictionariesIds);
+            var queryObject = new TermsQuery(QueryVariant);
 
             var newTermsCount = await Http.GetFromJsonAsync<int>(
                 $"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
@@ -100,8 +97,7 @@ namespace RazorLibrary.Pages
         {
             var termsListQuery = new TermsListQuery(
                 page, pageSize,
-                QueryVariant,
-                dictionariesIds);
+                QueryVariant);
 
             var newTerms = await Http.GetFromJsonAsync<TermDto[]>(
                 $"Terms/GetList{termsListQuery.ObjectPropertiesToQueryString()}");

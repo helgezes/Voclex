@@ -2,23 +2,21 @@
 using Application.DataAccess;
 using Application.Models;
 using Application.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using SharedLibrary.Attributes;
 
 namespace SharedLibrary.Queries.Terms;
 
 public class TermsQuery : IQuery<Term> //todo refactor this ?
 {
-    public TermsQuery(TermsListEnumQueryVariants queryVariant, int[] dictionariesIds)
+    public TermsQuery(TermsListEnumQueryVariants queryVariant, int[]? dictionariesIds = null)
     {
-        DictionariesIds = dictionariesIds;
         QueryVariant = queryVariant;
+        DictionariesIds = dictionariesIds;//TODO settings DictionariesIds
     }
 
     public TermsQuery(){}
 
-    public int[] DictionariesIds { get; init; }
+    public int[]? DictionariesIds { get; init; }
 
     [UserId]
     public int UserId { get; init; }
@@ -34,7 +32,7 @@ public class TermsQuery : IQuery<Term> //todo refactor this ?
                 var knownTermIdsForThatUser = context.TermProgresses
                     .Where(t => t.UserId == UserId)
                     .Select(x => x.TermId).ToArray(); //todo check performance of implementation in one query with usage of navigational properties. should be checked on prod data.
-                return term => DictionariesIds.Contains(term.TermsDictionaryId) &&
+                return term => (term.TermsDictionary.UserId == UserId || term.TermsDictionary.UserId == null) &&
                                !knownTermIdsForThatUser.Contains(term.Id);
 
             case TermsListEnumQueryVariants.GetOnlyForRepetition:
@@ -49,11 +47,11 @@ public class TermsQuery : IQuery<Term> //todo refactor this ?
                                 currentDateTime >= x.TermProgress.LastGuessDateTime.AddHours(x.GuessedTimesToHoursWaiting.HoursWaiting))
                     .Select(x => x.TermProgress.TermId).ToArray();
                 
-                return term => DictionariesIds.Contains(term.TermsDictionaryId) &&
+                return term => (term.TermsDictionary.UserId == UserId || term.TermsDictionary.UserId == null) && //userid = null are shared dictionaries
                                termIdsInProgress.Contains(term.Id);
 
             case TermsListEnumQueryVariants.GetAll:
-                return term => DictionariesIds.Contains(term.TermsDictionaryId);
+                return term => (term.TermsDictionary.UserId == UserId || term.TermsDictionary.UserId == null) && DictionariesIds.Contains(term.TermsDictionaryId);
 
             default:
                 throw new ArgumentOutOfRangeException();

@@ -40,7 +40,7 @@
 		var queryObject = 
 			new TermsListQuery(1, int.MaxValue, //todo load only chunks and cache it somehow. Virtualize ItemsProvider works strangely, mb made a custom one.
 			TermsListEnumQueryVariants.GetAll,
-			new []{Id}); //todo dictionary id
+			new []{Id});
 
 		var newTerms =
 			await Http.GetFromJsonAsync<TermDto[]>(
