@@ -36,7 +36,7 @@ namespace RazorLibrary.Extensions
             collection.AddHttpClient(Options.DefaultName,
                 client =>
                 {
-                    client.BaseAddress = new Uri("http://localhost:61072/");
+                    client.BaseAddress = new Uri("http://localhost:5279/");
                 })
                 .AddHttpMessageHandler<AuthorizationHeaderHandler>();
         }
