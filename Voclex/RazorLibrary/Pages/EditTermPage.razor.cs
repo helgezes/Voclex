@@ -4,11 +4,17 @@ using RazorLibrary.Shared.EditLearningModules;
 using RazorLibrary.Shared;
 using SharedLibrary.DataTransferObjects;
 using System.Net.Http.Json;
+using RazorLibrary.Services.Interfaces;
 
 namespace RazorLibrary.Pages
 {
     public partial class EditTermPage : ComponentBase
     {
+        [Inject]
+        public IAppHttpClient AppHttpClient { get; set; } = null!;
+
+        protected HttpClient Http => AppHttpClient.ApiClient;
+
         [Parameter]
         public int Id { get; set; }
 

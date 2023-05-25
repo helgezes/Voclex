@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
+using RazorLibrary.Services.Interfaces;
 using SharedLibrary.Queries.TermsRelated;
 
 namespace RazorLibrary.Shared.LearningModules;
@@ -9,7 +11,7 @@ namespace RazorLibrary.Shared.LearningModules;
 public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRelated
 {
     [Inject]
-    public HttpClient Http { get; set; } = null!;
+    public IAppHttpClient AppHttpClient { get; set; } = null!;
 
     [Parameter]
     public int CurrentTermId { get; set; }
@@ -54,7 +56,7 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
     protected async Task LoadNewItems(int[] termIds)
     {
         var queryObject = new TermsRelatedListQuery(termIds);
-        itemsForThatPage = await Http.GetFromJsonAsync<TDto[]>(
+        itemsForThatPage = await AppHttpClient.ApiClient.GetFromJsonAsync<TDto[]>(
             $"{ApiPath}{queryObject.ObjectPropertiesToQueryString()}");
     }
 }

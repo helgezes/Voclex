@@ -2,7 +2,8 @@
 @using SharedLibrary.DataTransferObjects
 @using RazorLibrary.DataTransferObjects
 @using RazorLibrary.Extensions
-@inject IHttpClientFactory HttpFactory
+@using RazorLibrary.Services.Interfaces
+@inject IAppHttpClient AppHttpClient
 
 <div class="mb-3">
     <button @onclick="SearchSuggestions" type="button" class="btn btn-secondary" 
@@ -37,7 +38,7 @@
 
     protected override void OnInitialized()
     {
-        http = HttpFactory.CreateClient(ConfigureServices.SuggestionsHttpClientName);
+        http = AppHttpClient.SuggestionsClient;
     }
 
     private async Task SearchSuggestions()

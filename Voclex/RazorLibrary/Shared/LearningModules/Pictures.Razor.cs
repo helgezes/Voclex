@@ -10,7 +10,7 @@ namespace RazorLibrary.Shared.LearningModules
 
         protected override Task OnInitializedAsync()
         {
-            pictureHost = Http.BaseAddress.AbsoluteUri.TrimEnd('/');
+            pictureHost = AppHttpClient.ApiClient.BaseAddress.AbsoluteUri.TrimEnd('/');
             return base.OnInitializedAsync();
         }
     }

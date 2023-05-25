@@ -3,11 +3,12 @@
 @using Application.ModelInterfaces.DtoInterfaces
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.JSInterop
+@using RazorLibrary.Services.Interfaces
 @implements IDisposable
 @inject IAuthenticatedUserService AuthenticatedUserService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JS
-@inject LocalStorage Storage
+@inject IAppStorage Storage
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -109,6 +110,12 @@
         AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChange;
     }
 
+    [JSInvokable]
+    public async Task LogOut()
+    {
+        await Storage.RemoveItem("token");
+    }
+
     private void OnAuthenticationStateChange(Task<AuthenticationState> _)
     {
         initializeLogoutPopover = true;
@@ -117,7 +124,7 @@
 
     private async Task InitializeLogoutPopover()
     {
-        await jsModule.InvokeVoidAsync("InitializeLogoutPopover");
+        await jsModule.InvokeVoidAsync("InitializeLogoutPopover", DotNetObjectReference.Create(this));
     }
 
 

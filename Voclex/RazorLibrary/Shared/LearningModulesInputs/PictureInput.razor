@@ -3,8 +3,10 @@
 @using RazorLibrary.Shared.LearningModulesInputs.Suggestions
 @using SharedLibrary.DataTransferObjects
 @using RazorLibrary.DataTransferObjects
+@using RazorLibrary.Services.Interfaces
+@using System.Net
 @inject IJSRuntime JS
-@inject HttpClient Http
+@inject IAppHttpClient AppHttpClient
 
 
 <div class="mb-3" hidden="@(!showThumbnail)">
@@ -67,7 +69,7 @@
 
     private async Task<MemoryBrowserFile> DownloadPicture(ImageSuggestion image)
     {
-        var imageBytes = await Http.GetByteArrayAsync(image.FullSizeUrl);
+        var imageBytes = await AppHttpClient.ApiClient.GetByteArrayAsync(image.FullSizeUrl);
         var imageData = new MemoryStream(imageBytes);
         var imageFile = new MemoryBrowserFile(imageData, image.FullSizeUrl);
         return imageFile;

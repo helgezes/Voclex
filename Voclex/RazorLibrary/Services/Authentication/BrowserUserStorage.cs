@@ -1,13 +1,14 @@
 ﻿using RazorLibrary.Helpers;
+using RazorLibrary.Services.Interfaces;
 using SharedLibrary.Services.Interfaces;
 
 namespace RazorLibrary.Services.Authentication
 {
     public sealed class BrowserUserStorage : IUserStorage
     {
-        private readonly LocalStorage storage;
+        private readonly IAppStorage storage;
 
-        public BrowserUserStorage(LocalStorage storage)
+        public BrowserUserStorage(IAppStorage storage)
         {
             this.storage = storage;
         }

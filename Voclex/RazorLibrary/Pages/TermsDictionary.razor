@@ -1,8 +1,9 @@
 ﻿@page "/dictionary/{id:int}"
-@inject HttpClient Http
+@inject IAppHttpClient AppHttpClient
 @using RazorLibrary.Helpers
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using RazorLibrary.Services.Interfaces
 @using SharedLibrary.DataTransferObjects
 @using SharedLibrary.Queries.Terms
 
@@ -14,7 +15,7 @@
 			<ItemContent>
 				<div class="py-3 list-group-item d-flex btn btn-outline-info">
 					<div class="col-10 text-start">@term.Value</div>
-					<a type="button" href="/term/edit/@term.Id" class="btn btn-success col-1 fa fa-pencil" target="_blank">
+					<a type="button" href="/term/edit/@term.Id" class="btn btn-success col-1 fa fa-pencil">
 					</a>
 					<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
 					</button>
@@ -34,6 +35,8 @@
 	public int Id { get; set; }
 
 	private readonly List<TermDto> terms = new();
+
+	protected HttpClient Http => AppHttpClient.ApiClient;
 
 	protected override async Task OnInitializedAsync()
 	{

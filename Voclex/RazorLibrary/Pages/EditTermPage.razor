@@ -1,11 +1,6 @@
 ﻿@page "/term/edit/{id:int}"
-@using SharedLibrary.DataTransferObjects
 @using Microsoft.AspNetCore.Components.Forms
-@using System.Net.Http.Json
 @using RazorLibrary.Shared
-@using RazorLibrary.Shared.CreateLearningModules
-@using RazorLibrary.Shared.EditLearningModules
-@inject HttpClient Http
 
 <div class="container">
 	<EditForm Model="currentTerm" OnValidSubmit="SaveChanges">

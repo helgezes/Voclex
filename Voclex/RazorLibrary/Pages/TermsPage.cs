@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
+using RazorLibrary.Services.Interfaces;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.Terms;
-using SharedLibrary.Services.Interfaces;
 
 namespace RazorLibrary.Pages
 {
@@ -12,8 +12,10 @@ namespace RazorLibrary.Pages
         const int pageSize = 7;
 
         [Inject]
-        public HttpClient Http { get; set; } = null!;
-        
+        public IAppHttpClient AppHttpClient { get; set; } = null!;
+
+        protected HttpClient Http => AppHttpClient.ApiClient;
+
         protected abstract TermsListEnumQueryVariants QueryVariant { get; }
 
         protected readonly Queue<TermDto> LoadedTerms = new();

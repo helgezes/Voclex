@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using RazorLibrary.Services.Interfaces;
 using RazorLibrary.Shared.CreateLearningModules;
 using SharedLibrary.DataTransferObjects;
 using System.Net.Http.Json;
@@ -8,6 +9,11 @@ namespace RazorLibrary.Pages
 {
     public partial class CreateTermPage : ComponentBase
     {
+        [Inject]
+        public IAppHttpClient AppHttpClient { get; set; } = null!;
+
+        protected HttpClient Http => AppHttpClient.ApiClient;
+
         [Parameter]
         public int DictionaryId { get; set; }
 

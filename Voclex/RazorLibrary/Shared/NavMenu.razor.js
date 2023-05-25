@@ -1,4 +1,8 @@
-﻿export function InitializeLogoutPopover(){
+﻿let dotNetHelper;
+
+export function InitializeLogoutPopover(dotNetHelperObj) {
+    dotNetHelper = dotNetHelperObj;
+
     bootstrap.Popover.Default.allowList.button = [];
     const logoutPopoverTrigger = document.querySelector('#logout_popover');
 
@@ -17,7 +21,7 @@
     });
 }
 
-function logOut() {
-    localStorage.removeItem("token");
+async function logOut() {
+    await dotNetHelper.invokeMethodAsync('LogOut');
     window.location.reload();
 }

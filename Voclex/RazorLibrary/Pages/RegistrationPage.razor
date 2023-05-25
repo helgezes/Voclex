@@ -3,12 +3,13 @@
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
+@using RazorLibrary.Services.Interfaces
 
 @implements IDisposable
 
 @attribute [AllowAnonymous]
 
-@inject HttpClient Http
+@inject IAppHttpClient AppHttpClient
 @inject NavigationManager Navigation
 
 <h3>Sign Up</h3>
@@ -36,6 +37,8 @@
     private ValidationMessageStore? messageStore;
     private readonly RegistrationRequest registrationRequest = new ();
     private bool isDisabled = false;
+    
+    protected HttpClient Http => AppHttpClient.ApiClient;
 
     protected override void OnInitialized()
     {

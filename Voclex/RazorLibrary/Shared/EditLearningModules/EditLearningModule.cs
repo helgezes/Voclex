@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Application.ModelInterfaces;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
+using RazorLibrary.Services.Interfaces;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.TermsRelated;
 
@@ -14,9 +15,11 @@ namespace RazorLibrary.Shared.EditLearningModules
         protected TDto[]? CurrentEntities; //if we will have multiple objects for one term. todo will we actually need this?
 
         [Inject]
-        public HttpClient Http { get; set; } = null!;
+        public IAppHttpClient AppHttpClient { get; set; } = null!;
 
-        [Parameter]
+        protected HttpClient Http => AppHttpClient.ApiClient;
+
+		[Parameter]
         public TermDto Term { get; set; } = null!;
 
         [Parameter] 
