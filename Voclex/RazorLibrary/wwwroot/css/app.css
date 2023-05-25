@@ -1,24 +1,30 @@
-﻿.learn-term-button {
+﻿.voclex-large-button {
     background-color: teal;
     border: none;
     color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
-    width: 100%; /* Make the button span the entire width of the container */
+    width: 100%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.learn-term-button:hover {
+.voclex-large-button:hover {
     background-color: #3e8e41;
     color: white;
 }
 
-/* Add shadow effect to buttons */
-.learn-term-button {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+.voclex-large-button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+
+.voclex-large-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #3e8e41;
 }
