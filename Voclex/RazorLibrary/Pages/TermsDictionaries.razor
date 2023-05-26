@@ -9,11 +9,11 @@
 @using RazorLibrary.Shared.Modals
 
 <PageTitle>Dictionaries</PageTitle>
-<div class="container">
+<div class="container voclex-list-container">
 	<div class="list-group">		
 		<Virtualize Items="dictionaries" Context="dictionary">
 			<ItemContent>
-				<div class="py-3 list-group-item d-flex btn btn-outline-info">
+				<div class="py-3 list-group-item voclex-group-item d-flex btn btn-outline-info">
 					<a href="/dictionary/@dictionary.Id" class="col-11 text-decoration-none">
 						<div class="text-start">@dictionary.Title</div>
 					</a>
@@ -22,7 +22,7 @@
 				</div>
 			</ItemContent>
 		</Virtualize>
-		<button type="button" @onclick="OpenCreateModal" class="py-3 border btn btn-outline-primary list-group-item" data-bs-toggle="modal" data-bs-target="#@createModalId">
+		<button type="button" @onclick="OpenCreateModal" class="py-3 border voclex-large-button list-group-item" data-bs-toggle="modal" data-bs-target="#@createModalId">
 			<div class="d-flex justify-content-center">Add new dictionary</div>
 		</button>
 	</div>
