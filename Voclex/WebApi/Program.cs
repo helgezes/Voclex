@@ -81,6 +81,8 @@ builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>(
 
 var app = builder.Build();
 
+UseForwardedFromReverseProxyHeaders(app);
+
 await SeedDevelopmentDb(app);
 
 // Configure the HTTP request pipeline.
@@ -187,4 +189,15 @@ void AddDbContext(WebApplicationBuilder webApplicationBuilder1)
 		provider.GetRequiredService<ApplicationDbContext>());
 }
 
+void UseForwardedFromReverseProxyHeaders(WebApplication webApplication)
+{
+	var forwardedHeadersOptions = new ForwardedHeadersOptions
+	{
+		ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+		RequireHeaderSymmetry = false
+	};
+	forwardedHeadersOptions.KnownNetworks.Clear();
+	forwardedHeadersOptions.KnownProxies.Clear();
+
+	webApplication.UseForwardedHeaders(forwardedHeadersOptions);
 }
