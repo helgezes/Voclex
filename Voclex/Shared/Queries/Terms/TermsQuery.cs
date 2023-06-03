@@ -36,7 +36,7 @@ public class TermsQuery : IQuery<Term> //todo refactor this ?
                                !knownTermIdsForThatUser.Contains(term.Id);
 
             case TermsListEnumQueryVariants.GetOnlyForRepetition:
-                var currentDateTime = DateTime.Now;
+                var currentDateTime = DateTimeOffset.UtcNow;
                 
                 var termIdsInProgress = context.TermProgresses
                     .Join(context.GuessedTimesCountToHoursWaiting, 

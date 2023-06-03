@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Persistence
 {
     public sealed class ApplicationDbContext : DbContext, IDbContext
-    {
-        public DbSet<TermsDictionary> TermsDictionaries => Set<TermsDictionary>();
+	{
+		public ApplicationDbContext(DbContextOptions options) : base(options) { }
+
+		public DbSet<TermsDictionary> TermsDictionaries => Set<TermsDictionary>();
 
         public DbSet<Term> Terms => Set<Term>();
 
@@ -24,14 +26,7 @@ namespace Infrastructure.Persistence
 
         public DbSet<GuessedTimesCountToHoursWaiting> GuessedTimesCountToHoursWaiting =>
             Set<GuessedTimesCountToHoursWaiting>();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=TestDB;");
-
-            base.OnConfiguring(optionsBuilder);
-        }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DictionaryConfiguration());

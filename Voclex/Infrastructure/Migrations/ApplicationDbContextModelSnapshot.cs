@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,21 +16,27 @@ namespace Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Application.Models.Definition", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("TermId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(1000)");
 
                     b.HasKey("Id");
 
@@ -42,15 +49,17 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("TermId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(2000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(2000)");
 
                     b.HasKey("Id");
 
@@ -62,10 +71,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Application.Models.GuessedTimesCountToHoursWaiting", b =>
                 {
                     b.Property<byte>("GuessedTimesCount")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("smallint");
 
-                    b.Property<ushort>("HoursWaiting")
-                        .HasColumnType("INTEGER");
+                    b.Property<int>("HoursWaiting")
+                        .HasColumnType("integer");
 
                     b.HasKey("GuessedTimesCount");
 
@@ -75,37 +84,37 @@ namespace Infrastructure.Migrations
                         new
                         {
                             GuessedTimesCount = (byte)0,
-                            HoursWaiting = (ushort)0
+                            HoursWaiting = 0
                         },
                         new
                         {
                             GuessedTimesCount = (byte)1,
-                            HoursWaiting = (ushort)12
+                            HoursWaiting = 12
                         },
                         new
                         {
                             GuessedTimesCount = (byte)2,
-                            HoursWaiting = (ushort)24
+                            HoursWaiting = 24
                         },
                         new
                         {
                             GuessedTimesCount = (byte)3,
-                            HoursWaiting = (ushort)120
+                            HoursWaiting = 120
                         },
                         new
                         {
                             GuessedTimesCount = (byte)4,
-                            HoursWaiting = (ushort)336
+                            HoursWaiting = 336
                         },
                         new
                         {
                             GuessedTimesCount = (byte)5,
-                            HoursWaiting = (ushort)1080
+                            HoursWaiting = 1080
                         },
                         new
                         {
                             GuessedTimesCount = (byte)6,
-                            HoursWaiting = (ushort)2880
+                            HoursWaiting = 2880
                         });
                 });
 
@@ -113,15 +122,17 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("TermId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -134,15 +145,17 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("TermsDictionaryId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(600)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(600)");
 
                     b.HasKey("Id");
 
@@ -155,19 +168,21 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<byte>("GuessedTimesCount")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("smallint");
 
                     b.Property<DateTime>("LastGuessDateTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TermId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -182,15 +197,17 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -203,20 +220,22 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("Role")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

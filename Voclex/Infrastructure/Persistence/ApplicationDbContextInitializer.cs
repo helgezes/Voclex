@@ -7,13 +7,11 @@ namespace Infrastructure.Persistence
 {
     public static class ApplicationDbContextInitializer
     {
-        public static async Task CreateAndSeedDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
-        {
-            //await context.Database.EnsureDeletedAsync();
-            await context.Database.MigrateAsync();
-            await SeedDbIfNeeded(context, scope);
-        }
-
+	    public static async Task MigrateDb(ApplicationDbContext context)
+	    {
+		    await context.Database.MigrateAsync();
+		}
+        
         public static async Task SeedDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
         {
             if (context.TermsDictionaries.Any()) return;

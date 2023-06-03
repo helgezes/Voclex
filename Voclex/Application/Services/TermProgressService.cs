@@ -52,11 +52,11 @@ namespace Application.Services
 
         private async Task<TermProgress> CreateNewTermProgress(int termId, int userId)
         {
-            var userFromDbTask = context.Users.FindAsync(userId);
-            var termFromDbTask = context.Terms.FindAsync(termId);
+            var userFromDb = await context.Users.FindAsync(userId);
+            var termFromDb = await context.Terms.FindAsync(termId);
 
             TermProgress relevantProgressItem =
-                new (await userFromDbTask, await termFromDbTask);
+                new (userFromDb, termFromDb);
 
             context.TermProgresses.Add(relevantProgressItem);
             return relevantProgressItem;

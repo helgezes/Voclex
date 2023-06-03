@@ -10,9 +10,10 @@ using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Infrastructure.Services.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -47,11 +48,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 AddSwagger(builder);
 
-
-builder.Services.AddDbContext<ApplicationDbContext>();
-builder.Services.AddScoped<IDbContext>(provider => 
-    provider.GetRequiredService<ApplicationDbContext>());
-
+AddDbContext(builder);
 
 AddAuthentication(builder);
 
@@ -115,14 +112,17 @@ app.MapControllers().RequireAuthorization();
 app.Run();
 
 
-Task SeedDevelopmentDb(WebApplication app)
+async Task SeedDevelopmentDb(WebApplication app)
 {
-    if (!app.Environment.IsDevelopment()) return Task.CompletedTask;
+	using var scope = app.Services.CreateScope();
+    await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    using var scope = app.Services.CreateScope();
-    using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await ApplicationDbContextInitializer.MigrateDb(context);
 
-    return ApplicationDbContextInitializer.CreateAndSeedDbIfNeeded(context, scope);
+    if (app.Environment.IsDevelopment())
+    {
+	    await ApplicationDbContextInitializer.SeedDbIfNeeded(context, scope);
+    }
 }
 
 void AddSwagger(WebApplicationBuilder webApplicationBuilder)
@@ -176,4 +176,15 @@ void AddAuthentication(WebApplicationBuilder builder1)
             };
             options.MapInboundClaims = false;
         });
+}
+
+void AddDbContext(WebApplicationBuilder webApplicationBuilder1)
+{
+	webApplicationBuilder1.Services.AddDbContext<ApplicationDbContext>(options =>
+		options.UseNpgsql(webApplicationBuilder1.Configuration["ConnectionStrings:DefaultConnection"]));
+		//options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")));
+	webApplicationBuilder1.Services.AddScoped<IDbContext>(provider =>
+		provider.GetRequiredService<ApplicationDbContext>());
+}
+
 }

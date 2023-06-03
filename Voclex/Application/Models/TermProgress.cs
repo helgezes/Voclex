@@ -49,7 +49,7 @@
 
         private void UpdateLastGuessDateTime()
         {
-            LastGuessDateTime = DateTime.Now;
+            LastGuessDateTime = DateTime.UtcNow;
         }
     }
 }
