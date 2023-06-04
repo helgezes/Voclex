@@ -67,6 +67,7 @@ builder.Services.AddScoped<ICrudService<TermsDictionary, TermsDictionaryDto>, Ge
 builder.Services.AddScoped<ICrudService<Definition, DefinitionDto>, GenericCrudService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<ICrudService<Example, ExampleDto>, GenericCrudService<Example, ExampleDto>>();
 builder.Services.AddScoped<ICrudService<Picture, PictureDto>, GenericCrudService<Picture, PictureDto>>();
+builder.Services.AddScoped<ICrudService<ExceptionLog, IExceptionLogDto>, GenericCrudService<ExceptionLog, IExceptionLogDto>>();
 builder.Services.AddScoped<IGetListService<Term, TermDto>, GenericGetListService<Term, TermDto>>();
 builder.Services.AddScoped<IGetListService<TermsDictionary, TermsDictionaryDto>, GenericGetListService<TermsDictionary, TermsDictionaryDto>>();
 builder.Services.AddScoped<ITermRelatedService<DefinitionDto>, TermRelatedService<Definition, DefinitionDto>>();
@@ -76,6 +77,7 @@ builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFacto
 builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudService<Picture, IPictureDto>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<PicturesService>();
+builder.Services.AddScoped<ExceptionLogService>();
 builder.Services.AddScoped<IAuthTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 

@@ -19,6 +19,8 @@ namespace Application.DataAccess
 
         DbSet<GuessedTimesCountToHoursWaiting> GuessedTimesCountToHoursWaiting { get; }
 
+        DbSet<ExceptionLog> ExceptionLogs { get; }
+
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

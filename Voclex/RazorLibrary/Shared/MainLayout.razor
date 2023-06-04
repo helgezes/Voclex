@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using RazorLibrary.Services.Interfaces
+@using System.Net.Http.Json
+@using SharedLibrary.DataTransferObjects
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject IAppHttpClient AppHttpClient
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +12,50 @@
 
     <main>
         <article class="content px-4">
-            @Body
+            <ErrorBoundary @ref="errorBoundary">
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    @{ LogException(ex);}
+                    @Body
+                    <div class="voclex-error-ui">
+                        Sorry, some error has occurred. We are already working on fixing it :)
+                        <a class="reload" @onclick="ReloadPage">Reload</a>
+                        <a class="dismiss" @onclick="Dismiss">🗙</a>
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
         </article>
     </main>
 </div>
+
+@code {
+    private ErrorBoundary? errorBoundary;
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+
+    private void ReloadPage()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    private void Dismiss()
+    {
+        errorBoundary?.Recover();
+    }
+
+    private async Task LogException(Exception exception)
+    {
+        var dto = new ExceptionLogDto(
+            exception.Message,
+            exception.StackTrace,
+            exception.Source,
+            NavigationManager.Uri, 
+            exception.ToString());
+
+        await AppHttpClient.ApiClient.PostAsJsonAsync("ExceptionLogs", dto);
+    }
+}

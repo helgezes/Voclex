@@ -43,7 +43,7 @@ public class UserIdInputFormatter : SystemTextJsonInputFormatter
     {
         foreach (var property in propertiesWithUserIdAttribute)
         {
-            if (property.PropertyType == typeof(int))
+            if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
             {
                 property.SetValue(modelInstance, currentUser.Id);
             }

@@ -26,7 +26,9 @@ namespace Infrastructure.Persistence
 
         public DbSet<GuessedTimesCountToHoursWaiting> GuessedTimesCountToHoursWaiting =>
             Set<GuessedTimesCountToHoursWaiting>();
-        
+
+        public DbSet<ExceptionLog> ExceptionLogs => Set<ExceptionLog>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DictionaryConfiguration());
