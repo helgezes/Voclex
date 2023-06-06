@@ -31,14 +31,57 @@ namespace WebApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Create([FromForm] PictureDto dto, IFormFile file) 
+        public async Task<ActionResult> Create([FromForm] PictureDto dto, IFormFile file)
+        {
+            return await CreateAndGetOkOrBadRequest(dto, () => picturesService.Create(dto, file));
+        }
+
+        [HttpPost("DownloadAndCreate")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Create([FromForm] PictureDto dto, string pictureUrl)
+        {
+            return await CreateAndGetOkOrBadRequest(dto, () => picturesService.Create(dto, pictureUrl));
+        }
+
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update([FromForm] PictureDto dto, IFormFile file)
+        {
+            return this.OkOrNotFound(await picturesService.UpdateAsync(dto, file) != null);
+		}
+
+
+        [HttpPut("DownloadAndEdit")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update([FromForm] PictureDto dto, string pictureUrl)
+        {
+	        return this.OkOrNotFound(await picturesService.UpdateAsync(dto, pictureUrl) != null);
+		}
+
+
+		[HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Delete([Required] int id)
+        {
+            return this.OkOrNotFound(await picturesService.Delete(id));
+        }
+
+        private async Task<ActionResult> CreateAndGetOkOrBadRequest(PictureDto dto, Func<Task<Picture>> createFunc)
         {
             if (dto.Id != default(int))
-                return BadRequest("This is method for creation. Id should be 0. For updating existing object use different method.");
+                return BadRequest(
+                    "This is method for creation. Id should be 0. For updating existing object use different method.");
 
             try
             {
-                var newModel = await picturesService.Create(dto, file);
+                var newModel = await createFunc();
 
                 return Ok(newModel.Id);
             }
@@ -52,22 +95,6 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPut]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Update([FromForm] PictureDto dto, IFormFile file)
-        {
-            return this.OkOrNotFound(await picturesService.UpdateAsync(dto, file) != null);
-        }
-
-        [HttpDelete]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete([Required] int id)
-        {
-            return this.OkOrNotFound(await picturesService.Delete(id));
-        }
     }
 
 }

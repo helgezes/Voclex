@@ -59,6 +59,8 @@ builder.Services.AddAuthorization(o =>
 
 builder.Services.AddAutoMapper(typeof(ApplicationDbContext));
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
 builder.Services.AddScoped<TermProgressService>();

@@ -2,9 +2,10 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using RazorLibrary.Helpers
 @using RazorLibrary.Shared.LearningModulesInputs
+@using System.Net
 @inherits EditLearningModule<SharedLibrary.DataTransferObjects.PictureDto>
 
-@if (file == null && FirstEntity != null)
+@if ((file == null && suggestionPath == null) && FirstEntity != null)
 {
 	<div class="form-floating mb-3" style="display: inline-block;">
 		<img src="@($"{pictureHost}{FirstEntity.Path}")" style="max-height: 250px; max-width: 400px" />
@@ -15,7 +16,7 @@
 
 @if (FirstEntity != null)
 {
-    <PictureInput OnFileInput="OnFileInput" Term="Term"></PictureInput>
+    <PictureInput OnFileInput="OnFileInput" OnSuggestionSelected="OnSuggestionSelected" Term="Term"></PictureInput>
 }
 
 
@@ -25,25 +26,29 @@
 
 	private string pictureHost;
     private IBrowserFile? file;
+    private string? suggestionPath;
 
 	public override async Task SaveChanges()
 	{
-	    if (file == null) return;
+	    if (file == null && suggestionPath == null) return;
 		
-	    var content = new MultipartFormDataContentBuilder()
-	        .AddObjectPublicProperties(FirstEntity ?? new PictureDto(0, Term.Id, string.Empty))
-	        .AddFile(file, MaxAllowedFileSizeInMb)
-	        .Build();
+		var editPath = SaveChangesApiPath;
 
-	    if (FirstEntity != null)
-	    {
-	        await Http.PutAsync(SaveChangesApiPath, content);
-	    }
-	    else
-	    {
-	        await Http.PostAsync(SaveChangesApiPath, content); //if picture was deleted
-	        await OnInitializationComplete.InvokeAsync(new OnInitializationEventArgs(GetType(), true));
-	    }
+	    var formDataBuilder = new MultipartFormDataContentBuilder()
+	        .AddObjectPublicProperties(FirstEntity);
+
+		if (file != null)
+		{
+			formDataBuilder.AddFile(file, MaxAllowedFileSizeInMb);
+		}
+		else
+		{
+			editPath = $"{editPath}/DownloadAndEdit?pictureUrl={WebUtility.UrlEncode(suggestionPath)}";
+		}
+
+		var content = formDataBuilder.Build();
+		
+		await Http.PutAsync(editPath, content);
 	}
 
 	protected override Task OnInitializedAsync()
@@ -64,6 +69,11 @@
     {
 		file = browserFile;
     }
+
+	private void OnSuggestionSelected(string suggestion)
+	{
+	    suggestionPath = suggestion;
+	}
 
     private const int MaxAllowedFileSizeInMb = 10;
 }

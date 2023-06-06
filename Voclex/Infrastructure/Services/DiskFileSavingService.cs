@@ -18,15 +18,15 @@ namespace Infrastructure.Services
 
         public async Task<string> SaveFileAsync(IFormFile file)
         {
-            var fileExtension = GetFileExtension(file);
+	        await using var formFileStream = file.OpenReadStream();
+			return await SaveFileAsync(formFileStream, file.FileName);
+        }
 
-            CheckFileExtension(fileExtension);
+        public async Task<string> SaveFileAsync(Stream fileStream, string fileName)
+        {
+            CheckFileExtensionAndCreateDirectoryIfNotExists(fileName);
 
-            CreateDirectoryIfNotExists();
-
-            var filePath = await SaveFileToFolder(file, folderAbsolutePath);
-            
-            return $"{folderEndpointPath}{Path.GetFileName(filePath)}";
+            return await SaveFileToFolderAndGetRelativePath(fileStream, fileName);
         }
 
         public void DeleteFile(string fileName)//todo async?
@@ -34,6 +34,15 @@ namespace Infrastructure.Services
             File.Delete($"{folderAbsolutePath}{fileName}"); 
         }
 
+
+        private void CheckFileExtensionAndCreateDirectoryIfNotExists(string fileFileName)
+        {
+            var fileExtension = GetFileExtension(fileFileName);
+
+            CheckFileExtension(fileExtension);
+
+            CreateDirectoryIfNotExists();
+        }
 
         private void CheckFileExtension(string fileExtension)
         {
@@ -48,31 +57,38 @@ namespace Infrastructure.Services
                 Directory.CreateDirectory(folderAbsolutePath);
         }
 
-        private static async Task<string> SaveFileToFolder(IFormFile file, string folderPath)
+        private async Task<string> SaveFileToFolderAndGetRelativePath(Stream formFileStream, string fileName)
         {
-            var filePath = GetFilePath(file, folderPath);
+            var filePath = await SaveFileToFolder(formFileStream, fileName, folderAbsolutePath);
 
-            await SaveFileToPath(file, filePath);
+            return $"{folderEndpointPath}{Path.GetFileName(filePath)}";
+        }
+
+        private static async Task<string> SaveFileToFolder(Stream formFileStream, string fileName, string folderPath)
+        {
+            var filePath = GetFilePath(folderPath, fileName);
+
+            await SaveFileToPath(filePath, formFileStream);
             return filePath;
         }
 
-        private static string GetFilePath(IFormFile file, string folderPath)
+        private static string GetFilePath(string folderPath, string fileName)
         {
-            var fileExtension = GetFileExtension(file);
+            var fileExtension = GetFileExtension(fileName);
 
             var filePath = $"{folderPath}{Guid.NewGuid()}{fileExtension}";
             return filePath;
         }
 
-        private static async Task SaveFileToPath(IFormFile file, string filePath)
+        private static async Task SaveFileToPath(string filePath, Stream formFileStream)
         {
             await using var fileStream = new FileStream(filePath, FileMode.Create); //todo resize
-            await file.CopyToAsync(fileStream);
+            await formFileStream.CopyToAsync(fileStream);
         }
 
-        private static string GetFileExtension(IFormFile file)
+        private static string GetFileExtension(string fileName)
         {
-            return Path.GetExtension(file.FileName).ToLowerInvariant();
+            return Path.GetExtension(fileName).ToLowerInvariant();
         }
     }
 }

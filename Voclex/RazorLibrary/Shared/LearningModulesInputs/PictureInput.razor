@@ -24,6 +24,9 @@
     public EventCallback<IBrowserFile> OnFileInput { get; set; }
 
     [Parameter, EditorRequired]
+    public EventCallback<string> OnSuggestionSelected { get; set; }
+
+    [Parameter, EditorRequired]
     public TermDto? Term { get; set; }
 
     private ElementReference imageThumbnailElement;
@@ -56,8 +59,7 @@
     {
         await ShowSelectedSuggestionThumbnail(image);
 
-        var imageFile = await DownloadPicture(image);
-        await OnFileInput.InvokeAsync(imageFile);
+        await OnSuggestionSelected.InvokeAsync(image.FullSizeUrl);
     }
 
 
@@ -66,36 +68,4 @@
         showThumbnail = true;
         await jsModule.InvokeVoidAsync("previewImageFromUrl", image.PreviewUrl, imageThumbnailElement);
     }
-
-    private async Task<MemoryBrowserFile> DownloadPicture(ImageSuggestion image)
-    {
-        var imageBytes = await AppHttpClient.ApiClient.GetByteArrayAsync(image.FullSizeUrl);
-        var imageData = new MemoryStream(imageBytes);
-        var imageFile = new MemoryBrowserFile(imageData, image.FullSizeUrl);
-        return imageFile;
-    }
-
-    private sealed class MemoryBrowserFile : IBrowserFile
-    {
-        public MemoryBrowserFile(Stream data, string name)
-        {
-            Content = data;
-            Name = name;
-            LastModified = DateTimeOffset.Now;
-            Size = data.Length;
-            ContentType = "application/octet-stream";
-        }
-
-        public Stream Content { get; }
-        public string ContentType { get; }
-        public DateTimeOffset LastModified { get; }
-        public string Name { get; }
-        public long Size { get; }
-
-        public Stream OpenReadStream(long maxAllowedSize = 512000, CancellationToken cancellationToken = default)
-        {
-            return Content;
-        }
-    }
-
 }

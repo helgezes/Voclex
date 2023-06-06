@@ -2,12 +2,14 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using RazorLibrary.Shared.LearningModulesInputs
 @using RazorLibrary.Helpers
+@using System.Net
 @inherits CreateLearningModule<SharedLibrary.DataTransferObjects.PictureDto>
 
-<PictureInput OnFileInput="OnFileInput" Term="Term"></PictureInput>
+<PictureInput OnFileInput="OnFileInput" OnSuggestionSelected="OnSuggestionSelected" Term="Term"></PictureInput>
 
 @code {
 	private IBrowserFile? file;
+	private string? suggestionPath;
 
 	protected override string SaveChangesApiPath => "Pictures";
 	protected override PictureDto CreateNewDto()
@@ -21,12 +23,23 @@
 		
 	    FirstEntity.TermId = termId;
 
-	    var content = new MultipartFormDataContentBuilder()
-	        .AddObjectPublicProperties(FirstEntity)
-	        .AddFile(file!, MaxAllowedFileSizeInMb)
-	        .Build();
+	    var createPath = SaveChangesApiPath;
 
-		await Http.PostAsync(SaveChangesApiPath, content);
+	    var formDataBuilder = new MultipartFormDataContentBuilder()
+	        .AddObjectPublicProperties(FirstEntity);
+
+	    if (file != null)
+	    {
+	        formDataBuilder.AddFile(file, MaxAllowedFileSizeInMb);
+	    }
+	    else
+	    {
+	        createPath = $"{createPath}/DownloadAndCreate?pictureUrl={WebUtility.UrlEncode(suggestionPath)}";
+	    }
+
+	    var content = formDataBuilder.Build();
+
+		await Http.PostAsync(createPath, content);
 
 	    return true;
 	}
@@ -36,6 +49,12 @@
 		file = browserFile;
 		EnableModuleCreation();
 	}
-	    
+
+    private void OnSuggestionSelected(string suggestion)
+    {
+        suggestionPath = suggestion;
+		EnableModuleCreation();
+    }
+
 	private const int MaxAllowedFileSizeInMb = 10;
 }
