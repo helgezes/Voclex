@@ -1,9 +1,12 @@
-﻿using Application.Models;
+﻿using System.Security.Authentication;
+using Application.DataAccess;
+using Application.Models;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.Queries.TermsDictionary;
+using SharedLibrary.Services.Interfaces;
 
 namespace WebApi.Controllers
 {
@@ -32,5 +35,22 @@ namespace WebApi.Controllers
         {
             return listService.GetCount(query);
         }
+
+        [HttpGet(nameof(GetFirstDictionaryId))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<int?> GetFirstDictionaryId([FromServices] IDbContext context, [FromServices] IAuthenticatedUserService userService)
+        {
+            var user = await userService.GetCurrentUser();
+
+            if (user == null)
+                throw new AuthenticationException();
+
+			var dictionaryId = context.TermsDictionaries
+                .Where(d => d.UserId == user.Id)
+                .OrderBy(d => d.Id)
+                .Select(d => d.Id).FirstOrDefault();
+
+            return dictionaryId != 0 ? dictionaryId : null;
+		}
     }
 }

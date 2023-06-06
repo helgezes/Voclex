@@ -1,0 +1,15 @@
+﻿@page "/create-new-term-main-dictionary"
+@using RazorLibrary.Services.Interfaces
+@using System.Net.Http.Json
+@inject NavigationManager NavigationManager
+@inject IAppHttpClient AppHttpClient
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var firstDictionaryIdString = await AppHttpClient.ApiClient.GetStringAsync("TermsDictionary/GetFirstDictionaryId");
+
+        NavigationManager.NavigateTo(!string.IsNullOrWhiteSpace(firstDictionaryIdString) ? $"/dictionary/{firstDictionaryIdString}/create-new-term" : "/dictionaries");
+    }
+
+}
