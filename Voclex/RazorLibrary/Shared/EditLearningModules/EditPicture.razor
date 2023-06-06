@@ -35,7 +35,7 @@
 		var editPath = SaveChangesApiPath;
 
 	    var formDataBuilder = new MultipartFormDataContentBuilder()
-	        .AddObjectPublicProperties(FirstEntity);
+	        .AddObjectPublicProperties(FirstEntity!);
 
 		if (file != null)
 		{
