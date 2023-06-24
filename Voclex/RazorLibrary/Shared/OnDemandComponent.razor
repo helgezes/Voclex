@@ -1,12 +1,11 @@
 ﻿<div class="row py-2">
-	@if (state == ComponentState.Visible)
-	{
-		@ChildContent
-	}
-	else if (state == ComponentState.OnDemand)
-	{
-		<button type="button" class="btn btn-lg btn-block voclex-large-button" @onclick="MakeVisible">Show @ComponentName</button>
-	}
+	<div hidden="@(state != ComponentState.Visible)">
+        @ChildContent
+    </div>
+    @if (state == ComponentState.OnDemand)
+    {
+        <button type="button" class="btn btn-lg btn-block voclex-large-button" @onclick="MakeVisible">Show @ComponentName</button>
+    }
 </div>
 
 @code {
