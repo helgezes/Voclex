@@ -7,48 +7,40 @@
 <PageTitle>Terms Repetition</PageTitle>
 
 <div class="container">
-	@if (CurrentTerm != null)
+	@if (CurrentTerm != null && showTerm)
 	{
-	    <div hidden="@(!showTerm)"> 
-            <Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></Term>
-            <p class="d-flex justify-content-around py-3">
-                <button @onclick="CorrectGuess" type="button" class="btn btn-lg voclex-large-button">I got it</button>
-                <button @onclick="IncorrectGuess" type="button" class="btn btn-lg voclex-large-button">Keep showing it</button>
-            </p>
-        </div>
-
-	    <div hidden="@(showTerm)">
-            @{
-                var learningModuleParameters = GetLearningModuleParameters();
-            }
-            @foreach (var guessingModule in guessingModules)
-            {
-                <OnDemandComponent InitialState="guessingModule.InitialState" ComponentName="@guessingModule.Name">
-                    <DynamicComponent Type="guessingModule.Module" Parameters="learningModuleParameters"></DynamicComponent>
-                </OnDemandComponent>
-            }
-            <div class="row py-2">
-                <form class="submit-answer @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @onsubmit="TryGuess">
-                    <input class="form-control border-primary" @bind="guess" placeholder="Enter your guess">
-                    <button type="submit" class="btn submit-button">Submit my answer</button>
-                </form>
-                <div class="invalid-feedback">
-                    Wrong guess! Try again.
-                </div>
+		<Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></Term>
+		<p class="d-flex justify-content-around py-3">
+			<button @onclick="CorrectGuess" type="button" class="btn btn-lg voclex-large-button">I got it</button>
+			<button @onclick="IncorrectGuess" type="button" class="btn btn-lg voclex-large-button">Keep showing it</button>
+		</p>
+	}
+	else if (CurrentTerm != null)
+	{
+		var learningModuleParameters = GetLearningModuleParameters();
+		@foreach (var guessingModule in guessingModules)
+		{
+			<OnDemandComponent InitialState="guessingModule.InitialState" ComponentName="@guessingModule.Name">
+				<DynamicComponent Type="guessingModule.Module" Parameters="learningModuleParameters"></DynamicComponent>
+			</OnDemandComponent>
+		}
+	    <div class="row py-2">
+			<form class="submit-answer @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @onsubmit="TryGuess">
+                <input class="form-control border-primary" @bind="guess" placeholder="Enter your guess">
+                <button type="submit" class="btn submit-button">Submit my answer</button>
+            </form>
+            <div class="invalid-feedback">
+                Wrong guess! Try again.
             </div>
         </div>
 	}
-    else if (IsLastPage())
-    {
-        <div>
-            <p>No more terms to repeat!</p>
+	else
+	{
+	    <div>
+			<p>No more terms to repeat!</p>
             <p><a href="/learn-new-terms">I would like to learn new terms</a></p>
-        </div>
-    }
-    else
-    {
-        <LoadingComponent></LoadingComponent>
-    }
+		</div>
+	}
 </div>
 
 @code {
