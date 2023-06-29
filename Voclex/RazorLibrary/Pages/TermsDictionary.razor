@@ -13,13 +13,15 @@
 	<div class="list-group">
 		<Virtualize Items="terms" Context="term">
 			<ItemContent>
-				<div class="py-3 list-group-item voclex-group-item d-flex btn btn-outline-info">
-					<div class="col-10 text-start">@term.Value</div>
-					<a type="button" href="/term/edit/@term.Id" class="btn btn-success col-1 fa fa-pencil">
-					</a>
-					<button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
-					</button>
-				</div>
+                <div class="py-3 list-group-item voclex-group-item d-flex btn btn-outline-info">
+					<a href="/term/edit/@term.Id" class="col-10 text-decoration-none">
+                        <div class="text-start">@term.Value</div>
+                    </a>
+                    <a type="button" href="/term/edit/@term.Id" class="btn btn-success col-1 fa fa-pencil">
+                    </a>
+                    <button @onclick="() => Delete(term)" type="button" class="btn btn-danger col-1 fa fa-trash">
+                    </button>
+                </div>
 			</ItemContent>
 		</Virtualize>
 		<div class="py-3 btn btn-outline-primary list-group-item">
