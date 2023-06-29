@@ -22,13 +22,16 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
     [Parameter]
     public int[]? LoadedTermsIds { get; set; }
 
+    [Parameter]
+    public EventCallback<OnLearningModuleLoadingEventArgs> OnLoading { get; set; } //todo separate into two events?
 
-    protected TDto? current;
+
+	protected TDto? current;
     protected TDto[]? itemsForThatPage;
     protected int itemsLoadedForPage = -1;
 
     protected abstract string ApiPath { get; } //todo we can make this virtual and use type name as convention
-
+    
     protected override async Task OnParametersSetAsync()
     {
         await LoadNewItemsIfNeeded();
@@ -55,8 +58,26 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
 
     protected async Task LoadNewItems(int[] termIds)
     {
+	    await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), false)); //todo refactor?
+
         var queryObject = new TermsRelatedListQuery(termIds);
         itemsForThatPage = await AppHttpClient.ApiClient.GetFromJsonAsync<TDto[]>(
             $"{ApiPath}{queryObject.ObjectPropertiesToQueryString()}");
+
+        await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), true));
     }
+}
+public sealed class OnLearningModuleLoadingEventArgs
+{
+	public OnLearningModuleLoadingEventArgs(Type type, bool isLoadingFinished)
+	{
+		Type = type;
+		IsLoadingFinished = isLoadingFinished;
+	}
+
+	public Type Type { get; init; }
+
+	public bool IsLoadingFinished { get; init; }
+
+	public bool IsLoadingStarted => !IsLoadingFinished;
 }

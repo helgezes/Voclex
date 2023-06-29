@@ -21,7 +21,7 @@ namespace RazorLibrary.Pages
         protected readonly Queue<TermDto> LoadedTerms = new();
         protected TermDto? CurrentTerm;
         
-        private int totalPagesCount;
+        private int totalPagesCount = int.MaxValue;
         private int currentPage = 1;
 
         protected override async Task OnInitializedAsync()
@@ -66,10 +66,15 @@ namespace RazorLibrary.Pages
             }
         }
 
+        protected bool IsLastPage()
+        {
+            return currentPage >= totalPagesCount;
+        }
+
         private async Task SetNewCurrentTermAndLoadIfNeeded()
         {
             SetNewCurrentTerm();
-            if (LoadedTerms.Any() || currentPage >= totalPagesCount) return;
+            if (LoadedTerms.Any() || IsLastPage()) return;
 
             await AddNewTerms(++currentPage);
         }

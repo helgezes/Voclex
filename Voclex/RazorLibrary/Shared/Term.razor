@@ -1,18 +1,57 @@
 ﻿@using RazorLibrary.Shared.LearningModules
-<h1>@CurrentTerm</h1>
 
-@foreach (var learningModule in learningModules)
+<div hidden="@(!allModulesLoaded)">
+    <h1>@CurrentTerm</h1>
+    
+    @{
+        var parameters = GetLearningModuleParameters();
+    }
+    @foreach (var learningModule in learningModules)
+    {
+        <DynamicComponent Type="learningModule" Parameters="parameters"></DynamicComponent>
+    }
+</div>
+
+@if (!allModulesLoaded)
 {
-	<DynamicComponent Type="learningModule" Parameters="LearningModuleParameters"></DynamicComponent>
+    <div>
+        <p>Loading your definitions, examples and pictures...</p>
+    </div>
 }
 
+
 @code {
-	private readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
+	private static readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
+
+    private readonly Dictionary<Type, bool> loadedModules = learningModules.ToDictionary(l => l, _ => false); //todo concurrent dict?
+
+    private bool allModulesLoaded = false;
+
+    private void OnModuleLoading(OnLearningModuleLoadingEventArgs args)
+    {
+        loadedModules[args.Type] = args.IsLoadingFinished;
+
+        if (args.IsLoadingStarted)
+        {
+            allModulesLoaded = false;
+        }
+        else
+        {
+            allModulesLoaded = loadedModules.All(m => m.Value);
+        }
+    }
 
 	[Parameter]
 	public string CurrentTerm { get; set; }
 
 	[Parameter]
 	public IDictionary<string, object> LearningModuleParameters { get; set; }
+
+
+    protected IDictionary<string, object> GetLearningModuleParameters()
+    {
+        LearningModuleParameters.TryAdd("OnLoading", EventCallback.Factory.Create<OnLearningModuleLoadingEventArgs>(this, OnModuleLoading)); //todo is it ok?
+        return LearningModuleParameters;
+    }
 
 }
