@@ -31,7 +31,12 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
     protected int itemsLoadedForPage = -1;
 
     protected abstract string ApiPath { get; } //todo we can make this virtual and use type name as convention
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), false)); //todo refactor?
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         await LoadNewItemsIfNeeded();
@@ -46,6 +51,8 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
             itemsLoadedForPage = CurrentPage;
 
             await LoadNewItems(LoadedTermsIds);
+
+            await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), true));
         }
     }
 
@@ -58,13 +65,9 @@ public abstract class LearningModule<TDto> : ComponentBase where TDto : ITermRel
 
     protected async Task LoadNewItems(int[] termIds)
     {
-	    await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), false)); //todo refactor?
-
         var queryObject = new TermsRelatedListQuery(termIds);
         itemsForThatPage = await AppHttpClient.ApiClient.GetFromJsonAsync<TDto[]>(
             $"{ApiPath}{queryObject.ObjectPropertiesToQueryString()}");
-
-        await OnLoading.InvokeAsync(new OnLearningModuleLoadingEventArgs(GetType(), true));
     }
 }
 public sealed class OnLearningModuleLoadingEventArgs
