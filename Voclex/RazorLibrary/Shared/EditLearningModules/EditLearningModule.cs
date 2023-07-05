@@ -1,11 +1,11 @@
 ﻿
 using System.Net.Http.Json;
-using Application.ModelInterfaces;
+using Application.Queries.TermsRelated;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
 using RazorLibrary.Services.Interfaces;
 using SharedLibrary.DataTransferObjects;
-using SharedLibrary.Queries.TermsRelated;
+using SharedLibrary.ModelInterfaces;
 
 namespace RazorLibrary.Shared.EditLearningModules
 {

@@ -1,4 +1,4 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
+﻿using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Application.Services.Interfaces
 {

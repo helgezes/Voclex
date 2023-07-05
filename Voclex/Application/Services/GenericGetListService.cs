@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using Application.DataAccess;
-using Application.ModelInterfaces;
 using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.ModelInterfaces;
 
 namespace Application.Services
 {

@@ -1,7 +1,7 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using Application.Models;
-using SharedLibrary.DataTransferObjects;
+﻿using SharedLibrary.DataTransferObjects;
 using System.Security.Claims;
+using SharedLibrary.Enums;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace SharedLibrary.Services
 {

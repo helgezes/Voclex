@@ -1,11 +1,11 @@
 ﻿using Application.DataAccess;
 using Application.Exceptions;
-using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Application.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace Application.ModelInterfaces.DtoInterfaces;
+﻿namespace SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 public interface IExceptionLogDto : IIdentifiable
 {

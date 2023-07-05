@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Application.ModelInterfaces.DtoInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using SharedLibrary.Attributes;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using SharedLibrary.Services.Interfaces;
 
 namespace WebApi.Binding;

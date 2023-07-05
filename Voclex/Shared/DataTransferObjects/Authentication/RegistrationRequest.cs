@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Application.ModelInterfaces.DtoInterfaces;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace SharedLibrary.DataTransferObjects.Authentication
 {

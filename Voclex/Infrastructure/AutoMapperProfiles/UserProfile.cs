@@ -1,9 +1,10 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using Application.Models;
+﻿using Application.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.DataTransferObjects.Authentication;
+using SharedLibrary.Enums;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Infrastructure.AutoMapperProfiles
 {

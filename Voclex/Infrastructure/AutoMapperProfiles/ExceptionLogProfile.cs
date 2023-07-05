@@ -1,7 +1,7 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using Application.Models;
+﻿using Application.Models;
 using AutoMapper;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Infrastructure.AutoMapperProfiles;
 

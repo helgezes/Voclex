@@ -7,12 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="DataTransferObjects\Interfaces\" />
-    <Folder Include="Queries\Terms\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>

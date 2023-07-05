@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using Application.DataAccess;
-using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services;
 using Application.Services.Factories.Interfaces;
@@ -19,6 +18,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.Enums;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using SharedLibrary.Services.Interfaces;
 using WebApi.Binding;
 using WebApi.Constants;

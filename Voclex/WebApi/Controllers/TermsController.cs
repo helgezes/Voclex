@@ -1,9 +1,9 @@
 ﻿using Application.Models;
+using Application.Queries.Terms;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
-using SharedLibrary.Queries.Terms;
 
 namespace WebApi.Controllers
 {

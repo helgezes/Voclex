@@ -1,10 +1,10 @@
 ﻿using Application.DataAccess;
-using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Application.Services
 {

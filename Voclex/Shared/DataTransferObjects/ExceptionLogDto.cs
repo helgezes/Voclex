@@ -1,5 +1,5 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using SharedLibrary.Attributes;
+﻿using SharedLibrary.Attributes;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace SharedLibrary.DataTransferObjects
 {

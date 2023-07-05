@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using SharedLibrary.Services;
 using SharedLibrary.Services.Interfaces;
 

@@ -1,11 +1,11 @@
 ﻿using System.Security.Authentication;
 using Application.DataAccess;
 using Application.Models;
+using Application.Queries.TermsDictionary;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
-using SharedLibrary.Queries.TermsDictionary;
 using SharedLibrary.Services.Interfaces;
 
 namespace WebApi.Controllers

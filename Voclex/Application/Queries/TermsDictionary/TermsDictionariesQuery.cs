@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using Application.DataAccess;
-using Application.Models;
 using Application.Services;
 using SharedLibrary.Attributes;
+using SharedLibrary.Enums;
 
-namespace SharedLibrary.Queries.TermsDictionary
+namespace Application.Queries.TermsDictionary
 {
 	public class TermsDictionariesQuery : IQuery<Application.Models.TermsDictionary>
     {

@@ -1,8 +1,8 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using Application.Services;
+﻿using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using WebApi.Constants;
 
 namespace WebApi.Controllers

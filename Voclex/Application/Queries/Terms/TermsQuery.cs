@@ -4,7 +4,7 @@ using Application.Models;
 using Application.Services;
 using SharedLibrary.Attributes;
 
-namespace SharedLibrary.Queries.Terms;
+namespace Application.Queries.Terms;
 
 public class TermsQuery : IQuery<Term> //todo refactor this ?
 {
@@ -32,7 +32,7 @@ public class TermsQuery : IQuery<Term> //todo refactor this ?
                 var knownTermIdsForThatUser = context.TermProgresses
                     .Where(t => t.UserId == UserId)
                     .Select(x => x.TermId).ToArray(); //todo check performance of implementation in one query with usage of navigational properties. should be checked on prod data.
-                return term => (term.TermsDictionary.UserId == UserId || term.TermsDictionary.UserId == null) &&
+                return term => term.TermsDictionaryId != 1 && (term.TermsDictionary.UserId == UserId || term.TermsDictionary.UserId == null) &&
                                !knownTermIdsForThatUser.Contains(term.Id);
 
             case TermsListEnumQueryVariants.GetOnlyForRepetition:

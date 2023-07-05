@@ -1,11 +1,11 @@
 ﻿using Application.DataAccess;
-using Application.ModelInterfaces.DtoInterfaces;
 using Application.Models;
 using Application.Services.Factories.Interfaces;
 using Application.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Application.Services
 {

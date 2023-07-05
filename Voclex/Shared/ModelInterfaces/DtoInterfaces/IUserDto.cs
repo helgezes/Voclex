@@ -1,6 +1,6 @@
-﻿using Application.Models;
+﻿using SharedLibrary.Enums;
 
-namespace Application.ModelInterfaces.DtoInterfaces
+namespace SharedLibrary.ModelInterfaces.DtoInterfaces
 {
     public interface IUserDto : IIdentifiable
     {

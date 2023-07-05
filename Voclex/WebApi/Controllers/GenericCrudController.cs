@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Application.ModelInterfaces;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.ModelInterfaces;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers

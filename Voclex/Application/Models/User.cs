@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SharedLibrary.Enums;
 
 namespace Application.Models
 {
@@ -31,11 +32,5 @@ namespace Application.Models
         {
             return passwordHasher.HashPassword(this, password);
         }
-    }
-
-    public enum Role
-    {
-        User = 0,
-        Admin = 1
     }
 }

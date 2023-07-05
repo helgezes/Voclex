@@ -1,8 +1,8 @@
-﻿using Application.ModelInterfaces;
+﻿using Application.Queries.TermsRelated;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using SharedLibrary.Queries.TermsRelated;
+using SharedLibrary.ModelInterfaces;
 
 namespace WebApi.Controllers;
 

@@ -7,8 +7,9 @@ using SharedLibrary.Attributes;
 using SharedLibrary.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Application.ModelInterfaces.DtoInterfaces;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.Enums;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace Infrastructure.Filters
 {

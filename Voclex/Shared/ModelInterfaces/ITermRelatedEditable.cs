@@ -1,4 +1,4 @@
-﻿namespace Application.ModelInterfaces
+﻿namespace SharedLibrary.ModelInterfaces
 {
 
     public interface ITermRelatedEditable : ITermRelated

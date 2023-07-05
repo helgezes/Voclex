@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.Models;
+using Application.Queries.TermsRelated;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
-using SharedLibrary.Queries.TermsRelated;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers

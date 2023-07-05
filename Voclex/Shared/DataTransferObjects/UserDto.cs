@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Application.ModelInterfaces.DtoInterfaces;
-using Application.Models;
+using SharedLibrary.Enums;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 
 namespace SharedLibrary.DataTransferObjects
 {

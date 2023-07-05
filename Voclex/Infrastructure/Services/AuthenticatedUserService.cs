@@ -1,5 +1,5 @@
-﻿using Application.ModelInterfaces.DtoInterfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using SharedLibrary.Services;
 using SharedLibrary.Services.Interfaces;
 
