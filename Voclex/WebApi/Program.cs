@@ -4,6 +4,7 @@ using Application.Models;
 using Application.Services;
 using Application.Services.Factories.Interfaces;
 using Application.Services.Interfaces;
+using Application.Services.QueryServices;
 using Infrastructure.Filters;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
@@ -18,6 +19,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.DataTransferObjects.Queries.Terms;
+using SharedLibrary.DataTransferObjects.Queries.TermsDictionary;
 using SharedLibrary.Enums;
 using SharedLibrary.ModelInterfaces.DtoInterfaces;
 using SharedLibrary.Services.Interfaces;
@@ -71,8 +74,14 @@ builder.Services.AddScoped<ICrudService<Definition, DefinitionDto>, GenericCrudS
 builder.Services.AddScoped<ICrudService<Example, ExampleDto>, GenericCrudService<Example, ExampleDto>>();
 builder.Services.AddScoped<ICrudService<Picture, PictureDto>, GenericCrudService<Picture, PictureDto>>();
 builder.Services.AddScoped<ICrudService<ExceptionLog, IExceptionLogDto>, GenericCrudService<ExceptionLog, IExceptionLogDto>>();
-builder.Services.AddScoped<IGetListService<Term, TermDto>, GenericGetListService<Term, TermDto>>();
-builder.Services.AddScoped<IGetListService<TermsDictionary, TermsDictionaryDto>, GenericGetListService<TermsDictionary, TermsDictionaryDto>>();
+
+builder.Services.AddSingleton<IQueryService<Term, TermsQueryDto>, TermsQueryService>();
+builder.Services.AddSingleton<IQueryService<TermsDictionary, TermsDictionariesQueryDto>, TermsDictionariesQueryService>();
+builder.Services.AddScoped<GenericGetListService<TermsDictionary, TermsDictionariesQueryDto, TermsDictionaryDto>>();
+builder.Services.AddScoped<GenericGetCountService<TermsDictionary, TermsDictionariesQueryDto>>();
+builder.Services.AddScoped<GenericGetListService<Term, TermsQueryDto, TermDto>>();
+builder.Services.AddScoped<GenericGetCountService<Term, TermsQueryDto>>();
+
 builder.Services.AddScoped<ITermRelatedService<DefinitionDto>, TermRelatedService<Definition, DefinitionDto>>();
 builder.Services.AddScoped<ITermRelatedService<ExampleDto>, TermRelatedService<Example, ExampleDto>>();
 builder.Services.AddScoped<ITermRelatedService<PictureDto>, TermRelatedService<Picture, PictureDto>>();
@@ -188,8 +197,8 @@ void AddAuthentication(WebApplicationBuilder builder1)
 void AddDbContext(WebApplicationBuilder webApplicationBuilder1)
 {
 	webApplicationBuilder1.Services.AddDbContext<ApplicationDbContext>(options =>
-		options.UseNpgsql(webApplicationBuilder1.Configuration["ConnectionStrings:DefaultConnection"]));
-		//options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")));
+		options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING") ?? 
+		                  webApplicationBuilder1.Configuration["ConnectionStrings:DefaultConnection"]));
 	webApplicationBuilder1.Services.AddScoped<IDbContext>(provider =>
 		provider.GetRequiredService<ApplicationDbContext>());
 }

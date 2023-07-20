@@ -1,12 +1,12 @@
 ﻿@page "/dictionaries"
 @inject IAppHttpClient AppHttpClient
 @using System.Net.Http.Json
-@using Application.Queries.TermsDictionary
 @using RazorLibrary.Helpers
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using RazorLibrary.Services.Interfaces
 @using SharedLibrary.DataTransferObjects
 @using RazorLibrary.Shared.Modals
+@using SharedLibrary.DataTransferObjects.Queries.TermsDictionary
 
 <PageTitle>Dictionaries</PageTitle>
 <div class="container voclex-list-container">
@@ -44,7 +44,7 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var queryObject = new TermsDictionariesListQuery(1, int.MaxValue); //todo pagination by scroll
+		var queryObject = new TermsDictionariesListQueryDto(1, int.MaxValue); //todo pagination by scroll
 
 		var newDictionaries =
 			await Http.GetFromJsonAsync<TermsDictionaryDto[]>(

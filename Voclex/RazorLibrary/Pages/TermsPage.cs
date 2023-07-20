@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
-using Application.Queries.Terms;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
 using RazorLibrary.Services.Interfaces;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.DataTransferObjects.Queries.Terms;
 
 namespace RazorLibrary.Pages
 {
@@ -91,7 +91,7 @@ namespace RazorLibrary.Pages
 
         private async Task<int> GetTotalPagesCount()
         {
-            var queryObject = new TermsQuery(QueryVariant);
+            var queryObject = new TermsQueryDto(QueryVariant);
 
             var newTermsCount = await Http.GetFromJsonAsync<int>(
                 $"Terms/GetCount{queryObject.ObjectPropertiesToQueryString()}");
@@ -102,7 +102,7 @@ namespace RazorLibrary.Pages
 
         private async Task<TermDto[]> GetNewTerms(int page)
         {
-            var termsListQuery = new TermsListQuery(
+            var termsListQuery = new TermsListQueryDto(
                 page, pageSize,
                 QueryVariant);
 

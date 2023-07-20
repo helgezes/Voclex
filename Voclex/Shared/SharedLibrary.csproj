@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="DataTransferObjects\Interfaces\" />
+    <Folder Include="DataTransferObjects\Queries\Interfaces\" />
     <Folder Include="Enums\" />
   </ItemGroup>
 

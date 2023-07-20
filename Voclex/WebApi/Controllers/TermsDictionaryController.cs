@@ -1,11 +1,11 @@
 ﻿using System.Security.Authentication;
 using Application.DataAccess;
 using Application.Models;
-using Application.Queries.TermsDictionary;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.DataTransferObjects.Queries.TermsDictionary;
 using SharedLibrary.Services.Interfaces;
 
 namespace WebApi.Controllers
@@ -13,27 +13,27 @@ namespace WebApi.Controllers
 	[Route("[controller]")]
 	public class TermsDictionaryController : GenericCrudController<TermsDictionary, TermsDictionaryDto>
     {
-        private readonly IGetListService<TermsDictionary, TermsDictionaryDto> listService;
-
-        public TermsDictionaryController(
-	        IGetListService<TermsDictionary, TermsDictionaryDto> listService,
+	    public TermsDictionaryController(
             ICrudService<TermsDictionary, TermsDictionaryDto> crudService) : base(crudService)
         {
-            this.listService = listService;
         }
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IEnumerable<TermsDictionaryDto>> GetList([FromQuery] TermsDictionariesListQuery query) 
+        public Task<IEnumerable<TermsDictionaryDto>> GetList(
+	        [FromQuery] TermsDictionariesListQueryDto dto,
+	        [FromServices] GenericGetListService<TermsDictionary, TermsDictionariesQueryDto, TermsDictionaryDto> listService) 
         {
-            return listService.GetAsync(query);
+            return listService.GetAsync(dto);
         }
 
         [HttpGet(nameof(GetCount))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<int> GetCount([FromQuery] TermsDictionariesQuery query)
+        public Task<int> GetCount(
+	        [FromQuery] TermsDictionariesQueryDto dto, 
+	        [FromServices] GenericGetCountService<TermsDictionary, TermsDictionariesQueryDto> genericGetCountService)
         {
-            return listService.GetCount(query);
+            return genericGetCountService.GetCount(dto);
         }
 
         [HttpGet(nameof(GetFirstDictionaryId))]

@@ -1,4 +1,4 @@
-﻿namespace Application.Queries.Terms;
+﻿namespace SharedLibrary.DataTransferObjects.Queries.Terms;
 
 public enum TermsListEnumQueryVariants
 {

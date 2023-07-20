@@ -1,7 +1,6 @@
-﻿using Application.Queries.TermsRelated;
-using Application.Services;
-using Application.Services.Interfaces;
+﻿using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using SharedLibrary.DataTransferObjects.Queries.TermsRelated;
 using SharedLibrary.ModelInterfaces;
 
 namespace WebApi.Controllers;

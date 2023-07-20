@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Application.Models;
-using Application.Queries.TermsRelated;
 using Application.Services;
 using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
+using SharedLibrary.DataTransferObjects.Queries.TermsRelated;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers
@@ -23,9 +23,9 @@ namespace WebApi.Controllers
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IEnumerable<PictureDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
+        public async Task<IEnumerable<PictureDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
         {
-            return listService.GetListAsync(termsRelatedListQuery.TermsIds);
+            return await listService.GetListAsync(termsRelatedListQuery.TermsIds);
         }
 
         [HttpPost]

@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Application.Queries.TermsRelated;
 using Microsoft.AspNetCore.Components;
 using RazorLibrary.Helpers;
 using RazorLibrary.Services.Interfaces;
+using SharedLibrary.DataTransferObjects.Queries.TermsRelated;
 using SharedLibrary.ModelInterfaces;
 
 namespace RazorLibrary.Shared.LearningModules;

@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Application.Queries.TermsRelated
+namespace SharedLibrary.DataTransferObjects.Queries.TermsRelated
 {
 	public sealed class TermsRelatedListQuery
 	{
