@@ -25,3 +25,9 @@ async function logOut() {
     await dotNetHelper.invokeMethodAsync('LogOut');
     window.location.reload();
 }
+
+async function TestFunc() {
+    window.location.reload();
+}
+
+window.logOut = logOut;

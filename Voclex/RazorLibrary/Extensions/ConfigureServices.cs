@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using System.Net;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -32,13 +33,15 @@ namespace RazorLibrary.Extensions
         private static void AddDefaultHttpClient(this IServiceCollection collection)
         {
             collection.AddTransient<AuthorizationHeaderHandler>();
+            collection.AddTransient<LogoutOnUnauthorizedHandler>();
 
             collection.AddHttpClient(Options.DefaultName,
                 client =>
                 {
                     client.BaseAddress = new Uri("http://localhost:5279/");
                 })
-                .AddHttpMessageHandler<AuthorizationHeaderHandler>();
+                .AddHttpMessageHandler<AuthorizationHeaderHandler>()
+                .AddHttpMessageHandler<LogoutOnUnauthorizedHandler>();
         }
 
         private static void AddSuggestionsHttpClient(this IServiceCollection collection)
@@ -70,4 +73,27 @@ namespace RazorLibrary.Extensions
             return await base.SendAsync(request, cancellationToken);
         }
     }
+
+    public class LogoutOnUnauthorizedHandler : DelegatingHandler
+    {
+	    private readonly IJSRuntime _jsRuntime;
+
+	    public LogoutOnUnauthorizedHandler(IJSRuntime jsRuntime)
+	    {
+		    _jsRuntime = jsRuntime;
+	    }
+
+	    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+	    {
+		    var response = await base.SendAsync(request, cancellationToken);
+
+		    if (response.StatusCode == HttpStatusCode.Unauthorized)
+		    {
+			    await _jsRuntime.InvokeVoidAsync("logOut", cancellationToken);
+		    }
+
+		    return response;
+	    }
+    }
+
 }
