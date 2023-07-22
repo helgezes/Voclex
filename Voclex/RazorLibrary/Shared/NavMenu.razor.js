@@ -26,8 +26,4 @@ async function logOut() {
     window.location.reload();
 }
 
-async function TestFunc() {
-    window.location.reload();
-}
-
 window.logOut = logOut;

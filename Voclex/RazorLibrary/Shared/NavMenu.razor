@@ -90,7 +90,7 @@
         AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChange;
 
         jsModule = await JS.InvokeAsync<IJSObjectReference>(
-            "import", $"./_content/{nameof(RazorLibrary)}/Shared/{nameof(NavMenu)}.razor.js");
+            "import", $"./_content/{nameof(RazorLibrary)}/Shared/{nameof(NavMenu)}.razor.js?v=2");
 
         await SetCurrentUser();
 
