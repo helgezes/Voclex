@@ -89,6 +89,7 @@ builder.Services.AddScoped<IFileSavingServiceFactory, DiskFileSavingServiceFacto
 builder.Services.AddScoped<ICrudService<Picture, IPictureDto>, GenericCrudService<Picture, IPictureDto>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<PicturesService>();
+builder.Services.AddScoped<TermsDictionaryService>();
 builder.Services.AddScoped<ExceptionLogService>();
 builder.Services.AddScoped<IAuthTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();

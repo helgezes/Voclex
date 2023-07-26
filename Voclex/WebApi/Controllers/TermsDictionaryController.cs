@@ -36,21 +36,11 @@ namespace WebApi.Controllers
             return genericGetCountService.GetCount(dto);
         }
 
-        [HttpGet(nameof(GetFirstDictionaryId))]
+        [HttpGet(nameof(GetMainDictionaryId))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<int?> GetFirstDictionaryId([FromServices] IDbContext context, [FromServices] IAuthenticatedUserService userService)
+		public async Task<int> GetMainDictionaryId([FromServices] TermsDictionaryService dictionaryService)
         {
-            var user = await userService.GetCurrentUser();
-
-            if (user == null)
-                throw new AuthenticationException();
-
-			var dictionaryId = context.TermsDictionaries
-                .Where(d => d.UserId == user.Id)
-                .OrderBy(d => d.Id)
-                .Select(d => d.Id).FirstOrDefault();
-
-            return dictionaryId != 0 ? dictionaryId : null;
+	        return await dictionaryService.GetMainDictionaryId();
 		}
     }
 }

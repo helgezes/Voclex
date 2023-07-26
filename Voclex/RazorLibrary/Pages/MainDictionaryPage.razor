@@ -6,9 +6,9 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        var firstDictionaryIdString = await AppHttpClient.ApiClient.GetStringAsync("TermsDictionary/GetFirstDictionaryId");
+        var mainDictionaryIdString = await AppHttpClient.ApiClient.GetStringAsync("TermsDictionary/GetMainDictionaryId");
 
-        NavigationManager.NavigateTo(!string.IsNullOrWhiteSpace(firstDictionaryIdString) ? $"/dictionary/{firstDictionaryIdString}/create-new-term" : "/dictionaries");
+        NavigationManager.NavigateTo($"/dictionary/{mainDictionaryIdString}/create-new-term");
     }
 
 }

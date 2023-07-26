@@ -9,6 +9,12 @@
             User = user;
         }
 
+        public TermsDictionary(string title, int userId)
+        {
+	        Title = title;
+            UserId = userId;
+        }
+
         private TermsDictionary(){}
 
         public string Title { get; private set; }
