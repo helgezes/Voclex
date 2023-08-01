@@ -4,7 +4,6 @@ export function ShowSuccessfulCreationModal() {
     successModal.show();
 }
 
-export function DisposeModalAndGoToUrl(path) {
-    successModal.dispose();
-    location.href = location.origin + path;
+window.HideSuccessfulCreationModal = function HideSuccessfulCreationModal() {
+    successModal.hide();
 }

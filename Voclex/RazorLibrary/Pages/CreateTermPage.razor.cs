@@ -41,7 +41,7 @@ namespace RazorLibrary.Pages
             if (!firstRender) return;
 
             jsModule = await JS.InvokeAsync<IJSObjectReference>(
-                "import", $"./_content/{nameof(RazorLibrary)}/Pages/{nameof(CreateTermPage)}.razor.js");
+                "import", $"./_content/{nameof(RazorLibrary)}/Pages/{nameof(CreateTermPage)}.razor.js?v=2");
 
         }
 

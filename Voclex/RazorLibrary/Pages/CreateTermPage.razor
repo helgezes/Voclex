@@ -40,9 +40,9 @@
 			<div class="modal-body">
 				New term successfully added!
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" @onclick="() => DisposeModalAndGoToUrl(GoBackToDictionaryUrl)"> Go back to dictionary</button>
-				<button type="button" class="btn btn-primary" @onclick="() => DisposeModalAndGoToUrl(ContinueEditingUrl)">Continue editing</button>
+            <div class="modal-footer">
+				<a type="button" class="btn btn-secondary" href="@GoBackToDictionaryUrl" onclick="HideSuccessfulCreationModal()"> Go back to dictionary</a>
+				<a type="button" class="btn btn-primary" href="@ContinueEditingUrl" onclick="HideSuccessfulCreationModal()">Continue editing</a>
 			</div>
 		</div>
 	</div>
