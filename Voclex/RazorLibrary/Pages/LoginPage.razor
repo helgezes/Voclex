@@ -3,16 +3,12 @@
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
-@using RazorLibrary.Helpers
 @using RazorLibrary.Services.Authentication
 @using RazorLibrary.Services.Interfaces
 
 @attribute [AllowAnonymous]
 
-@inject IAppHttpClient AppHttpClient
-@inject IAppStorage Storage
-@inject NavigationManager Navigation
-@inject ClientJwtAuthenticationStateProvider AuthenticationStateProvider
+@inject LoginService LoginService
 
 <h3>Login</h3>
 
@@ -40,20 +36,11 @@
     private async Task OnValid()
     {
         isDisabled = true;
-        using var msg = await AppHttpClient.ApiClient.PostAsJsonAsync("/login", user);
+        var isLoginSuccessful = await LoginService.Login(user);
 
-        if (!msg.IsSuccessStatusCode)
+        if (!isLoginSuccessful)
         {
             isDisabled = false;
-            return;
         }
-        
-        var result = await msg.Content.ReadFromJsonAsync<LoginResult>();
-            
-        await Storage.SetItem("token", result!.Token);
-
-        AuthenticationStateProvider.NotifyAuthenticationStateChanged();
-        
-        Navigation.NavigateTo("/");
     }
 }

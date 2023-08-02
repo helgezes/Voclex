@@ -26,6 +26,7 @@ namespace RazorLibrary.Extensions
             collection.AddScoped<ClientJwtAuthenticationStateProvider>();
             collection.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<ClientJwtAuthenticationStateProvider>());
             collection.AddScoped<IAuthenticatedUserService, JwtAuthenticatedUserService>();
+            collection.AddScoped<LoginService>();
 
             return collection;
         }
