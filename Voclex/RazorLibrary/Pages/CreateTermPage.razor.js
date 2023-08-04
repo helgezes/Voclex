@@ -1,4 +1,8 @@
-﻿const successModal = new bootstrap.Modal('#successfulCreation');
+﻿var successModal;
+
+export function InitializeSuccessfulCreationModal() {
+    successModal = new bootstrap.Modal('#successfulCreation');
+}
 
 export function ShowSuccessfulCreationModal() {
     successModal.show();
