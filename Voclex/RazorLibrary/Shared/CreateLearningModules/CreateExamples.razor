@@ -14,4 +14,13 @@
 		return new ExampleDto(0, 0, string.Empty);
 	}
 
+    public override Task<bool> SaveChanges(int termId)
+    {
+        if (string.IsNullOrEmpty(FirstEntity.Value))
+        {
+            DisableModuleCreation();
+        }
+
+        return base.SaveChanges(termId);
+    }
 }

@@ -48,7 +48,12 @@ namespace RazorLibrary.Shared.CreateLearningModules
         {
             IsModuleCreationEnabled = true;
         }
-    }
+
+        protected void DisableModuleCreation()
+        {
+	        IsModuleCreationEnabled = false;
+        }
+	}
 
     public interface ICreatableLearningModule
     {
