@@ -136,9 +136,11 @@ async Task SeedDevelopmentDb(WebApplication app)
 
     await ApplicationDbContextInitializer.MigrateDb(context);
 
+    await ApplicationDbContextInitializer.SeedProdDbIfNeeded(context);
+
     if (app.Environment.IsDevelopment())
     {
-	    await ApplicationDbContextInitializer.SeedDbIfNeeded(context, scope);
+	    await ApplicationDbContextInitializer.SeedDevDbIfNeeded(context, scope);
     }
 }
 

@@ -12,8 +12,13 @@ namespace Infrastructure.Persistence
 	    {
 		    await context.Database.MigrateAsync();
 		}
-        
-        public static async Task SeedDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
+
+        public static async Task SeedProdDbIfNeeded(ApplicationDbContext context)
+        {
+            //we can put some seed data for production
+        }
+
+        public static async Task SeedDevDbIfNeeded(ApplicationDbContext context, IServiceScope scope)
         {
             if (context.TermsDictionaries.Any()) return;
 
