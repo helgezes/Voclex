@@ -18,7 +18,7 @@
         @foreach (var image in suggestions)
         {
             <div class="image-thumbnail">
-                <img src="@image.PreviewUrl" @onclick="() => OnPictureSuggestionSelected(image)" style="max-height: 250px; max-width: 400px;" />
+                <img class="img-thumbnail voclex-medium-image" src="@image.PreviewUrl" @onclick="() => OnPictureSuggestionSelected(image)" />
             </div>
         }
     </div>

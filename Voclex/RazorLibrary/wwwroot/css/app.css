@@ -58,6 +58,16 @@
         color: inherit
     }
 
+.voclex-medium-image {
+    max-height: 250px;
+    max-width: 400px;
+}
+
+.voclex-large-image {
+    max-height: 350px;
+    max-width: 600px;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;

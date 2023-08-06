@@ -8,7 +8,7 @@
 @if ((file == null && suggestionPath == null) && FirstEntity != null)
 {
 	<div class="form-floating mb-3" style="display: inline-block;">
-		<img src="@($"{pictureHost}{FirstEntity.Path}")" style="max-height: 250px; max-width: 400px" />
+		<img class="img-thumbnail w-100 voclex-medium-image" src="@($"{pictureHost}{FirstEntity.Path}")" />
 		<button @onclick="DeletePicture" type="button" class="btn btn-danger col-1 fa fa-trash" style="position: absolute;right: 0;top: 0;">
 		</button>
 	</div>
