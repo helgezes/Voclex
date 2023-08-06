@@ -1,0 +1,69 @@
+﻿@using SharedLibrary.DataTransferObjects
+@using RazorLibrary.Services.Interfaces
+@inject IAppHttpClient AppHttpClient
+
+<div class="modal fade" id="dictionary-delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Delete the @(Dictionary?.Title)?</h5>        
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <label>
+                        If you delete the dictionary, all the word in it will get lost!
+                    </label>
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button @onclick="ConfirmDelete" disabled="@(!CountdownComplete)" 
+                        type="submit" class="btn btn-danger" data-bs-dismiss="modal">
+                    @(CountdownComplete ? "" : $"({currentCountDown}) ")Confirm delete (irreversible)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private const int CountDownTimeInSeconds = 5;
+    private int currentCountDown = default;
+
+    private bool CountdownComplete => currentCountDown <= default(int);
+
+    [Parameter]
+    [EditorRequired]
+    public TermsDictionaryDto? Dictionary { get; set; }
+    
+    [Parameter] 
+    public EventCallback<TermsDictionaryDto> OnDelete { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await StartCountdown();
+    }
+
+    private async Task ConfirmDelete()
+    {
+        await AppHttpClient.ApiClient.DeleteAsync($"TermsDictionary?id={Dictionary!.Id}");
+
+        await OnDelete.InvokeAsync(Dictionary);
+    }
+
+    private async Task StartCountdown()
+    {
+        currentCountDown = CountDownTimeInSeconds;
+
+        while (currentCountDown > default(int))
+        {
+            await Task.Delay(1000);
+            currentCountDown--;
+            StateHasChanged();
+        }
+    }
+
+}

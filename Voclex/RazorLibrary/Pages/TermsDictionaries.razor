@@ -14,10 +14,12 @@
 		<Virtualize Items="dictionaries" Context="dictionary">
 			<ItemContent>
 				<div class="py-3 list-group-item voclex-group-item d-flex btn btn-outline-info">
-					<a href="/dictionary/@dictionary.Id" class="col-11 text-decoration-none">
+					<a href="/dictionary/@dictionary.Id" class="col-10 text-decoration-none">
 						<div class="text-start">@dictionary.Title</div>
 					</a>
 					<button type="button" @onclick="() => Edit(dictionary)" class="btn btn-success col-1 fa fa-pencil" data-bs-toggle="modal" data-bs-target="#@editModalId">
+                    </button>
+					<button type="button" @onclick="() => Delete(dictionary)" class="btn btn-danger col-1 fa fa-trash" data-bs-toggle="modal" data-bs-target="#dictionary-delete-modal">
 					</button>
 				</div>
 			</ItemContent>
@@ -30,6 +32,7 @@
 
 <DictionaryEdit ModalId="@editModalId" Dictionary="currentEditDictionary" SaveChangesHttpMethod="Http.PutAsJsonAsync" OnChangesSaved="OnEditChangesSaved"></DictionaryEdit>
 <DictionaryEdit ModalId="@createModalId" Dictionary="newDictionary" SaveChangesHttpMethod="Http.PostAsJsonAsync" OnChangesSaved="OnCreateChangesSaved"></DictionaryEdit>
+<DictionaryDelete Dictionary="@currentDeleteDictionary" OnDelete="OnDelete"></DictionaryDelete>
 
 @code {
 	private readonly List<TermsDictionaryDto> dictionaries = new();
@@ -39,6 +42,8 @@
 	    
 	private const string createModalId = "dictionaryCreateModal";
 	private TermsDictionaryDto? newDictionary = null;
+
+	private TermsDictionaryDto? currentDeleteDictionary = null;
 
 	protected HttpClient Http => AppHttpClient.ApiClient;
 
@@ -58,9 +63,19 @@
 		currentEditDictionary = dictionary;
 	}
 
+    private void Delete(TermsDictionaryDto dictionary)
+    {
+		currentDeleteDictionary = dictionary;
+    }
+
 	private void OnEditChangesSaved(DictionaryEdit.ChangesSavedArgs args)
 	{
 		currentEditDictionary!.Title = args.Dictionary.Title;
+	}
+	
+	private void OnDelete(TermsDictionaryDto dict)
+	{
+	    dictionaries.Remove(dict);
 	}
 
 	private void OpenCreateModal()
