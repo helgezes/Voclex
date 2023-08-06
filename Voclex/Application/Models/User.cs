@@ -12,6 +12,13 @@ namespace Application.Models
             HashedPassword = HashPassword(password, passwordHasher); 
         }
 
+        public User(string name, string hashedPassword, Role role)
+        {
+            Name = name;
+            HashedPassword = hashedPassword;
+            Role = role;
+        }
+
         private User()
         {
         }

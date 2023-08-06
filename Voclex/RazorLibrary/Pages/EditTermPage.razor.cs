@@ -20,15 +20,12 @@ namespace RazorLibrary.Pages
 
         private TermDto currentTerm = new(0, string.Empty, 1); //todo dictionary id;
 
-        private readonly Dictionary<Type, Type> editToCreateModules =
-            new()
+        private readonly CreateEditLearningModule[] createEditLearningModules =
             {
-            { typeof(EditDefinition), typeof(CreateDefinition) },
-            { typeof(EditExamples), typeof(CreateExamples) },
-            { typeof(EditPicture), typeof(CreatePicture) }
+                new(typeof(EditDefinition), typeof(CreateDefinition)),
+                new(typeof(EditExamples), typeof(CreateExamples)),
+                new(typeof(EditPicture), typeof(CreatePicture))
             };
-        private readonly List<Type> createModules = new();
-        private Type[] editModules;
 
         private DynamicComponent[] editableLearningModules;
         private readonly Dictionary<Type, DynamicComponent?> creatableLearningModulesDictionary = new();
@@ -39,8 +36,7 @@ namespace RazorLibrary.Pages
 
         protected override async Task OnInitializedAsync()
         {   //todo mb form as a component, add and edit page separate, using this component
-            editModules = editToCreateModules.Keys.ToArray();
-            editableLearningModules = new DynamicComponent[editToCreateModules.Count];
+            editableLearningModules = new DynamicComponent[createEditLearningModules.Length];
 
             TermDto? loadedTerm;
             if (Id != default && (loadedTerm = await Http.GetFromJsonAsync<TermDto>($"Terms?id={Id}")) != null)
@@ -91,7 +87,7 @@ namespace RazorLibrary.Pages
 
         private void LoadCreatedModule(ICreatableLearningModule createdModule)
         {
-            var editModule = editToCreateModules.First(e => e.Value == createdModule.GetType()).Key;
+            var editModule = createEditLearningModules.First(e => e.Create == createdModule.GetType()).Edit;
             var editComponent = editableLearningModules.First(m => m.Instance.GetType() == editModule);
             ((IEditableLearningModule)editComponent.Instance).LoadEntities();
         }
@@ -101,25 +97,25 @@ namespace RazorLibrary.Pages
             AddCreateModuleIfEntityIsNotLoaded(eventArgs);
 
             learningModulesInitializedCount++;
-            if (learningModulesInitializedCount < editModules.Length) return;
+            if (learningModulesInitializedCount < createEditLearningModules.Length) return;
 
             saveEnabled = true;
         }
 
         private void AddCreateModuleIfEntityIsNotLoaded(OnInitializationEventArgs eventArgs)
         {
-            var createModule = editToCreateModules[eventArgs.Type];
+            var createEditModule = createEditLearningModules.First(m => m.Edit == eventArgs.Type);
             if (eventArgs.IsEntityLoaded)
             {
-                createModules.Remove(createModule);
-                creatableLearningModulesDictionary.Remove(createModule);
-                return;
+                createEditModule.ShowCreateModule = false;
+                creatableLearningModulesDictionary.Remove(createEditModule.Create);
+				return;
             }
 
-            if (createModules.Contains(createModule)) return;
+            if (createEditModule.ShowCreateModule) return;
 
-            createModules.Add(createModule);
-        }
+            createEditModule.ShowCreateModule = true;
+		}
 
         protected IDictionary<string, object> GetEditLearningModuleParameters()
         {
@@ -137,6 +133,21 @@ namespace RazorLibrary.Pages
             {
                 { "Term", currentTerm }
             };
+        }
+
+        public sealed class CreateEditLearningModule
+        {
+            public CreateEditLearningModule(Type edit, Type create)
+            {
+                Create = create;
+                Edit = edit;
+            }
+
+            public Type Create { get; }
+
+            public Type Edit { get; }
+
+            public bool ShowCreateModule { get; set; } = false;
         }
     }
 }

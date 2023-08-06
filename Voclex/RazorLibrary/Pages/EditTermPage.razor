@@ -14,25 +14,27 @@
             </div>
 		</div>
 
-		@{ var editParameters = GetEditLearningModuleParameters();}
-		@for (var i = 0; i < editModules.Length; i++)
-		{
-			var module = editModules[i];
-			var i2 = i;
-
-			<div class="border-start border-success p-1 mb-3 empty-check" style="--bs-border-opacity: .25;">
-                <DynamicComponent Type="module" @ref="editableLearningModules[i2]" Parameters="editParameters"></DynamicComponent>
-		    </div>
+		@{
+			var editParameters = GetEditLearningModuleParameters();
+		    var createParameters = GetCreateLearningModuleParameters();
 		}
-		
-        @{ var createParameters = GetCreateLearningModuleParameters();}
-		@for (var i = 0; i < createModules.Count; i++)
+        @for (var i = 0; i < createEditLearningModules.Length; i++)
 		{
-			var module = createModules[i];
+			var module = createEditLearningModules[i];
+		    var i2 = i;
+			
 		    <div class="border-start border-success p-1 mb-3" style="--bs-border-opacity: .25;">
-                <DynamicComponent Type="module" @ref="creatableLearningModulesDictionary[module]" Parameters="createParameters"></DynamicComponent>
-		    </div>
+			    @if (module.ShowCreateModule)
+			    {
+			        <DynamicComponent Type="module.Create" @ref="creatableLearningModulesDictionary[module.Create]" Parameters="createParameters"></DynamicComponent>
+			    }
+			    else
+			    {
+			        <DynamicComponent Type="module.Edit" @ref="editableLearningModules[i2]" Parameters="editParameters"></DynamicComponent>
+			    }
+            </div>
 		}
+
 		<SuccessAlert Text="Changes saved succesfully!" @ref="successAlert"></SuccessAlert>
 		<div class="form-floating mb-3">
 			<button type="submit" class="btn btn-success" disabled="@(!saveEnabled)">Save</button>

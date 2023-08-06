@@ -36,6 +36,8 @@ namespace RazorLibrary.Shared.EditLearningModules
 
         public async Task LoadEntities()
         {
+            if(Term.Id == default) return;
+
 	        var queryObject = new TermsRelatedListQuery(Term.Id);
 	        CurrentEntities =
 		        await Http.GetFromJsonAsync<TDto[]>($"{GetListApiPath}{queryObject.ObjectPropertiesToQueryString()}");
