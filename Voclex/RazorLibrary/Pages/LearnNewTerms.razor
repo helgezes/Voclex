@@ -9,7 +9,7 @@
     @if (CurrentTerm != null)
     {
         <div>
-            <Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></Term>
+            <TermLearningCard CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="GetLearningModuleParameters()"></TermLearningCard>
 
             <p class="d-flex justify-content-around py-3">
                 <button @onclick="AlreadyKnowThis" type="button" class="btn btn-lg voclex-large-button">I already know this</button>

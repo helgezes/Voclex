@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.DataTransferObjects;
 using SharedLibrary.DataTransferObjects.Queries.TermsRelated;
+using WebApi.Constants;
 using WebApi.Extensions;
 
 namespace WebApi.Controllers
@@ -23,7 +24,7 @@ namespace WebApi.Controllers
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ResponseCache(Duration = 90, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = CacheConstants.ModulesGetListCacheDurationInSeconds, Location = ResponseCacheLocation.Client)]
         public async Task<IEnumerable<PictureDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
         {
             return await listService.GetListAsync(termsRelatedListQuery.TermsIds);

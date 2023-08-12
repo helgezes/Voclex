@@ -11,24 +11,19 @@
     {
         var learningModuleParameters = GetLearningModuleParameters();
 
-        <div hidden="@(!showTerm)">
-            <Term CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="learningModuleParameters"></Term>
-            <p class="d-flex justify-content-around py-3">
-                <button @onclick="CorrectGuess" type="button" class="btn btn-lg voclex-large-button">I got it</button>
-                <button @onclick="IncorrectGuess" type="button" class="btn btn-lg voclex-large-button">Keep showing it</button>
-            </p>
-        </div>
+        @if (guessingCardLoaded) //so we load some of the already loaded modules from cache todo do we actually need this? maybe remove to reduce complexity
+        {
+            <div hidden="@(!showTerm)">
+                <TermLearningCard CurrentTerm="@CurrentTerm.Value" LearningModuleParameters="learningModuleParameters"></TermLearningCard>
+                <p class="d-flex justify-content-around py-3">
+                    <button @onclick="CorrectGuess" type="button" class="btn btn-lg voclex-large-button">I got it</button>
+                    <button @onclick="IncorrectGuess" type="button" class="btn btn-lg voclex-large-button">Keep showing it</button>
+                </p>
+            </div>
+        }
 
         <div hidden="@(showTerm)">
-            @for (var i = 0; i < guessingModules.Length; i++)
-            {
-                var guessingModule = guessingModules[i];
-                var i2 = i;
-
-                <OnDemandComponent InitialState="@guessingModule.InitialState" ComponentName="@guessingModule.Name" @ref="onDemandComponents[i2]">
-                    <DynamicComponent Type="@guessingModule.Module" Parameters="@learningModuleParameters"></DynamicComponent>
-                </OnDemandComponent>
-            }
+            <TermGuessingCard CurrentTerm="CurrentTerm.Value" LearningModuleParameters="learningModuleParameters" OnLoading="OnGuessingModuleLoading" @ref="termGuessingCard"></TermGuessingCard>
             <div class="row py-2">
                 <form class="submit-answer @(triesNumber > default(int) ? "is-invalid" : string.Empty)" @onsubmit="TryGuess">
                     <input class="form-control border-primary" @bind="guess" placeholder="Enter your guess">
@@ -55,19 +50,16 @@
 
 @code {
 	protected override TermsListEnumQueryVariants QueryVariant => TermsListEnumQueryVariants.GetOnlyForRepetition;
-
-	private readonly GuessingModule[] guessingModules = new[] { //todo
-		new GuessingModule(typeof(Definition), OnDemandComponent.ComponentState.OnDemand, "Definition"),
-		new GuessingModule(typeof(Pictures), OnDemandComponent.ComponentState.OnDemand, "Picture")
-	};
-	private OnDemandComponent[] onDemandComponents;
+    
 	private const int maxTriesNumber = 3;
 
 	private string guess;
 	private int triesNumber = default;
 	private bool showTerm = false;
+    private bool guessingCardLoaded = false;
+    private TermGuessingCard? termGuessingCard;
 
-	private void TryGuess()
+    private void TryGuess()
 	{
 		if (guess?.ToUpper() == CurrentTerm!.Value.ToUpper())
 		{
@@ -90,29 +82,11 @@
 		triesNumber = default;
 		showTerm = false;
 
-		foreach (var onDemandComponent in onDemandComponents)
-		{
-			onDemandComponent?.ResetToInitialState();
-		}
+		termGuessingCard?.ResetToInitialState();
 	}
 
-    protected override void OnInitialized()
+    protected void OnGuessingModuleLoading(OnTermCardLoadingEventArgs args)
     {
-        onDemandComponents = new OnDemandComponent[guessingModules.Length];
-        base.OnInitialized();
+        guessingCardLoaded = args.IsLoadingFinished;
     }
-
-    public sealed class GuessingModule
-	{
-		public GuessingModule(Type module, OnDemandComponent.ComponentState initialState, string name)
-		{
-			Module = module;
-			InitialState = initialState;
-			Name = name;
-		}
-
-		public Type Module { get; init; }
-		public OnDemandComponent.ComponentState InitialState { get; init; }
-		public string Name { get; init; }
-	}
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedLibrary.DataTransferObjects.Queries.TermsRelated;
 using SharedLibrary.ModelInterfaces;
+using WebApi.Constants;
 
 namespace WebApi.Controllers;
 
@@ -21,7 +22,7 @@ public abstract class GenericTermsRelatedController<TModel, TDto> :
 
     [HttpGet(nameof(GetList))]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ResponseCache(Duration = 90, Location = ResponseCacheLocation.Client)]
+    [ResponseCache(Duration = CacheConstants.ModulesGetListCacheDurationInSeconds, Location = ResponseCacheLocation.Client)]
     public Task<IEnumerable<TDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
     {
         return termRelatedService.GetListAsync(termsRelatedListQuery.TermsIds);

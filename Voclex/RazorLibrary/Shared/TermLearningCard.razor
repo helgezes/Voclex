@@ -1,0 +1,28 @@
+﻿@using RazorLibrary.Shared.LearningModules
+@inherits AbstractTermCard
+
+<div hidden="@(!AllModulesLoaded)">
+    <h1>@CurrentTerm</h1>
+    
+    @{
+        var parameters = GetLearningModuleParameters();
+    }
+    @foreach (var learningModule in learningModules)
+    {
+        <DynamicComponent Type="learningModule" Parameters="parameters"></DynamicComponent>
+    }
+</div>
+
+@if (!AllModulesLoaded) //todo show only one loading? mb make a 'allmodulesloaded' event here.
+{
+    <div>
+        <p>Loading your definitions, examples and pictures...</p>
+    </div>
+}
+
+
+@code {
+	private static readonly Type[] learningModules = new[] { typeof(Definition), typeof(Examples), typeof(Pictures) };
+
+    protected override Type[] LoadableModules => learningModules;
+}

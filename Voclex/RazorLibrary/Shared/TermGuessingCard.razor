@@ -1,0 +1,78 @@
+﻿@using RazorLibrary.Pages
+@using RazorLibrary.Shared.LearningModules
+@inherits AbstractTermCard
+
+@{
+    var learningModuleParameters = GetLearningModuleParameters();
+}
+
+<div hidden="@(!AllModulesLoaded)">
+    @for (var i = 0; i < guessingModules.Length; i++)
+    {
+        var guessingModule = guessingModules[i];
+        var i2 = i;
+
+        <OnDemandComponent InitialState="@guessingModule.InitialState" ComponentName="@guessingModule.Name" @ref="onDemandComponents[i2]">
+            <DynamicComponent Type="@guessingModule.Module" Parameters="@learningModuleParameters"></DynamicComponent>
+        </OnDemandComponent>
+    }
+</div>
+
+@if (!AllModulesLoaded)
+{
+    <div>
+        <p>Loading your definitions and pictures...</p>
+    </div>
+}
+
+@code {
+    
+    private OnDemandComponent[] onDemandComponents;
+
+    private readonly GuessingModule[] guessingModules = new[]
+    {
+        new GuessingModule(typeof(Definition), OnDemandComponent.ComponentState.OnDemand, "Definition"),
+        new GuessingModule(typeof(Pictures), OnDemandComponent.ComponentState.OnDemand, "Picture")
+    };
+
+    private Type[]? guessingModuleTypes;
+
+    protected override Type[] LoadableModules
+    {
+        get
+        {
+            if (guessingModuleTypes == null)
+                guessingModuleTypes = guessingModules.Select(g => g.Module).ToArray();
+
+            return guessingModuleTypes;
+        }
+    }
+
+    public void ResetToInitialState()
+    {
+        foreach (var onDemandComponent in onDemandComponents)
+        {
+            onDemandComponent?.ResetToInitialState();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        onDemandComponents = new OnDemandComponent[guessingModules.Length];
+    }
+
+    
+    public sealed class GuessingModule
+    {
+        public GuessingModule(Type module, OnDemandComponent.ComponentState initialState, string name)
+        {
+            Module = module;
+            InitialState = initialState;
+            Name = name;
+        }
+
+        public Type Module { get; init; }
+        public OnDemandComponent.ComponentState InitialState { get; init; }
+        public string Name { get; init; }
+    }
+}
