@@ -23,6 +23,7 @@ namespace WebApi.Controllers
 
         [HttpGet(nameof(GetList))]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ResponseCache(Duration = 90, Location = ResponseCacheLocation.Client)]
         public async Task<IEnumerable<PictureDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
         {
             return await listService.GetListAsync(termsRelatedListQuery.TermsIds);

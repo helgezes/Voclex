@@ -21,6 +21,7 @@ public abstract class GenericTermsRelatedController<TModel, TDto> :
 
     [HttpGet(nameof(GetList))]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ResponseCache(Duration = 90, Location = ResponseCacheLocation.Client)]
     public Task<IEnumerable<TDto>> GetList([FromQuery] TermsRelatedListQuery termsRelatedListQuery)
     {
         return termRelatedService.GetListAsync(termsRelatedListQuery.TermsIds);
