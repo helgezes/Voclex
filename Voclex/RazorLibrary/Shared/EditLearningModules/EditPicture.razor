@@ -16,17 +16,20 @@
 
 @if (FirstEntity != null)
 {
-    <PictureInput OnFileInput="OnFileInput" OnSuggestionSelected="OnSuggestionSelected" Term="Term"></PictureInput>
+    <PictureInput OnFileInput="OnFileInput" OnSuggestionSelected="OnSuggestionSelected" Term="Term" @ref="pictureInput"></PictureInput>
 }
 
 
 @code {
+    private const int MaxAllowedFileSizeInMb = 10;
+
     protected override string GetListApiPath => "Pictures/GetList";
 	protected override string SaveChangesApiPath => "Pictures";
 
 	private string pictureHost;
     private IBrowserFile? file;
     private string? suggestionPath;
+    private PictureInput? pictureInput;
 
 	public override async Task SaveChanges()
 	{
@@ -48,7 +51,9 @@
 
 		var content = formDataBuilder.Build();
 		
-		await Http.PutAsync(editPath, content);
+		var response = await Http.PutAsync(editPath, content);
+
+		await InitializeEditedPicture(response);
 	}
 
 	protected override Task OnInitializedAsync()
@@ -75,5 +80,12 @@
 	    suggestionPath = suggestion;
 	}
 
-    private const int MaxAllowedFileSizeInMb = 10;
+	private async Task InitializeEditedPicture(HttpResponseMessage response)
+	{
+		if (!response.IsSuccessStatusCode) return;
+
+		file = null;
+		pictureInput?.HideThumbnail();
+		await LoadEntities();
+	}
 }

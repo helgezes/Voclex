@@ -34,6 +34,11 @@
     private IJSObjectReference jsModule = null!;
     private bool showThumbnail = false;
 
+    public void HideThumbnail()
+    {
+        showThumbnail = false;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(!firstRender) return;
